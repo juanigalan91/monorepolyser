@@ -2577,7 +2577,6 @@ const main = async () => {
         const pkgJsonFile = require(pkg);
         console.log(pkgJsonFile.dependencies);
     });
-    console.log(files);
 }
 
 main().catch(err => core.setFailed(err.message));

@@ -2,6 +2,9 @@
     "name": "@monorepolyser/graph",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js"
+    "main": "index.js",
+    "dependencies": {
+        "@monorepolyser/generator": "1.0.0" 
+    }
   }
   
