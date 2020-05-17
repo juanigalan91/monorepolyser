@@ -2569,7 +2569,7 @@ const glob = __webpack_require__(650);
 const packageJson = __webpack_require__(534);
 
 const main = async () => {
-    const patterns = packageJson.workspaces;
+    const patterns = packageJson.workspaces.map((workspace) => `${workspace}/package.json`);
     const globber = await glob.create(patterns.join('\n'));
     const files = await globber.glob();
     console.log(files);
