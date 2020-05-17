@@ -2571,7 +2571,12 @@ const packageJson = __webpack_require__(534);
 const main = async () => {
     const patterns = packageJson.workspaces.map((workspace) => `${workspace}/package.json`);
     const globber = await glob.create(patterns.join('\n'));
-    const files = await globber.glob();
+    const packages = await globber.glob();
+
+    packages.map((pkg) => {
+        const pkgJsonFile = require(pkg);
+        console.log(pkgJsonFile.dependencies);
+    });
     console.log(files);
 }
 
