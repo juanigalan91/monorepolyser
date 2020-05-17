@@ -2567,16 +2567,19 @@ exports.getOptions = getOptions;
 const core = __webpack_require__(421);
 const glob = __webpack_require__(650);
 const packageJson = __webpack_require__(534);
+const fs = __webpack_require__(747);
 
 const main = async () => {
     const patterns = packageJson.workspaces.map((workspace) => `${workspace}/package.json`);
     const globber = await glob.create(patterns.join('\n'));
     const packages = await globber.glob();
 
-    packages.map((pkg) => {
+    /**packages.map((pkg) => {
         const pkgJsonFile = require(pkg);
         console.log(pkgJsonFile.dependencies);
-    });
+    });*/
+
+    fs.writeFileSync('dependencies.json', JSON.stringify(packages), { encoding: 'UTF-8'});
 }
 
 main().catch(err => core.setFailed(err.message));

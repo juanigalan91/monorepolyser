@@ -11,3 +11,8 @@ jobs:
       - name: Graph Generator
         uses: ./ # Uses an action in the root directory
         id: graph-generator
+      - name: Upload Graph
+        uses: actions/upload-artifact@v2
+        with:
+          name: dependencies-graph
+          path: dependencies.json
