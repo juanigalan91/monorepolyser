@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "private": "true",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:generator": "ncc build ./packages/generator/index.js"
@@ -19,10 +19,6 @@
     "url": "https://github.com/juanigalan91/monorepolyser/issues"
   },
   "homepage": "https://github.com/juanigalan91/monorepolyser#readme",
-  "dependencies": {
-    "@actions/core": "^1.2.4",
-    "@actions/github": "^2.2.0"
-  },
   "workspaces": [
     "packages/**/*"
   ]
