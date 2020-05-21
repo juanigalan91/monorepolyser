@@ -8,5 +8,8 @@
         "@actions/github": "^2.2.0",
         "@actions/glob": "^0.1.0",
         "@monorepolyser/generator": "1.0.0"
+    },
+    "scripts": {
+        "build": "ncc build ./index.js"
     }
 }

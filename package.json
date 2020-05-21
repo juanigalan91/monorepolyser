@@ -5,9 +5,9 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test:generator": "node ./packages/generator/index.test.js",
-    "build:action": "ncc build ./packages/github-action/index.js",
-    "build:app": "yarn workspace @monorepolyser/app build"
+    "build:app": "yarn workspace @monorepolyser/app build",
+    "build:action": "yarn workspace @monorepolyser/github-action build",
+    "test:generator": "yarn workspace @monorepolyser/generator test"
   },
   "repository": {
     "type": "git",

@@ -7,5 +7,8 @@
         "find-root": "^1.1.0",
         "flatten": "^1.0.3",
         "glob": "latest"
+    },
+    "scripts": {
+        "test": "node ./index.test.js"
     }
 }
