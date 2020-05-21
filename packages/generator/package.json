@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
-        "@actions/core": "^1.2.4",
-        "@actions/github": "^2.2.0",
-        "@actions/glob": "^0.1.0"
+        "find-root": "^1.1.0",
+        "flatten": "^1.0.3",
+        "glob": "latest"
     }
 }

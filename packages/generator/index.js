@@ -1,19 +1,33 @@
-const core = require('@actions/core');
-const glob = require('@actions/glob');
-const packageJson = require('../../package.json');
 const fs = require('fs');
+const path = require('path');
+const findRoot = require('find-root');
+const flatten = require('flatten');
+const glob = require('glob');
 
-const main = async () => {
-    const patterns = packageJson.workspaces.map((workspace) => `${workspace}/package.json`);
-    const globber = await glob.create(patterns.join('\n'));
-    const packages = await globber.glob();
-
-    /**packages.map((pkg) => {
-        const pkgJsonFile = require(pkg);
-        console.log(pkgJsonFile.dependencies);
-    });*/
-
-    fs.writeFileSync('dependencies.json', JSON.stringify(packages), { encoding: 'UTF-8'});
+function getPackages(packageJson) {
+    if (!('workspaces' in packageJson)) {
+        return null;
+    }
+    const { workspaces } = packageJson;
+    if (Array.isArray(workspaces)) {
+        return workspaces;
+    }
+    return workspaces.packages || null;
 }
 
-main().catch(err => core.setFailed(err.message));
+/**
+ * Retrieves the different workspaces that are configured for this repo
+ */
+function getWorkspaces(from) {
+    const root = findRoot(from, (dir) => {
+        const pkg = path.join(dir, 'package.json');
+        return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
+    });
+
+    const packages = getPackages(require(path.join(root, 'package.json')));
+    return flatten(packages.map((name) => glob.sync(path.join(root, `${name}/`))));
+}
+
+module.exports = {
+    getWorkspaces,
+};

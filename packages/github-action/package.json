@@ -1,0 +1,12 @@
+{
+    "name": "@monorepolyser/github-action",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "dependencies": {
+        "@actions/core": "^1.2.4",
+        "@actions/github": "^2.2.0",
+        "@actions/glob": "^0.1.0",
+        "@monorepolyser/generator": "1.0.0"
+    }
+}
