@@ -15,17 +15,16 @@ function getPackages(packageJson) {
     return workspaces.packages || null;
 }
 
-/**
- * Retrieves the different workspaces that are configured for this repo
- */
 function getWorkspaces(from) {
+    console.log(from);
     const root = findRoot(from, (dir) => {
         const pkg = path.join(dir, 'package.json');
         return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
     });
+    console.log(root);
 
     const packages = getPackages(require(path.join(root, 'package.json')));
-    return flatten(packages.map((name) => glob.sync(path.join(root, `${name}/`))));
+    return packages;
 }
 
 module.exports = {

@@ -3543,7 +3543,7 @@ exports.DefaultGlobber = DefaultGlobber;
 /***/ 534:
 /***/ (function(module) {
 
-module.exports = {"name":"monorepolyser","version":"1.0.0","description":"","main":"index.js","private":true,"scripts":{"test":"echo \"Error: no test specified\" && exit 1","build:action":"ncc build ./packages/github-action/index.js","build:app":"yarn workspace @monorepolyser/app build"},"repository":{"type":"git","url":"git+https://github.com/juanigalan91/monorepolyser.git"},"keywords":[],"author":"","license":"ISC","bugs":{"url":"https://github.com/juanigalan91/monorepolyser/issues"},"homepage":"https://github.com/juanigalan91/monorepolyser#readme","workspaces":["packages/**/*"]};
+module.exports = {"name":"monorepolyser","version":"1.0.0","description":"","main":"index.js","private":true,"scripts":{"test:generator":"node ./packages/generator/index.test.js","build:action":"ncc build ./packages/github-action/index.js","build:app":"yarn workspace @monorepolyser/app build"},"repository":{"type":"git","url":"git+https://github.com/juanigalan91/monorepolyser.git"},"keywords":[],"author":"","license":"ISC","bugs":{"url":"https://github.com/juanigalan91/monorepolyser/issues"},"homepage":"https://github.com/juanigalan91/monorepolyser#readme","workspaces":["packages/**/*"]};
 
 /***/ }),
 
@@ -4852,17 +4852,16 @@ function getPackages(packageJson) {
     return workspaces.packages || null;
 }
 
-/**
- * Retrieves the different workspaces that are configured for this repo
- */
 function getWorkspaces(from) {
+    console.log(from);
     const root = findRoot(from, (dir) => {
         const pkg = path.join(dir, 'package.json');
         return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
     });
+    console.log(root);
 
     const packages = getPackages(__ncc_wildcard$0(root));
-    return flatten(packages.map((name) => glob.sync(path.join(root, `${name}/`))));
+    return packages;
 }
 
 module.exports = {
