@@ -21,7 +21,8 @@ function getWorkspaces(from) {
         const pkg = path.join(dir, 'package.json');
         return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
     });
-    console.log(root);
+
+    console.log(path.join(root, 'package.json'));
 
     const packages = getPackages(require(path.join(root, 'package.json')));
     return packages;
