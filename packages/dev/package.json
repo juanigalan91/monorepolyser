@@ -1,9 +1,0 @@
-{
-    "name": "@monorepolyser/dev",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "devDependencies": {
-        "eslint": "^7.0.0"
-    }
-}
