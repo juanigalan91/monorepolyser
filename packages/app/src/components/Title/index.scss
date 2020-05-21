@@ -1,0 +1,47 @@
+.title {
+    color: $white;
+
+    &-dark {
+        color: $black;
+    }
+
+    &-centered {
+        text-align: center;
+    }
+
+    &-h1 {
+        font-size: $font-size-xxl;
+        line-height: 1.5;
+
+        @media(max-width: $medium-resolution) {
+            font-size: $font-size-l;
+        }
+
+        @media(max-width: $tablet-resolution) {
+            font-size: $font-size-m;
+
+        }
+
+        @media(max-width: $mobile-resolution) {
+            font-size: $font-size-m;
+        }
+    }
+
+    &-h2 {
+        font-size: $font-size-m;
+        margin-top: $base-spacing;
+
+        @media(max-width: $medium-resolution) {
+            font-size: $font-size-m;
+        }
+
+        @media(max-width: $tablet-resolution) {
+            font-size: $font-size-s;
+
+        }
+
+        @media(max-width: $mobile-resolution) {
+            font-size: $font-size-s;
+        }
+    }
+}
