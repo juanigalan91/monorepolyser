@@ -1,8 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const findRoot = require('find-root');
-const flatten = require('flatten');
-const glob = require('glob');
 
 function getPackages(packageJson) {
     if (!('workspaces' in packageJson)) {
@@ -21,10 +19,6 @@ function getWorkspaces(from) {
         const pkg = path.join(dir, 'package.json');
         return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
     });
-
-    console.log(root);
-    console.log('logged root and logging root with package json');
-    console.log(path.join(root, 'package.json'));
 
     const packages = getPackages(require(path.join(root, 'package.json')));
     return packages;
