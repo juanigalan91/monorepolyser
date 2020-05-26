@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const findRoot = require('find-root');
+const glob = require('glob');
 
 function getPackages(packageJson) {
     if (!('workspaces' in packageJson)) {
@@ -13,17 +14,33 @@ function getPackages(packageJson) {
     return workspaces.packages || null;
 }
 
-function getWorkspaces(from) {
-    console.log(from);
-    const root = findRoot(from, (dir) => {
+function getRoot() {
+    const root = findRoot(__dirname, (dir) => {
         const pkg = path.join(dir, 'package.json');
         return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
     });
+
+    return root;
+}
+
+function getWorkspaces() {
+    const root = getRoot();
 
     const packages = getPackages(require(path.join(root, 'package.json')));
     return packages;
 }
 
+function getPackagesFromWorkspaces(workspaces) {
+    const root = getRoot();
+
+    workspaces.forEach((workspace) => {
+        glob(`${workspace}/package.json`, { cwd: root }, (err, matches) => {
+            console.log(matches);
+        })
+    })
+}
+
 module.exports = {
     getWorkspaces,
+    getPackagesFromWorkspaces,
 };

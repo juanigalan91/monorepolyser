@@ -1,3 +1,7 @@
-const { getWorkspaces } = require('./index');
+const { getWorkspaces, getPackagesFromWorkspaces } = require('./index');
 
-console.log(getWorkspaces(__dirname));
+const workspaces = getWorkspaces()
+
+console.log(workspaces);
+
+getPackagesFromWorkspaces(workspaces);
