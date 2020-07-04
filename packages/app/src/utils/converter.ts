@@ -15,6 +15,7 @@ const convert = (rawData: any) => {
                 id: id,
                 label: key,
                 shape: 'box',
+                color: '#eaf4ff',
             });
 
             currentNodeId = id;
@@ -36,6 +37,7 @@ const convert = (rawData: any) => {
                         id: id,
                         label: depKey,
                         shape: 'box',
+                        color: '#eaf4ff',
                     });
 
                     edges.push({
@@ -58,7 +60,7 @@ const convert = (rawData: any) => {
                         id: id,
                         label: devDepKey,
                         shape: 'box',
-                        color: 'red',
+                        color: '#5ac085',
                     });
 
                     edges.push({

@@ -27,7 +27,11 @@ const App = ({ graph }: { graph: any }) => {
             nodes: nodes,
             edges: edges
         };
-        var options = {};
+         var options = {
+             layout: {
+                improvedLayout: false,
+             }
+         };
 
         // @ts-ignore
         new vis.Network(container, data, options);
