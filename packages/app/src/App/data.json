@@ -1,0 +1,1427 @@
+{
+    "eslint-plugin-lumapps": {},
+    "@lumapps/ga-jest-reporter": {
+        "dependencies": {
+            "@actions/github": "^2.1.0",
+            "@cedx/lcov": "^6.3.0"
+        }
+    },
+    "@lumapps/ga-remove-label": {
+        "dependencies": {
+            "@actions/github": "^2.1.0",
+            "@actions/core": "^1.2.4"
+        }
+    },
+    "@lumapps/ga-reviews": {
+        "dependencies": {
+            "@actions/github": "^2.1.0",
+            "@actions/core": "^1.2.4"
+        }
+    },
+    "@lumapps/generate-icons": {
+        "devDependencies": {
+            "@lumapps/lumx": "1.0.0"
+        }
+    },
+    "@lumapps/generator": {
+        "dependencies": {
+            "arg": "4.1.2",
+            "replace-in-files": "2.0.3",
+            "ncp": "2.0.0"
+        }
+    },
+    "@lumapps/json-server": {
+        "devDependencies": {
+            "json-server": "^0.15.1",
+            "lodash": "latest",
+            "arg": "4.1.2"
+        }
+    },
+    "@lumapps/linting": {
+        "dependencies": {
+            "@typescript-eslint/eslint-plugin": "^2.18.0",
+            "@typescript-eslint/parser": "^2.18.0",
+            "eslint": "^6.8.0",
+            "eslint-config-airbnb": "^18.0.1",
+            "eslint-config-prettier": "^6.10.0",
+            "eslint-plugin-import": "^2.20.0",
+            "eslint-plugin-jsx-a11y": "^6.2.3",
+            "eslint-plugin-prettier": "^3.1.2",
+            "eslint-plugin-react": "^7.18.0",
+            "eslint-plugin-react-hooks": "^2.3.0",
+            "eslint-plugin-lumapps": "1.0.0",
+            "prettier": "^1.19.1",
+            "prettier-stylelint": "^0.4.2",
+            "stylelint": "^9.10.1",
+            "stylelint-config-idiomatic-order": "^6.2.0",
+            "stylelint-config-recommended": "^2.1.0",
+            "stylelint-config-recommended-scss": "^3.2.0",
+            "stylelint-scss": "^3.5.4"
+        }
+    },
+    "@apps/back-office": {
+        "dependencies": {
+            "@apps/core": "1.0.0",
+            "@apps/utils": "1.0.0",
+            "@lumapps/communities": "1.0.0",
+            "@lumapps/analytics": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/nanny": "1.0.0",
+            "@lumapps/newsletter": "1.0.0",
+            "@lumapps/gamification": "1.0.0",
+            "@lumapps/directory-entries": "1.0.0",
+            "@lumapps/content": "1.0.0",
+            "@lumapps/media": "1.0.0",
+            "@lumapps/metric": "1.0.0",
+            "@lumapps/mobile": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/navigation": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/platform": "1.0.0",
+            "@lumapps/providers": "1.0.0",
+            "@lumapps/groups": "1.0.0",
+            "@lumapps/metadata": "1.0.0",
+            "@lumapps/style": "1.0.0",
+            "@lumapps/sa-connected-user": "1.0.0",
+            "@lumapps/sa-navigation": "1.0.0",
+            "@lumapps/sa-programs": "1.0.0",
+            "@lumapps/sa-topics": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "core-js": "^2.6.1",
+            "intersection-observer": "^0.10.0",
+            "lodash": "latest",
+            "react": "^16.13.0",
+            "react-dom": "^16.13.0",
+            "react-redux": "^7.1.0",
+            "react-scripts": "3.4.0",
+            "redux": "^4.0.5",
+            "redux-thunk": "^2.3.0",
+            "moment": "^2.24.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@apps/core": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "@lumapps/directory-entries": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "lodash": "latest",
+            "react": "^16.13.0",
+            "react-dom": "^16.13.0",
+            "redux": "^4.0.5",
+            "redux-thunk": "^2.3.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "react-axe": "^3.4.1"
+        }
+    },
+    "@apps/front-office": {
+        "dependencies": {
+            "@apps/core": "1.0.0",
+            "@apps/utils": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/folksonomy": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/header": "1.0.0",
+            "@lumapps/metric": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/search-page": "1.0.0",
+            "@lumapps/search": "1.0.0",
+            "@lumapps/directory-entries": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/navigation": "1.0.0",
+            "react": "^16.13.0",
+            "react-app-polyfill": "^1.0.6",
+            "react-dom": "^16.13.0",
+            "react-redux": "^7.1.0",
+            "react-scripts": "3.4.0",
+            "redux": "^4.0.5",
+            "redux-thunk": "^2.3.0"
+        }
+    },
+    "@apps/utils": {
+        "dependencies": {
+            "copy-webpack-plugin": "^4.6.0",
+            "customize-cra": "^0.9.1",
+            "find-root": "^1.1.0",
+            "flatten": "^1.0.3",
+            "glob": "latest",
+            "raw-loader": "^4.0.0",
+            "string-replace-loader": "^2.3.0",
+            "webpack": "4",
+            "yargs": "latest",
+            "webpack-bundle-analyzer": "^3.0.3"
+        }
+    },
+    "@lumapps/analytics": {
+        "dependencies": {
+            "@lumapps/content": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/data-attributes": "1.0.0",
+            "@nivo/line": "^0.61.1",
+            "@nivo/pie": "^0.61.1",
+            "lodash": "latest",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0",
+            "classnames": "^2.2.6",
+            "moment": "^2.24.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/auto-translation": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0"
+        },
+        "devDependencies": {}
+    },
+    "@lumapps/base-api": {
+        "dependencies": {
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "qs": "^6.7.0",
+            "axios": "^0.18.0",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "@types/axios": "^0.14.0",
+            "@types/lodash": "^4.14.149",
+            "@types/jest": "^25.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/cache": {
+        "dependencies": {},
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/chat": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/communities": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/constants": {},
+    "@lumapps/content": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "classnames": "^2.2.6",
+            "immer": "^2.1.4",
+            "lodash": "latest",
+            "moment": "2.24.0",
+            "normalizr": "^3.6.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "@types/enzyme": "^3.10.4",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/react-redux": "^7.1.0",
+            "enzyme": "^3.11.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/customer": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "lodash": "4.17.15",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "@types/lodash": "^4.14.149",
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/data-attributes": {
+        "dependencies": {
+            "lodash": "4.17.15",
+            "react": "^16.8.5"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/enzyme": "^3.10.4"
+        }
+    },
+    "@lumapps/directory-entries": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/skeletons": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "classnames": "^2.2.6",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/react-redux": "^7.1.2",
+            "moxios": "^0.4.0",
+            "@storybook/addon-knobs": "5.3.17"
+        }
+    },
+    "@lumapps/features": {
+        "dependencies": {
+            "@lumapps/customer": "1.0.0",
+            "lodash": "4.17.15",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "@types/lodash": "^4.14.149"
+        }
+    },
+    "@lumapps/focal-point": {
+        "dependencies": {
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "classnames": "^2.2.6",
+            "react": "^16.8.5",
+            "cropperjs": "^1.5.6"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/folksonomy": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/search": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/gamification": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/groups": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/header": {
+        "dependencies": {
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/data-attributes": "1.0.0",
+            "@lumapps/directory-entries": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/search-box": "1.0.0",
+            "@lumapps/search": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/navigation": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "reselect": "^4.0.0"
+        }
+    },
+    "@lumapps/instance": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "latest",
+            "immer": "^2.1.4",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "redux-thunk": "^2.3.0",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/languages": {
+        "dependencies": {
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "classnames": "^2.2.6",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0",
+            "lodash": "latest",
+            "@lumapps/lumx": "1.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/react-redux": "^7.1.2"
+        }
+    },
+    "@lumapps/lumx": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/data-attributes": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/search-box": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumx/angularjs": "0.24.3",
+            "@lumx/core": "0.24.3",
+            "@lumx/icons": "0.24.3",
+            "@lumx/react": "0.24.3",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/marketplace": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "axios": "^0.18.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "lumapps-sdk-js": "0.0.22",
+            "normalizr": "^3.6.0",
+            "prop-types": "15",
+            "qs": "^6.7.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/media": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/medias": {
+        "dependencies": {
+            "lodash": "latest",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "axios": "0.19.2"
+        },
+        "devDependencies": {}
+    },
+    "@lumapps/metadata": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "lodash": "latest",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/metric": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/user-directory": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/mobile": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/content": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/metadata": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-beautiful-dnd": "^11.0.4",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/nanny": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "classnames": "^2.2.6",
+            "moment": "^2.24.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/react-redux": "^7.1.2",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/navigation": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/search-box": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/cache": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0",
+            "lodash": "latest",
+            "classnames": "^2.2.6"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "react-dom": "^16.8.5"
+        }
+    },
+    "@lumapps/newsletter": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/notifications": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "reselect": "^4.0.0",
+            "redux": "^4.0.5"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/permissions": {
+        "dependencies": {
+            "lodash": "latest",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "reselect": "^4.0.0"
+        }
+    },
+    "@lumapps/platform": {
+        "dependencies": {
+            "@lumapps/features": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/posts": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/auto-translation": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/chat": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/medias": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/folksonomy": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "@lumapps/wrex": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/nanny": "1.0.0",
+            "@lumapps/share": "1.0.0",
+            "axios": "0.19.2",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0",
+            "slate-react": "^0.57.1",
+            "slate": "^0.57.1",
+            "slate-history": "^0.57.1",
+            "moment": "2.24.0",
+            "moxios": "^0.4.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0"
+        }
+    },
+    "@lumapps/providers": {
+        "dependencies": {
+            "@lumapps/features": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/redux": {
+        "dependencies": {
+            "lodash": "latest",
+            "immer": "^2.1.4",
+            "redux": "^4.0.5",
+            "redux-thunk": "^2.3.0",
+            "react": "^16.8.5",
+            "@lumapps/lumx": "1.0.0"
+        }
+    },
+    "@lumapps/router": {
+        "dependencies": {
+            "lodash": "latest",
+            "react": "^16.8.5",
+            "react-router-dom": "^5.1.2"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-router-dom": "^5.1.3"
+        }
+    },
+    "@lumapps/search": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/medias": "1.0.0",
+            "@lumapps/folksonomy": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "react-redux": "^7.1.0",
+            "react": "^16.8.5",
+            "lodash": "latest",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/search-box": {
+        "dependencies": {
+            "@lumapps/router": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/search": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "lodash": "latest",
+            "classnames": "^2.2.6"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/search-filters": {
+        "dependencies": {
+            "@lumapps/data-attributes": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/skeletons": "1.0.0",
+            "@lumapps/search": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "latest",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/search-page": {
+        "dependencies": {
+            "@lumapps/search": "1.0.0",
+            "@lumapps/search-results": "1.0.0",
+            "@lumapps/search-filters": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/customer": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "latest",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "yargs": "latest"
+        }
+    },
+    "@lumapps/search-results": {
+        "dependencies": {
+            "@lumapps/data-attributes": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/folksonomy": "1.0.0",
+            "@lumapps/skeletons": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/search": "1.0.0",
+            "@lumapps/medias": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "react-redux": "^7.1.0",
+            "classnames": "^2.2.6",
+            "lodash": "latest",
+            "moment": "2.24.0",
+            "react": "^16.8.5"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/share": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/chat": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/sa-social-networks": "1.0.0",
+            "@lumapps/sa-connected-user": "1.0.0",
+            "@lumapps/sa-programs": "1.0.0",
+            "@lumapps/sa-shareable-contents": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/sa-share": "1.0.0",
+            "@storybook/addon-knobs": "5.3.17",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0",
+            "moxios": "^0.4.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/skeletons": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "classnames": "^2.2.6",
+            "react": "^16.8.5"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/sa-connected-user": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/sa-social-networks": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/sa-members": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/user-directory": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/sa-programs": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/sa-navigation": {
+        "dependencies": {
+            "@lumapps/features": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "@lumapps/sa-connected-user": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/sa-programs": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/sa-programs": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/sa-connected-user": "1.0.0",
+            "@lumapps/sa-topics": "1.0.0",
+            "@lumapps/sa-members": "1.0.0",
+            "@lumapps/sa-social-networks": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "classnames": "^2.2.6",
+            "axios": "^0.18.0",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/sa-share": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/sa-shareable-contents": "1.0.0",
+            "@lumapps/sa-social-networks": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/sa-connected-user": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/sa-shareable-contents": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/sa-programs": "1.0.0",
+            "@lumapps/sa-social-networks": "1.0.0",
+            "@lumapps/sa-topics": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/sa-social-networks": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@storybook/addon-knobs": "5.3.17",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/sa-topics": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/sa-programs": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/style": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/router": "1.0.0",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5",
+            "lodash": "latest"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/translations": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "react": "^16.8.5",
+            "lodash": "latest",
+            "@lumapps/redux": "1.0.0",
+            "reselect": "^4.0.0",
+            "make-plural": "^5.0.0"
+        },
+        "devDependencies": {
+            "@types/lodash": "^4.14.149",
+            "@types/react": "^16.8.5",
+            "enzyme": "^3.11.0"
+        }
+    },
+    "@lumapps/user-directory": {
+        "dependencies": {
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/user": {
+        "dependencies": {
+            "@lumapps/router": "1.0.0",
+            "reselect": "^4.0.0",
+            "lodash": "latest",
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/constants": "1.0.0",
+            "@lumapps/permissions": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/instance": "1.0.0",
+            "@lumapps/languages": "1.0.0",
+            "@lumapps/features": "1.0.0",
+            "@storybook/addon-knobs": "5.3.17",
+            "@types/qs": "6.5.1",
+            "classnames": "^2.2.6",
+            "qs": "6.9.3",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "redux": "^4.0.5"
+        },
+        "devDependencies": {
+            "@types/qs": "6.9.1",
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/utils": {
+        "dependencies": {
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "enzyme": "^3.11.0"
+        },
+        "devDependencies": {
+            "@types/lodash": "^4.14.149",
+            "@types/react": "^16.9.19",
+            "@types/enzyme": "^3.10.4"
+        }
+    },
+    "@lumapps/widget-user-list": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "reselect": "^4.0.0",
+            "moxios": "^0.4.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0"
+        }
+    },
+    "@lumapps/widget-meta-data": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/base-api": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/sa-social-networks": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "@lumapps/chat": "1.0.0",
+            "@lumapps/sa-shareable-contents": "1.0.0",
+            "@lumapps/share": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/notifications": "1.0.0",
+            "@lumapps/redux": "1.0.0",
+            "classnames": "^2.2.6",
+            "lodash": "4.17.15",
+            "react": "^16.8.5",
+            "react-redux": "^7.1.0",
+            "reselect": "^4.0.0"
+        },
+        "devDependencies": {
+            "enzyme": "^3.11.0",
+            "@types/lodash": "^4.14.149",
+            "@types/moxios": "^0.4.0",
+            "@types/enzyme": "^3.10.4",
+            "@types/react-redux": "^7.1.0",
+            "moxios": "^0.4.0"
+        }
+    },
+    "@lumapps/wrex": {
+        "dependencies": {
+            "@lumapps/lumx": "1.0.0",
+            "@lumapps/translations": "1.0.0",
+            "@lumapps/utils": "1.0.0",
+            "@lumapps/user": "1.0.0",
+            "classnames": "^2.2.6",
+            "markdown-it": "^10.0.0",
+            "react": "^16.8.5",
+            "slate": "^0.57.1",
+            "slate-history": "^0.57.1",
+            "slate-react": "^0.57.1",
+            "string.prototype.matchall": "^4.0.2",
+            "lodash": "^4.17.13",
+            "is-hotkey": "^0.1.6",
+            "enzyme": "^3.10.4"
+        },
+        "devDependencies": {
+            "@types/markdown-it": "^0.0.9"
+        }
+    }
+}

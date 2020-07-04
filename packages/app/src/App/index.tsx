@@ -11,27 +11,15 @@ declare global {
     }
 }
 
-const App = () => {
+const App = ({ graph }: { graph: any }) => {
     React.useEffect(() => {
         const { vis } = window;
         // create an array with nodes
-        var nodes = new vis.DataSet([
-            {id: 1, label: 'Node 1'},
-            {id: 2, label: 'Node 2'},
-            {id: 3, label: 'Node 3'},
-            {id: 4, label: 'Node 4'},
-            {id: 5, label: 'Node 5'}
-        ]);
+        var nodes = new vis.DataSet(graph.nodes);
 
         // create an array with edges
         // @ts-ignore
-        var edges = new vis.DataSet([
-            {from: 1, to: 3},
-            {from: 1, to: 2},
-            {from: 2, to: 4},
-            {from: 2, to: 5},
-            {from: 3, to: 3}
-        ]);
+        var edges = new vis.DataSet(graph.edges);
 
         // create a network
         var container = document.getElementById('dependency-graph');
@@ -42,7 +30,7 @@ const App = () => {
         var options = {};
 
         // @ts-ignore
-        var network = new vis.Network(container, data, options);
+        new vis.Network(container, data, options);
     });
 
     return (

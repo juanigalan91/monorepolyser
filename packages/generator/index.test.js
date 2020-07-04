@@ -4,4 +4,4 @@ const workspaces = getWorkspaces()
 
 console.log(workspaces);
 
-getPackagesFromWorkspaces(workspaces);
+console.log(getPackagesFromWorkspaces(workspaces));

@@ -34,17 +34,22 @@ function getPackagesFromWorkspaces(workspaces) {
     const root = getRoot();
     const packages = {};
 
-    workspaces.forEach((workspace) => {
+    workspaces.forEach((workspace, index) => {
         glob(`${workspace}/package.json`, { cwd: root }, (err, matches) => {
             console.log(matches);
             matches.forEach((match) => {
                 const pkg = require(`${root}/${match}`);
 
-                const { name, dependencies } = pkg;
-                packages[name] = dependencies;
+                const { name, dependencies, devDependencies } = pkg;
+                packages[name] = {
+                    dependencies,
+                    devDependencies,
+                };
             });
-        })
-    })
+        });
+    });
+
+    return packages;
 }
 
 module.exports = {
