@@ -32,10 +32,17 @@ function getWorkspaces() {
 
 function getPackagesFromWorkspaces(workspaces) {
     const root = getRoot();
+    const packages = {};
 
     workspaces.forEach((workspace) => {
         glob(`${workspace}/package.json`, { cwd: root }, (err, matches) => {
             console.log(matches);
+            matches.forEach((match) => {
+                const pkg = require(`${root}/${match}`);
+
+                const { name, dependencies } = pkg;
+                packages[name] = dependencies;
+            });
         })
     })
 }
