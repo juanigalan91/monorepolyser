@@ -21,3 +21,5 @@ export interface Graph {
     totalNodes: number;
     nodesIdsByLabel: Record<string, number>;
 }
+
+export type Data = Record<string, { dependencies: Record<string, string>, devDependencies: Record<string, string>}>; 

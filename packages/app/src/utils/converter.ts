@@ -1,4 +1,4 @@
-import { NODE_TYPES, Node, Graph } from '../types';
+import { NODE_TYPES, Node, Graph, Data } from '../types';
 
 const graph: Graph = {
     nodes: [],
@@ -77,7 +77,7 @@ const addNodes = (currentNodeId: number, rawNodes: Record<string, string>, type:
     }
 }
 
-const convert = (rawData: any) => {
+const convert = (rawData: Data) => {
     const keys = Object.keys(rawData);
     let currentNodeId: number;
 

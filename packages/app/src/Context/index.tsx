@@ -1,5 +1,5 @@
 import React from 'react';
-import { DEFAULT_LANG } from '../../translations';
+import { DEFAULT_LANG } from '../translations';
 
 const defaults = {
     lang: DEFAULT_LANG
