@@ -1,78 +1,96 @@
-const convert = (rawData: any) => {
-    const keys = Object.keys(rawData);
-    const nodesId: Record<string, number> = {};
-    let currentNodeId: number;
-    let id = 1;
-    const nodes: any[] = [];
-    const edges: any[] = [];
+import { NODE_TYPES, Node, Graph } from '../types';
 
-    keys.forEach((key) => {
-        if (!nodesId[key]) {
-            id = id + 1;
-            nodesId[key] = id;
+const graph: Graph = {
+    nodes: [],
+    edges: [],
+    nodesIdsByLabel: {},
+    totalNodes: 0,
+}
 
-            nodes.push({
-                id: id,
-                label: key,
-                shape: 'box',
+const createNode = (id: number, label: string, type: NODE_TYPES): Node => {
+    const node: Node = {
+        id: id,
+        label: label,
+        shape: 'box',
+    };
+
+    switch(type) {
+        case NODE_TYPES.TOP_DEPENDENCY:
+            Object.assign(node, {
+                color: {
+                    background: '#28336d',
+                },
+                font: {
+                    color: '#FFF',
+                },
+                scaling: {
+                    label: {
+                        enabled: true,
+                    }
+                },
+            });
+        break;
+        case NODE_TYPES.DEV_DEPENDENCY:
+            Object.assign(node, {
+                color: '#5ac085',
+            });
+        break;
+        case NODE_TYPES.DEPENDENCY:
+            Object.assign(node, {
                 color: '#eaf4ff',
             });
+        break;
+    }
 
-            currentNodeId = id;
-        } else {
-            currentNodeId = nodesId[key];
-        }
+    return node;
+}
+
+const addNode = (label: string, type: NODE_TYPES) => {
+    let addedNodeId;
+
+    if (!graph.nodesIdsByLabel[label]) {
+        graph.totalNodes = graph.totalNodes + 1;
+        graph.nodesIdsByLabel[label] = graph.totalNodes;
+
+        graph.nodes.push(createNode(graph.totalNodes, label, type));
+
+        addedNodeId = graph.totalNodes;
+    } else {
+        addedNodeId = graph.nodesIdsByLabel[label];
+    }
+
+    return addedNodeId;
+}
+
+const addNodes = (currentNodeId: number, rawNodes: Record<string, string>, type: NODE_TYPES) => {
+    if (rawNodes) {
+        const nodesKeys = Object.keys(rawNodes);
+
+        nodesKeys.forEach((node: string) => {
+            const depNodeId = addNode(node, type);
+
+            graph.edges.push({
+                from: currentNodeId,
+                to: depNodeId,
+            });
+        });
+    }
+}
+
+const convert = (rawData: any) => {
+    const keys = Object.keys(rawData);
+    let currentNodeId: number;
+
+    keys.forEach((key) => {
+        currentNodeId = addNode(key, NODE_TYPES.TOP_DEPENDENCY);
 
         const { dependencies, devDependencies } = rawData[key];
 
-        if (dependencies) {
-            const dependenciesKeys = Object.keys(dependencies);
-
-            dependenciesKeys.forEach((depKey: string) => {
-                if (!nodesId[depKey]) {
-                    id = id + 1;
-                    nodesId[depKey] = id;
-
-                    nodes.push({
-                        id: id,
-                        label: depKey,
-                        shape: 'box',
-                        color: '#eaf4ff',
-                    });
-
-                    edges.push({
-                        from: currentNodeId,
-                        to: id,
-                    });
-                }
-            });
-        }
-
-        if (devDependencies) {
-            const devDependenciesKeys = Object.keys(devDependencies);
-
-            devDependenciesKeys.forEach((devDepKey: string) => {
-                if (!nodesId[devDepKey]) {
-                    id = id + 1;
-                    nodesId[devDepKey] = id;
-
-                    nodes.push({
-                        id: id,
-                        label: devDepKey,
-                        shape: 'box',
-                        color: '#5ac085',
-                    });
-
-                    edges.push({
-                        from: currentNodeId,
-                        to: id,
-                    });
-                }
-            });
-        }
+        addNodes(currentNodeId, dependencies, NODE_TYPES.DEPENDENCY);
+        addNodes(currentNodeId, devDependencies, NODE_TYPES.DEV_DEPENDENCY)
     });
 
-    return { nodes, edges };
+    return graph;
 };
 
 export { convert };
