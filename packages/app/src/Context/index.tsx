@@ -1,5 +1,5 @@
-import React from 'react';
-import { DEFAULT_LANG } from '../translations';
+import React, { useContext } from 'react';
+import { DEFAULT_LANG, translate } from '../translations';
 
 const defaults = {
     lang: DEFAULT_LANG
@@ -7,4 +7,13 @@ const defaults = {
 
 const AppContext = React.createContext(defaults);
 
-export { AppContext, defaults };
+const useTranslate = () => {
+    const context = useContext(AppContext);
+
+    return {
+        translate: (key: string) => translate(key, context.lang),
+    }
+};
+
+
+export { AppContext, defaults, useTranslate };

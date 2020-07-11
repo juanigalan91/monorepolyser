@@ -1,0 +1,16 @@
+.configurator {
+    margin: $lumx-spacing-unit-huge * 8 auto;
+
+    &__title {
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    &__configurations {
+        background-color: lumx-color-variant('blue', 'L5');
+        border-radius: $lumx-spacing-unit-regular;
+        width: 600px;
+        margin: $lumx-spacing-unit-huge auto;
+        padding: $lumx-spacing-unit-big;
+    }
+}

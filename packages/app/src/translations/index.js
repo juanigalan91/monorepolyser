@@ -1,3 +1,4 @@
+
 import en_UK from './en_UK.json';
 
 const DEFAULT_LANG = 'en_UK';

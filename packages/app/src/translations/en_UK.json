@@ -1,3 +1,8 @@
 {
-    "MONOREPOLYSER": "Monorepolyser"
+    "MONOREPOLYSER": "Monorepolyser",
+    "DEPENDENCIES": "Dependencies (\"dependencies\" on your package.json)",
+    "DEV_DEPENDENCIES": "Development dependencies (\"devDependencies\" on your package.json)",
+    "ALL_DEPENDENCIES": "All dependencies",
+    "WHAT_DEPENDENCIES_DO_YOU_WANT_TO_SEE": "What dependencies do you want to see?",
+    "CHOOSE_WHAT_DEPENDENCIES_YOU_WANT_TO_SEE": "You can choose which type of dependencies you want to take a closer look. "
 }
