@@ -7,6 +7,7 @@
         border-radius: 50% !important;
         margin-top: -($lumx-spacing-unit-tiny / 2);
         margin-left: $lumx-spacing-unit-tiny;
+        border: 1px lumx-color-variant('dark', 'N') solid;
     }
 
     &__helper {
