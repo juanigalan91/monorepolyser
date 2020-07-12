@@ -1,21 +1,17 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import { List, ListItem, Select, Size } from '@lumx/react';
 import { useTranslate } from '../../Context';
+import { Label } from '../Label';
 
 const OPTIONS = ['DEPENDENCIES', 'DEV_DEPENDENCIES', 'ALL_DEPENDENCIES'];
 
 const Dependencies: React.FC<any> = () => {
     const { translate } = useTranslate();
-    const LABEL = translate('WHAT_DEPENDENCIES_DO_YOU_WANT_TO_SEE');
-    const HELPER = translate('CHOOSE_WHAT_DEPENDENCIES_YOU_WANT_TO_SEE');
+    const label = translate('CHOOSE_THE_DEPENDENCIES_YOU_WANT_TO_ANALYZE');
+    const helpers = [translate('CHOOSE_THE_DEPENDENCIES_YOU_WANT_TO_ANALYZE_HELP'), translate('TAKE_INTO_CONSIDERATION_THAT_SELECTING_ALL_DEPENDENCIES')];
 
     const [value, setValue] = React.useState<string>(OPTIONS[0]);
     const [isOpen, setIsOpen] = React.useState(false);
-
-    const clearSelected = (event: SyntheticEvent) => {
-        event.stopPropagation();
-        setValue('');
-    };
 
     const onSelectOpen = () => {
         setIsOpen(true);
@@ -36,30 +32,29 @@ const Dependencies: React.FC<any> = () => {
     };
 
     return (
-        <Select
-            style={{ width: '100%' }}
-            isOpen={isOpen}
-            value={translate(value)}
-            onClear={clearSelected}
-            label={LABEL}
-            onInputClick={onSelectOpen}
-            onDropdownClose={onSelectClose}
-            helper={HELPER}
-        >
-            <List isClickable>
-                {OPTIONS.map((choice, index) => (
-                          <ListItem
-                              isSelected={value === choice}
-                              key={index}
-                              onItemSelected={selectItem(choice)}
-                              size={Size.tiny}
-                          >
-                              {translate(choice)}
-                          </ListItem>
-                      ))
-                }
-            </List>
-        </Select>
+        <>
+            <Label label={label} helpers={helpers} />
+            <Select
+                isOpen={isOpen}
+                value={translate(value)}
+                onInputClick={onSelectOpen}
+                onDropdownClose={onSelectClose}
+            >
+                <List isClickable>
+                    {OPTIONS.map((choice, index) => (
+                            <ListItem
+                                isSelected={value === choice}
+                                key={index}
+                                onItemSelected={selectItem(choice)}
+                                size={Size.tiny}
+                            >
+                                {translate(choice)}
+                            </ListItem>
+                        ))
+                    }
+                </List>
+            </Select>
+        </>
     );
 };
 

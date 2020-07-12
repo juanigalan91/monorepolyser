@@ -1,8 +1,9 @@
 {
     "MONOREPOLYSER": "Monorepolyser",
-    "DEPENDENCIES": "Dependencies (\"dependencies\" on your package.json)",
-    "DEV_DEPENDENCIES": "Development dependencies (\"devDependencies\" on your package.json)",
+    "DEPENDENCIES": "Dependencies",
+    "DEV_DEPENDENCIES": "Development dependencies",
     "ALL_DEPENDENCIES": "All dependencies",
-    "WHAT_DEPENDENCIES_DO_YOU_WANT_TO_SEE": "What dependencies do you want to see?",
-    "CHOOSE_WHAT_DEPENDENCIES_YOU_WANT_TO_SEE": "You can choose which type of dependencies you want to take a closer look. "
+    "CHOOSE_THE_DEPENDENCIES_YOU_WANT_TO_ANALYZE": "Choose the type of dependencies you want to analyze",
+    "CHOOSE_THE_DEPENDENCIES_YOU_WANT_TO_ANALYZE_HELP": "You can choose which type of dependencies you want to take a closer look. You can choose to see only the dependencies needed to execute your code  (\"devDependencies\" on your package.json), or both!",
+    "TAKE_INTO_CONSIDERATION_THAT_SELECTING_ALL_DEPENDENCIES": "Take into consideration that selecting all dependencies could have an impact on the performance of this tool, depending on how many nodes you have"
 }

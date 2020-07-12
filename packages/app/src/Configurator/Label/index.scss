@@ -1,0 +1,18 @@
+.label {
+    &__label {
+        margin-bottom: $lumx-spacing-unit-big;
+    }
+
+    &__help {
+        border-radius: 50% !important;
+        margin-top: -($lumx-spacing-unit-tiny / 2);
+        margin-left: $lumx-spacing-unit-tiny;
+    }
+
+    &__helper {
+        @include lumx-typography('body1');
+        line-height: 20px;
+        width: 400px;
+        padding: $lumx-spacing-unit-big;
+    }
+}
