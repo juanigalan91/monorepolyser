@@ -15,6 +15,7 @@ const Configurator: React.FC<ConfiguratorProps> = ({ graph }) => {
             <h1 className={`${NAMESPACE}__title`}>{translate('MONOREPOLYSER')}</h1>
             <div className={`${NAMESPACE}__configurations`}>
                 <Dependencies />
+                <Dependencies />
             </div>
         </div>
     );

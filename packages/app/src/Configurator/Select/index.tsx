@@ -9,6 +9,7 @@ export interface SelectProps {
     options: string[];
 }
 
+const NAMESPACE  = 'select';
 const Select: React.FC<SelectProps> = ({ options, label, helpers }) => {
     const { translate } = useTranslate();
     const [value, setValue] = React.useState<string>(options[0]);
@@ -33,7 +34,7 @@ const Select: React.FC<SelectProps> = ({ options, label, helpers }) => {
     };
 
     return (
-        <>
+        <div className={NAMESPACE}>
             <Label label={label} helpers={helpers} />
             <LumxSelect
                 isOpen={isOpen}
@@ -55,7 +56,7 @@ const Select: React.FC<SelectProps> = ({ options, label, helpers }) => {
                     }
                 </List>
             </LumxSelect>
-        </>
+        </div>
     );
 };
 
