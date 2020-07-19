@@ -1,6 +1,7 @@
 import React from 'react';
 import { Graph } from '../types';
 import { Dependencies } from './Dependencies';
+import { GraphType } from './GraphType';
 import { useTranslate } from '../Context';
 
 export interface ConfiguratorProps {
@@ -15,7 +16,7 @@ const Configurator: React.FC<ConfiguratorProps> = ({ graph }) => {
             <h1 className={`${NAMESPACE}__title`}>{translate('MONOREPOLYSER')}</h1>
             <div className={`${NAMESPACE}__configurations`}>
                 <Dependencies />
-                <Dependencies />
+                <GraphType />
             </div>
         </div>
     );

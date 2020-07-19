@@ -10,6 +10,9 @@
 
     "FIRST_LEVEL_GRAPH": "First level graph",
     "COMPLETE_GRAPH": "Complete graph",
-    "CHOOSE_THE_TYPE_OF_GRAPH_YOU_WANT_TO_ANALYZE": "Choose the type of graph you want to analyze",
-    "CHOOSE_THE_TYPE_OF_GRAPH_YOU_WANT_TO_ANALYZE_HELP": "You can choose the level of dependencies you want to "
+    "CHOOSE_THE_TYPE_OF_GRAPH_YOU_WANT_TO_ANALYZE": "Choose the type of graph you want to see",
+    "CHOOSE_THE_TYPE_OF_GRAPH_YOU_WANT_TO_ANALYZE_HELP": "You can choose the level of dependencies you want to see in your graph.",
+    "IF_YOU_SELECT_TO_ONLY_SEE_FIRST_LEVEL": "If you select to only see the first level graph, you will see 1 node for each for your packages and the dependencies between them, without any external dependencies.",
+    "IF_YOU_SELECT_TO_ONLY_SEE_COMPLETE_GRAPH": "If you select to only see the complete graph view, you will see 1 node for each for your packages, the dependencies between them and your external dependencies",
+    "TAKE_INTO_CONSIDERATION_THAT_SELECTING_COMPLETE_GRAPH": "Take into consideration that the complete graph could have an impact on the performance of this tool, depending on how many nodes you have"
 }
