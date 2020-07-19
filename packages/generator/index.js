@@ -49,7 +49,10 @@ function getPackagesFromWorkspaces(workspaces) {
         });
     });
 
-    return packages;
+    return {
+        packages,
+        workspaces,
+    };
 }
 
 module.exports = {

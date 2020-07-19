@@ -22,4 +22,6 @@ export interface Graph {
     nodesIdsByLabel: Record<string, number>;
 }
 
+export type Workspace = string;
+
 export type Data = Record<string, { dependencies: Record<string, string>, devDependencies: Record<string, string>}>; 

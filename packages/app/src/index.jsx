@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from './App';
-import data from './App/data.simple.json';
+import { packages, workspaces } from './App/data.json';
 import { convert } from './utils/converter';
 import './styles/index.scss';
 
-const graph = convert(data);
+const graph = convert(packages);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App graph={graph} />
+    <App graph={graph} workspaces={workspaces} />
   </React.StrictMode>,
   document.getElementById('root')
 );
