@@ -4,7 +4,8 @@ import { Dependencies } from './Dependencies';
 import { GraphType } from './GraphType';
 import { Workspaces } from './Workspaces';
 import { useTranslate } from '../Context';
-import { Action, State } from '../App/state';
+import { Action, State, ACTIONS, STATUS } from '../App/state';
+import { Button } from '@lumx/react';
 
 export interface ConfiguratorProps {
     graph: Graph;
@@ -17,6 +18,13 @@ const NAMESPACE = 'configurator';
 const Configurator: React.FC<ConfiguratorProps> = ({ graph, workspaces, onConfigUpdate, state }) => {
     const { translate } = useTranslate();
 
+    const onAnalyze = () => {
+        onConfigUpdate({
+            type: ACTIONS.SET_STATUS,
+            payload: STATUS.BROWSING,
+        });
+    };
+
     return (
         <div className={NAMESPACE}>
             <h1 className={`${NAMESPACE}__title`}>{translate('MONOREPOLYSER')}</h1>
@@ -24,6 +32,7 @@ const Configurator: React.FC<ConfiguratorProps> = ({ graph, workspaces, onConfig
                 <Dependencies onChange={onConfigUpdate} value={state.dependencies} />
                 <GraphType onChange={onConfigUpdate} value={state.graphType} />
                 <Workspaces workspaces={workspaces} onChange={onConfigUpdate} value={state.workspace} />
+                <Button className={`${NAMESPACE}__analyze`} onClick={onAnalyze}>{translate('ANALYZE')}</Button>
             </div>
         </div>
     );

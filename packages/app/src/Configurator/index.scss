@@ -9,8 +9,13 @@
     &__configurations {
         background-color: lumx-color-variant('blue', 'L5');
         border-radius: $lumx-spacing-unit-regular;
-        width: 600px;
+        width: 450px;
         margin: $lumx-spacing-unit-huge auto;
         padding: $lumx-spacing-unit-big;
+        height: 352px;
+    }
+
+    &__analyze {
+        float: right;
     }
 }

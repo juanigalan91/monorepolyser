@@ -13,28 +13,29 @@ const Vis = ({ graph }: { graph: any }) => {
     React.useEffect(() => {
         const { vis } = window;
         // create an array with nodes
-        var nodes = new vis.DataSet(graph.nodes);
+        const nodes = new vis.DataSet(graph.nodes);
 
         // create an array with edges
         // @ts-ignore
-        var edges = new vis.DataSet(graph.edges);
+        const edges = new vis.DataSet(graph.edges);
 
         // create a network
-        var container = document.getElementById('dependency-graph');
-        var data = {
+        const container = document.getElementById('dependency-graph');
+        const data = {
             nodes: nodes,
             edges: edges
         };
-        var options = {
+
+        const options = {
             layout: {
                 improvedLayout: false,
             },
-            "edges": {
+            edges: {
                 "smooth": {
                     "forceDirection": "none"
                 }
             },
-            "physics": {
+            physics: {
                 "minVelocity": 0.75,
                 "barnesHut": {
                     "gravitationalConstant": -6700

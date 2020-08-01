@@ -19,6 +19,7 @@
     "ALL_WORKSPACES": "All workspaces",
     "CHOOSE_THE_WORKSPACE_YOU_WANT_TO_ANALYZE": "Choose what workspace you want to analyze",
     "CHOOSE_THE_WORKSPACE_YOU_WANT_TO_ANALYZE_HELP": "You can select one of the workspaces that you have configurated in your repository or see them all at once.",
-    "TAKE_INTO_CONSIDERATION_THAT_SELECTING_ALL_WORKSPACES": "Take into consideration that seeing all your workspaces at once could have an impact on the performance of this tool, depending on how many packages you have"
+    "TAKE_INTO_CONSIDERATION_THAT_SELECTING_ALL_WORKSPACES": "Take into consideration that seeing all your workspaces at once could have an impact on the performance of this tool, depending on how many packages you have",
 
+    "ANALYZE": "Analyze"
 }

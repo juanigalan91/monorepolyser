@@ -23,6 +23,7 @@ export enum ACTIONS {
     SET_WORKSPACE = 'SET_WORKSPACE',
     SET_DEPENDENCIES = 'SET_DEPENDENCIES',
     SET_GRAPH_TYPE = 'SET_GRAPH_TYPE',
+    SET_STATUS = 'SET_STATUS',
 }
 
 export interface Action {
@@ -40,6 +41,8 @@ export const reducer = (state: State, action: Action): State => {
             return { ...state, graphType: payload };
         case ACTIONS.SET_WORKSPACE:
             return { ...state, workspace: payload };
+        case ACTIONS.SET_STATUS:
+            return { ...state, status: payload };
         default:
             return state;
     }
