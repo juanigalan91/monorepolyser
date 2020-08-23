@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from './App';
-import { packages, workspaces } from './App/data.json';
+import { packages, workspaces } from './App/data.simple.json';
 import { convert } from './utils/converter';
 import './styles/index.scss';
 

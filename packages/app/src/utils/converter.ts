@@ -9,8 +9,8 @@ const graph: Graph = {
 
 const createNode = (id: number, label: string, type: NODE_TYPES): Node => {
     const node: Node = {
-        id: id,
-        label: label,
+        id,
+        label,
         shape: 'box',
     };
 
@@ -70,8 +70,8 @@ const addNodes = (currentNodeId: number, rawNodes: Record<string, string>, type:
             const depNodeId = addNode(node, type);
 
             graph.edges.push({
-                from: currentNodeId,
-                to: depNodeId,
+                source: currentNodeId,
+                target: depNodeId,
             });
         });
     }

@@ -11,8 +11,8 @@ export type Node = {
 }
 
 export type Edge = {
-    from: number;
-    to: number;
+    source: number;
+    target: number;
 }
 
 export interface Graph {
