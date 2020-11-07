@@ -1,4 +1,3 @@
-const core = require('@actions/core');
 const { getWorkspaces, getPackagesFromWorkspaces } = require('@monorepolyser/dependencies');
 
 const repeatedDependencies = {};
@@ -38,7 +37,7 @@ const main = async () => {
     console.log(repeatedDependencies);
 }
 
-main().catch(err => core.setFailed(err.message));
+main();
 
 module.exports = {
     main,
