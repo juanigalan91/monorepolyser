@@ -9,7 +9,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Graph Generator
-        uses: ./ # Uses an action in the root directory
+        uses: ./packages/ga-dependencies # Uses an action in the root directory
         id: graph-generator
       - name: Upload Graph
         uses: actions/upload-artifact@v2
