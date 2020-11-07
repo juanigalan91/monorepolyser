@@ -38,6 +38,8 @@ const main = async () => {
 
         const repeatedDeps = Object.keys(repeatedDependencies);
 
+        console.log(repeatedDependencies);
+
         if (repeatedDeps.length > 0) {
             const githubToken = process.env.GITHUB_TOKEN;
             const client = new github.GitHub(githubToken);
@@ -55,6 +57,7 @@ const main = async () => {
             body = `${body}| Dependency | Added by | Version |\n| :-----------: |:-------------:| :----------:|\n`;
 
             repeatedDeps.forEach((repeatedDep) => {
+                console.log(repeatedDep);
                 const metadata = repeatedDependencies[repeatedDep];
                 const row = `| ${repeatedDep} | ${metadata.addedBy} | ${metadata.version} |\n`
                 body = `${body}|${row}`;
