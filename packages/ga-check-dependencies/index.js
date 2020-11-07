@@ -36,7 +36,9 @@ const main = async () => {
             });
         });
 
-        if (Object.keys(repeatedDependencies).length > 0) {
+        const repeatedDeps = Object.keys(repeatedDependencies);
+
+        if (repeatedDeps.length > 0) {
             const githubToken = process.env.GITHUB_TOKEN;
             const client = new github.GitHub(githubToken);
 
@@ -45,12 +47,24 @@ const main = async () => {
                 core.setFailed('No pull request found.');
                 return;
             }
+
             const pull_request_number = context.payload.pull_request.number;
+            let body = '## Dependencies check \n\n';
+
+            body = `${body}Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle\n`;
+            body = `${body}| Dependency | Added by | Version |\n| :-----------: |:-------------:| :----------:|\n`;
+
+            repeatedDeps.forEach((repeatedDep) => {
+                const metadata = repeatedDependencies[repeatedDep];
+                const row = `| ${repeatedDep} | ${metadata.addedBy} | ${metadata.version} |\n`
+                body = `${body}|${row}`;
+            });
+
 
             client.issues.createComment({
                 ...context.repo,
                 issue_number: pull_request_number,
-                body: 'ooops!'
+                body,
             });
 
             throw new Error('There are deps with different versions');
