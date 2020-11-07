@@ -4,7 +4,6 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
-        "lodash": "1.2.4",
         "@actions/github": "^2.1.0",
         "@actions/core": "^1.2.4",
         "@monorepolyser/dependencies": "1.0.0"
