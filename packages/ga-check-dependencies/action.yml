@@ -1,5 +1,5 @@
-name: 'Graph generator'
-description: 'Generates the dependency graph for the monorepo'
+name: 'Check dependencies integrity'
+description: 'Checks that all the packages used in the repo have the same version'
 runs:
   using: 'node12'
   main: 'dist/index.js'
