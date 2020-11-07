@@ -7,8 +7,8 @@
   "scripts": {
     "build:app": "yarn workspace @monorepolyser/app build",
     "start:app": "yarn workspace @monorepolyser/app start",
-    "build:action": "yarn workspace @monorepolyser/github-action build",
-    "test:generator": "yarn workspace @monorepolyser/generator test"
+    "build:action": "yarn workspace @monorepolyser/ga-dependencies build",
+    "test:generator": "yarn workspace @monorepolyser/dependencies test"
   },
   "repository": {
     "type": "git",

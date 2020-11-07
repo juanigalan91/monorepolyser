@@ -2,4 +2,4 @@ name: 'Graph generator'
 description: 'Generates the dependency graph for the monorepo'
 runs:
   using: 'node12'
-  main: 'packages/github-action/dist/index.js'
+  main: 'packages/ga-dependencies/dist/index.js'
