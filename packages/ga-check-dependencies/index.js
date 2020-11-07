@@ -54,12 +54,12 @@ const main = async () => {
             let body = '## Dependencies check \n\n';
 
             body = `${body}Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle\n`;
-            body = `${body}| Dependency | Added by | Version |\n| :-----------: |:-------------:| :----------:|\n`;
+            body = `${body}| Dependency | Added by | Added Version | Base version\n| :-----------: |:-------------:| :----------:| :----------:|\n`;
 
             repeatedDeps.forEach((repeatedDep) => {
                 const versions = repeatedDependencies[repeatedDep];
                 versions.forEach((v) => {
-                    const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} |\n`;
+                    const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} | ${deps[repeatedDep]} |\n`;
                     body = `${body}${row}`;
                 });
             });
