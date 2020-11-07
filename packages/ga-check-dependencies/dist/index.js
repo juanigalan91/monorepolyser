@@ -27671,10 +27671,11 @@ const main = async () => {
             body = `${body}| Dependency | Added by | Version |\n| :-----------: |:-------------:| :----------:|\n`;
 
             repeatedDeps.forEach((repeatedDep) => {
-                console.log(repeatedDep);
-                const metadata = repeatedDependencies[repeatedDep];
-                const row = `| ${repeatedDep} | ${metadata.addedBy} | ${metadata.version} |\n`
-                body = `${body}|${row}`;
+                const versions = repeatedDependencies[repeatedDep];
+                versions.forEach((v) => {
+                    const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} |\n`;
+                    body = `${body}${row}`;
+                });
             });
 
 
