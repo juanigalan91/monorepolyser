@@ -1,0 +1,4 @@
+description: 'Generates the dependency graph for the monorepo'
+runs:
+  using: 'node12'
+  main: 'packages/ga-check-dependencies/dist/index.js' 

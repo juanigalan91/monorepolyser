@@ -5,7 +5,9 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test:dependencies": "yarn workspace @monorepolyser/dependencies test"
+    "test:dependencies": "yarn workspace @monorepolyser/dependencies test",
+    "test:ga-check-dependencies": "yarn workspace @monorepolyser/ga-check-dependencies test",
+    "build:ga-check-dependencies": "yarn workspace @monorepolyser/ga-check-dependencies build"
   },
   "repository": {
     "type": "git",

@@ -1,20 +1,45 @@
 const core = require('@actions/core');
-const glob = require('@actions/glob');
-const fs = require('fs');
-const { getWorkspaces } = require('@monorepolyser/generator');
+const { getWorkspaces, getPackagesFromWorkspaces } = require('@monorepolyser/dependencies');
+
+const repeatedDependencies = {};
+const deps = {};
 
 const main = async () => {
-    const workspaces = getWorkspaces(__dirname);
-    const patterns = workspaces.map((workspace) => `${workspace}/package.json`);
-    const globber = await glob.create(patterns.join('\n'));
-    const packages = await globber.glob();
+    const workspaces = getWorkspaces()
 
-    /*packages.map((pkg) => {
-        const pkgJsonFile = require(pkg);
-        console.log(pkgJsonFile.dependencies);
-    });*/
+    const { packages } = await getPackagesFromWorkspaces(workspaces);
 
-    fs.writeFileSync('dependencies.json', JSON.stringify(packages), { encoding: 'UTF-8'});
+    Object.keys(packages).forEach((pkgName) => {
+        const pkg = packages[pkgName];
+        const { dependencies } = pkg;
+
+        Object.keys(dependencies).forEach((dep) => {
+            const version = dependencies[dep];
+
+            if (deps[dep]) {
+                const detectedVersion = deps[dep];
+
+                if (version !== detectedVersion) {
+                    if (!repeatedDependencies[dep]) {
+                        repeatedDependencies[dep] = [];
+                    }
+
+                    repeatedDependencies[dep].push({
+                        addedBy: pkgName,
+                        version, 
+                    });
+                }
+            } else {
+                deps[dep] = version;
+            }
+        });
+    });
+
+    console.log(repeatedDependencies);
 }
 
 main().catch(err => core.setFailed(err.message));
+
+module.exports = {
+    main,
+};

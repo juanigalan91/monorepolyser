@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
+        "@actions/core": "^1.2.5",
         "find-root": "^1.1.0",
         "flatten": "^1.0.3",
         "glob": "^7.1.6"

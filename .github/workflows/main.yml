@@ -1,0 +1,14 @@
+name: Monorepo Analysis
+
+on: [push]	
+
+jobs:	
+  check-dependencies:	
+    runs-on: ubuntu-latest	
+    name: Check dependencies integrity	
+    steps:	
+      # To use this repository's private action, you must check out the repository	
+      - name: Checkout	
+        uses: actions/checkout@v2	
+      - name: Check dependencies
+        uses: ./packages/ga-check-dependencies # Uses an action in the root directory	
