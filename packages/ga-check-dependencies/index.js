@@ -1,4 +1,5 @@
 const core = require('@actions/core');
+const github = require('@actions/github');
 const { getWorkspaces, getPackagesFromWorkspaces } = require('@monorepolyser/dependencies');
 
 const repeatedDependencies = {};
@@ -6,8 +7,7 @@ const deps = {};
 
 const main = async () => {
     try {
-        const workspaces = getWorkspaces()
-
+        const workspaces = getWorkspaces();
         const { packages } = await getPackagesFromWorkspaces(workspaces);
 
         Object.keys(packages).forEach((pkgName) => {
@@ -37,9 +37,23 @@ const main = async () => {
         });
 
         if (Object.keys(repeatedDependencies).length > 0) {
-            throw new Error({
-                message: 'there are deps with different versions'
+            const githubToken = process.env.GITHUB_TOKEN;
+
+            const context = github.context;
+            if (context.payload.pull_request == null) {
+                core.setFailed('No pull request found.');
+                return;
+            }
+            const pull_request_number = context.payload.pull_request.number;
+
+            const octokit = new github.GitHub(githubToken);
+            octokit.issues.createComment({
+                ...context.repo,
+                issue_number: pull_request_number,
+                body: 'ooops!'
             });
+
+            throw new Error('There are deps with different versions');
         }
     } catch (error) {
         core.setFailed(error.message);
