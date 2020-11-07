@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
+        "@actions/core": "^1.2.4",
         "@monorepolyser/dependencies": "1.0.0"
     },
     "scripts": {

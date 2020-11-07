@@ -1,7 +1,9 @@
 name: Monorepo Analysis
 
-on: [push]	
-
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  
 jobs:	
   check-dependencies:	
     runs-on: ubuntu-latest	
