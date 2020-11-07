@@ -39,6 +39,8 @@ const main = async () => {
         if (Object.keys(repeatedDependencies).length > 0) {
             const githubToken = process.env.GITHUB_TOKEN;
 
+            const octokit = github.getOctokit(githubToken)
+
             const context = github.context;
             if (context.payload.pull_request == null) {
                 core.setFailed('No pull request found.');
@@ -46,7 +48,6 @@ const main = async () => {
             }
             const pull_request_number = context.payload.pull_request.number;
 
-            const octokit = new github.GitHub(githubToken);
             octokit.issues.createComment({
                 ...context.repo,
                 issue_number: pull_request_number,
