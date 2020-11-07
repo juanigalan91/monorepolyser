@@ -27652,6 +27652,8 @@ const main = async () => {
 
         const repeatedDeps = Object.keys(repeatedDependencies);
 
+        console.log(workspaces);
+        console.log(deps);
         console.log(repeatedDependencies);
 
         if (repeatedDeps.length > 0) {
