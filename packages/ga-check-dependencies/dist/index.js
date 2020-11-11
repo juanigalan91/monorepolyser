@@ -27577,26 +27577,31 @@ const main = async () => {
             const pkg = packages[pkgName];
             const { dependencies } = pkg;
 
-            Object.keys(dependencies).forEach((dep) => {
-                const version = dependencies[dep];
+            console.log(pkgName);
+            console.log(dependencies);
 
-                if (deps[dep]) {
-                    const detectedVersion = deps[dep];
+            if (dependencies) {
+                Object.keys(dependencies).forEach((dep) => {
+                    const version = dependencies[dep];
 
-                    if (version !== detectedVersion) {
-                        if (!repeatedDependencies[dep]) {
-                            repeatedDependencies[dep] = [];
+                    if (deps[dep]) {
+                        const detectedVersion = deps[dep];
+
+                        if (version !== detectedVersion) {
+                            if (!repeatedDependencies[dep]) {
+                                repeatedDependencies[dep] = [];
+                            }
+
+                            repeatedDependencies[dep].push({
+                                addedBy: pkgName,
+                                version, 
+                            });
                         }
-
-                        repeatedDependencies[dep].push({
-                            addedBy: pkgName,
-                            version, 
-                        });
+                    } else {
+                        deps[dep] = version;
                     }
-                } else {
-                    deps[dep] = version;
-                }
-            });
+                });
+            }
         });
 
         const repeatedDeps = Object.keys(repeatedDependencies);
