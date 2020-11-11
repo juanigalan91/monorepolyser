@@ -36,8 +36,6 @@ module.exports =
 /******/ 		// Load entry module and return exports
 /******/ 		return __webpack_require__(942);
 /******/ 	};
-/******/ 	// initialize runtime
-/******/ 	runtime(__webpack_require__);
 /******/
 /******/ 	// run startup
 /******/ 	return startup();
@@ -13607,9 +13605,7 @@ exports.getUserAgent = getUserAgent;
 /***/ 62:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
-const fs = __webpack_require__(747);
 const path = __webpack_require__(622);
-const findRoot = __webpack_require__(808);
 const glob = __webpack_require__(757);
 
 function getPackages(packageJson) {
@@ -13623,27 +13619,19 @@ function getPackages(packageJson) {
     return workspaces.packages || null;
 }
 
-
-function getRoot() {
-    const workingDirectory = process.env['GITHUB_WORKSPACE'] ? process.env['GITHUB_WORKSPACE'] : process.cwd();
-
-    const root = findRoot(workingDirectory, (dir) => {
-        const pkg = path.join(dir, 'package.json');
-        return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
-    });
-
-    return root;
+function getWorkingDirectory() {
+    return process.env['GITHUB_WORKSPACE'] ? process.env['GITHUB_WORKSPACE'] : process.cwd();
 }
 
 function getWorkspaces() {
-    const root = getRoot();
+    const root = getWorkingDirectory();
 
     const packages = getPackages(require(path.join(root, 'package.json')));
     return packages;
 }
 
 function getPackagesFromWorkspaces(workspaces) {
-    const root = getRoot();
+    const root = getWorkingDirectory();
     const packages = {};
     const promises = [];
 
@@ -24898,45 +24886,6 @@ module.exports = require("stream");
 
 /***/ }),
 
-/***/ 808:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-/* module decorator */ module = __webpack_require__.nmd(module);
-var path = __webpack_require__(622)
-var fs = __webpack_require__(747)
-
-function defaultCheck (dir) {
-  return fs.existsSync(path.join(dir, 'package.json'))
-}
-
-function findRoot (start, check) {
-  start = start || module.parent.filename
-  check = check || defaultCheck
-
-  if (typeof start === 'string') {
-    if (start[start.length - 1] !== path.sep) {
-      start += path.sep
-    }
-    start = start.split(path.sep)
-  }
-  if (!start.length) {
-    throw new Error('package.json not found in path')
-  }
-  start.pop()
-  var dir = start.join(path.sep)
-  try {
-    if (check(dir)) {
-      return dir
-    }
-  } catch (e) {}
-  return findRoot(start, check)
-}
-
-module.exports = findRoot
-
-
-/***/ }),
-
 /***/ 815:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -28940,26 +28889,4 @@ module.exports = set;
 
 /***/ })
 
-/******/ },
-/******/ function(__webpack_require__) { // webpackRuntimeModules
-/******/ 	"use strict";
-/******/ 
-/******/ 	/* webpack/runtime/node module decorator */
-/******/ 	!function() {
-/******/ 		__webpack_require__.nmd = function(module) {
-/******/ 			module.paths = [];
-/******/ 			if (!module.children) module.children = [];
-/******/ 			Object.defineProperty(module, 'loaded', {
-/******/ 				enumerable: true,
-/******/ 				get: function() { return module.l; }
-/******/ 			});
-/******/ 			Object.defineProperty(module, 'id', {
-/******/ 				enumerable: true,
-/******/ 				get: function() { return module.i; }
-/******/ 			});
-/******/ 			return module;
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ }
-);
+/******/ });

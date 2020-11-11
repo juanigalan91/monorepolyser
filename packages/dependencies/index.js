@@ -1,6 +1,4 @@
-const fs = require('fs');
 const path = require('path');
-const findRoot = require('find-root');
 const glob = require('glob');
 
 function getPackages(packageJson) {
@@ -14,27 +12,19 @@ function getPackages(packageJson) {
     return workspaces.packages || null;
 }
 
-
-function getRoot() {
-    const workingDirectory = process.env['GITHUB_WORKSPACE'] ? process.env['GITHUB_WORKSPACE'] : process.cwd();
-
-    const root = findRoot(workingDirectory, (dir) => {
-        const pkg = path.join(dir, 'package.json');
-        return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
-    });
-
-    return root;
+function getWorkingDirectory() {
+    return process.env['GITHUB_WORKSPACE'] ? process.env['GITHUB_WORKSPACE'] : process.cwd();
 }
 
 function getWorkspaces() {
-    const root = getRoot();
+    const root = getWorkingDirectory();
 
     const packages = getPackages(require(path.join(root, 'package.json')));
     return packages;
 }
 
 function getPackagesFromWorkspaces(workspaces) {
-    const root = getRoot();
+    const root = getWorkingDirectory();
     const packages = {};
     const promises = [];
 
