@@ -13609,10 +13609,12 @@ const path = __webpack_require__(622);
 const glob = __webpack_require__(757);
 
 function getPackages(packageJson) {
+    console.log('packageJson', packageJson);
     if (!('workspaces' in packageJson)) {
         return null;
     }
     const { workspaces } = packageJson;
+    console.log('workspaces', packageJson);
     if (Array.isArray(workspaces)) {
         return workspaces;
     }
@@ -13626,7 +13628,11 @@ function getWorkingDirectory() {
 function getWorkspaces() {
     const root = getWorkingDirectory();
 
+    console.log('root', root);
+    console.log('package.json route', path.join(root, 'package.json'));
+
     const packages = getPackages(require(path.join(root, 'package.json')));
+
     return packages;
 }
 
