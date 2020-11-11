@@ -14,9 +14,6 @@ const main = async () => {
             const pkg = packages[pkgName];
             const { dependencies } = pkg;
 
-            console.log(pkgName);
-            console.log(dependencies);
-
             if (dependencies) {
                 Object.keys(dependencies).forEach((dep) => {
                     const version = dependencies[dep];

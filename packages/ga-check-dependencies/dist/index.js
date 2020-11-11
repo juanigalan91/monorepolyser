@@ -13609,9 +13609,7 @@ const path = __webpack_require__(622);
 const glob = __webpack_require__(757);
 
 function getPackages(packageJson) {
-    console.log('packageJson', packageJson);
     const { workspaces } = packageJson;
-    console.log('workspaces', workspaces);
 
     if (!workspaces) {
         return null;
@@ -13627,31 +13625,28 @@ function getWorkingDirectory() {
     return process.env['GITHUB_WORKSPACE'] ? process.env['GITHUB_WORKSPACE'] : process.cwd();
 }
 
-function getWorkspaces() {
+function getRootPackageJson() {
     const root = getWorkingDirectory();
 
-    console.log('root', root);
-    console.log('package.json route', path.join(root, 'package.json'));
+    return require(path.join(root, 'package.json'));
+}
 
-    const packages = getPackages(require(path.join(root, 'package.json')));
+function getWorkspaces() {
+    const packages = getPackages(getRootPackageJson());
 
     return packages;
 }
 
 function getPackagesFromWorkspaces(workspaces) {
     const root = getWorkingDirectory();
+    const rootPackageJson = getRootPackageJson();
     const packages = {};
     const promises = [];
 
-    console.log('workspaces', workspaces);
-
     workspaces.forEach((workspace) => {
         promises.push(new Promise((resolve) => {
-            console.log('workspace', workspace);
             glob(`${workspace}/package.json`, { cwd: root }, (err, matches) => {
-                console.log('matches', matches);
                 matches.forEach((match) => {
-                    console.log('match', match);
                     const pkg = require(`${root}/${match}`);
     
                     const { name, dependencies, devDependencies } = pkg;
@@ -13659,8 +13654,6 @@ function getPackagesFromWorkspaces(workspaces) {
                         dependencies,
                         devDependencies,
                     };
-
-                    console.log('packages[name]', packages[name]);
                 });
 
                 resolve();
@@ -13668,8 +13661,12 @@ function getPackagesFromWorkspaces(workspaces) {
         }))
     });
 
+    packages[rootPackageJson.name] = {
+        dependencies: rootPackageJson.dependencies,
+        devDependencies: rootPackageJson.devDependencies,
+    };
+
     return Promise.all(promises).then((results) => {
-        console.log('finish all', packages);
         return {
             packages,
             workspaces,
@@ -27576,9 +27573,6 @@ const main = async () => {
         Object.keys(packages).forEach((pkgName) => {
             const pkg = packages[pkgName];
             const { dependencies } = pkg;
-
-            console.log(pkgName);
-            console.log(dependencies);
 
             if (dependencies) {
                 Object.keys(dependencies).forEach((dep) => {
