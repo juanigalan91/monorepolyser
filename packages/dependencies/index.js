@@ -15,13 +15,10 @@ function getPackages(packageJson) {
 }
 
 
-
 function getRoot() {
-    console.log('__dirname', __dirname);
-    console.log(process.env['GITHUB_WORKSPACE']);
-    console.log(process.cwd());
+    const workingDirectory = process.env['GITHUB_WORKSPACE'] ? process.env['GITHUB_WORKSPACE'] : process.cwd();
 
-    const root = findRoot(__dirname, (dir) => {
+    const root = findRoot(workingDirectory, (dir) => {
         const pkg = path.join(dir, 'package.json');
         return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
     });

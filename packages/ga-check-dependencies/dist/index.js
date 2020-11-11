@@ -13624,15 +13624,12 @@ function getPackages(packageJson) {
 }
 
 
-
 function getRoot() {
-    console.log('__dirname', __dirname);
-    console.log(process.env['GITHUB_WORKSPACE']);
-    console.log(process.cwd());
+    const workingDirectory = process.env['GITHUB_WORKSPACE'] ? process.env['GITHUB_WORKSPACE'] : process.cwd();
 
-    const root = findRoot(__dirname, (dir) => {
+    const root = findRoot(workingDirectory, (dir) => {
         const pkg = path.join(dir, 'package.json');
-        return fs.existsSync(pkg) && getPackages(__webpack_require__(367)(pkg)) !== null;
+        return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
     });
 
     return root;
@@ -18356,25 +18353,6 @@ paginateRest.VERSION = VERSION;
 exports.paginateRest = paginateRest;
 //# sourceMappingURL=index.js.map
 
-
-/***/ }),
-
-/***/ 367:
-/***/ (function(module) {
-
-function webpackEmptyContext(req) {
-	if (typeof req === 'number' && __webpack_require__.m[req])
-  return __webpack_require__(req);
-try { return require(req) }
-catch (e) { if (e.code !== 'MODULE_NOT_FOUND') throw e }
-var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = function() { return []; };
-webpackEmptyContext.resolve = webpackEmptyContext;
-module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 367;
 
 /***/ }),
 
