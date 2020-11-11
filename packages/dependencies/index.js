@@ -15,6 +15,7 @@ function getPackages(packageJson) {
 }
 
 function getRoot() {
+    console.log('__dirname', __dirname);
     const root = findRoot(__dirname, (dir) => {
         const pkg = path.join(dir, 'package.json');
         return fs.existsSync(pkg) && getPackages(require(pkg)) !== null;
