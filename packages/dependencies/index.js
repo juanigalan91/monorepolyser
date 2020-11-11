@@ -3,11 +3,13 @@ const glob = require('glob');
 
 function getPackages(packageJson) {
     console.log('packageJson', packageJson);
-    if (!('workspaces' in packageJson)) {
+    const { workspaces } = packageJson;
+    console.log('workspaces', workspaces);
+
+    if (!workspaces) {
         return null;
     }
-    const { workspaces } = packageJson;
-    console.log('workspaces', packageJson);
+
     if (Array.isArray(workspaces)) {
         return workspaces;
     }
