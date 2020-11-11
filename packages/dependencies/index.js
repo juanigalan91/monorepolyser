@@ -36,10 +36,15 @@ function getPackagesFromWorkspaces(workspaces) {
     const packages = {};
     const promises = [];
 
-    workspaces.forEach((workspace, index) => {
-        promises.push(new Promise((resolve, reject) => {
+    console.log('workspaces', workspaces);
+
+    workspaces.forEach((workspace) => {
+        promises.push(new Promise((resolve) => {
+            console.log('workspace', workspace);
             glob(`${workspace}/package.json`, { cwd: root }, (err, matches) => {
+                console.log('matches', matches);
                 matches.forEach((match) => {
+                    console.log('match', match);
                     const pkg = require(`${root}/${match}`);
     
                     const { name, dependencies, devDependencies } = pkg;
@@ -47,6 +52,8 @@ function getPackagesFromWorkspaces(workspaces) {
                         dependencies,
                         devDependencies,
                     };
+
+                    console.log('packages[name]', packages[name]);
                 });
 
                 resolve();
@@ -55,6 +62,7 @@ function getPackagesFromWorkspaces(workspaces) {
     });
 
     return Promise.all(promises).then((results) => {
+        console.log('finish all', packages);
         return {
             packages,
             workspaces,
