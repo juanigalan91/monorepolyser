@@ -74,6 +74,8 @@ const main = async () => {
       });
 
       throw new Error('There are deps with different versions');
+    } else {
+      console.log('All packages are using the same versions of their dependencies!')
     }
   } catch (error) {
     core.setFailed(error.message);
