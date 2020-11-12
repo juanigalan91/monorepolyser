@@ -4,9 +4,11 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
+        "@types/glob": "^7.1.3",
         "find-root": "^1.1.0",
         "flatten": "^1.0.3",
-        "glob": "^7.1.6"
+        "glob": "^7.1.6",
+        "package-json-types": "^1.0.2"
     },
     "scripts": {
         "test": "node ./index.test.js"
