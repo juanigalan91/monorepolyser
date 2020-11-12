@@ -34,7 +34,7 @@ module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(942);
+/******/ 		return __webpack_require__(437);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -13602,86 +13602,6 @@ exports.getUserAgent = getUserAgent;
 
 /***/ }),
 
-/***/ 62:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-const path = __webpack_require__(622);
-const glob = __webpack_require__(757);
-
-function getPackages(packageJson) {
-    const { workspaces } = packageJson;
-
-    if (!workspaces) {
-        return null;
-    }
-
-    if (Array.isArray(workspaces)) {
-        return workspaces;
-    }
-    return workspaces.packages || null;
-}
-
-function getWorkingDirectory() {
-    return process.env['GITHUB_WORKSPACE'] ? process.env['GITHUB_WORKSPACE'] : process.cwd();
-}
-
-function getRootPackageJson() {
-    const root = getWorkingDirectory();
-
-    return require(path.join(root, 'package.json'));
-}
-
-function getWorkspaces() {
-    const packages = getPackages(getRootPackageJson());
-
-    return packages;
-}
-
-function getPackagesFromWorkspaces(workspaces) {
-    const root = getWorkingDirectory();
-    const rootPackageJson = getRootPackageJson();
-    const packages = {};
-    const promises = [];
-
-    workspaces.forEach((workspace) => {
-        promises.push(new Promise((resolve) => {
-            glob(`${workspace}/package.json`, { cwd: root }, (err, matches) => {
-                matches.forEach((match) => {
-                    const pkg = require(`${root}/${match}`);
-    
-                    const { name, dependencies, devDependencies } = pkg;
-                    packages[name] = {
-                        dependencies,
-                        devDependencies,
-                    };
-                });
-
-                resolve();
-            });
-        }))
-    });
-
-    packages[rootPackageJson.name] = {
-        dependencies: rootPackageJson.dependencies,
-        devDependencies: rootPackageJson.devDependencies,
-    };
-
-    return Promise.all(promises).then((results) => {
-        return {
-            packages,
-            workspaces,
-        };
-    });
-}
-
-module.exports = {
-    getWorkspaces,
-    getPackagesFromWorkspaces,
-};
-
-
-/***/ }),
-
 /***/ 87:
 /***/ (function(module) {
 
@@ -18906,6 +18826,108 @@ function withAuthorizationPrefix(authorization) {
 
   return `token ${authorization}`;
 }
+
+
+/***/ }),
+
+/***/ 437:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core = __importStar(__webpack_require__(738));
+const github = __importStar(__webpack_require__(230));
+const dependencies_1 = __webpack_require__(773);
+const repeatedDependencies = {};
+const deps = {};
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const workspaces = dependencies_1.getWorkspaces();
+        const { packages } = yield dependencies_1.getPackagesFromWorkspaces(workspaces);
+        Object.keys(packages).forEach((pkgName) => {
+            const pkg = packages[pkgName];
+            const { dependencies } = pkg;
+            if (dependencies) {
+                Object.keys(dependencies).forEach((dep) => {
+                    const version = dependencies[dep];
+                    if (deps[dep]) {
+                        const detectedVersion = deps[dep];
+                        if (version !== detectedVersion) {
+                            if (!repeatedDependencies[dep]) {
+                                repeatedDependencies[dep] = [];
+                            }
+                            repeatedDependencies[dep].push({
+                                addedBy: pkgName,
+                                version,
+                            });
+                        }
+                    }
+                    else {
+                        deps[dep] = version;
+                    }
+                });
+            }
+        });
+        const repeatedDeps = Object.keys(repeatedDependencies);
+        if (repeatedDeps.length > 0) {
+            const githubToken = process.env.GITHUB_TOKEN;
+            const client = new github.GitHub(githubToken);
+            const { context } = github;
+            if (context.payload.pull_request == null) {
+                core.setFailed('No pull request found.');
+                return;
+            }
+            const pullRequestNumber = context.payload.pull_request.number;
+            let body = '## Dependencies check \n\n';
+            body = `${body}Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle\n`;
+            body = `${body}| Dependency | Added by | Added Version | Base version\n| :-----------: |:-------------:| :----------:| :----------:|\n`;
+            repeatedDeps.forEach((repeatedDep) => {
+                const versions = repeatedDependencies[repeatedDep];
+                versions.forEach((v) => {
+                    const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} | ${deps[repeatedDep]} |\n`;
+                    body = `${body}${row}`;
+                });
+            });
+            client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                issue_number: pullRequestNumber, body }));
+            throw new Error('There are deps with different versions');
+        }
+    }
+    catch (error) {
+        core.setFailed(error.message);
+    }
+});
+main();
 
 
 /***/ }),
@@ -24766,6 +24788,102 @@ function unmonkeypatch () {
 
 /***/ }),
 
+/***/ 773:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPackagesFromWorkspaces = exports.getWorkspaces = void 0;
+const path = __importStar(__webpack_require__(622));
+const glob_1 = __importDefault(__webpack_require__(757));
+const getPackages = (packageJson) => {
+    const { workspaces } = packageJson;
+    if (!workspaces) {
+        return null;
+    }
+    if (Array.isArray(workspaces)) {
+        return workspaces;
+    }
+    return null;
+};
+const getWorkingDirectory = () => {
+    return process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : process.cwd();
+};
+const getRootPackageJson = () => {
+    const root = getWorkingDirectory();
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    return require(path.join(root, 'package.json'));
+};
+const getWorkspaces = () => {
+    const packages = getPackages(getRootPackageJson());
+    return packages;
+};
+exports.getWorkspaces = getWorkspaces;
+const getPackagesFromWorkspaces = (workspaces) => {
+    const root = getWorkingDirectory();
+    const rootPackageJson = getRootPackageJson();
+    const packages = {};
+    const promises = [];
+    workspaces.forEach((workspace) => {
+        promises.push(new Promise((resolve) => {
+            glob_1.default(`${workspace}/package.json`, { cwd: root }, (err, matches) => {
+                matches.forEach((match) => {
+                    // eslint-disable-next-line import/no-dynamic-require, global-require
+                    const pkg = require(`${root}/${match}`);
+                    const { name, dependencies, devDependencies, version } = pkg;
+                    packages[name] = {
+                        name,
+                        version,
+                        dependencies,
+                        devDependencies,
+                    };
+                });
+                resolve();
+            });
+        }));
+    });
+    packages[rootPackageJson.name] = {
+        name: rootPackageJson.name,
+        version: rootPackageJson.version,
+        dependencies: rootPackageJson.dependencies,
+        devDependencies: rootPackageJson.devDependencies,
+    };
+    return Promise.all(promises).then(() => {
+        const projectMetadata = {
+            packages,
+            workspaces,
+        };
+        return projectMetadata;
+    });
+};
+exports.getPackagesFromWorkspaces = getPackagesFromWorkspaces;
+
+
+/***/ }),
+
 /***/ 781:
 /***/ (function(module) {
 
@@ -27551,102 +27669,6 @@ class RequestError extends Error {
 
 exports.RequestError = RequestError;
 //# sourceMappingURL=index.js.map
-
-
-/***/ }),
-
-/***/ 942:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-const core = __webpack_require__(738);
-const github = __webpack_require__(230);
-const { getWorkspaces, getPackagesFromWorkspaces } = __webpack_require__(62);
-
-const repeatedDependencies = {};
-const deps = {};
-
-const main = async () => {
-    try {
-        const workspaces = getWorkspaces();
-        const { packages } = await getPackagesFromWorkspaces(workspaces);
-
-        Object.keys(packages).forEach((pkgName) => {
-            const pkg = packages[pkgName];
-            const { dependencies } = pkg;
-
-            if (dependencies) {
-                Object.keys(dependencies).forEach((dep) => {
-                    const version = dependencies[dep];
-
-                    if (deps[dep]) {
-                        const detectedVersion = deps[dep];
-
-                        if (version !== detectedVersion) {
-                            if (!repeatedDependencies[dep]) {
-                                repeatedDependencies[dep] = [];
-                            }
-
-                            repeatedDependencies[dep].push({
-                                addedBy: pkgName,
-                                version, 
-                            });
-                        }
-                    } else {
-                        deps[dep] = version;
-                    }
-                });
-            }
-        });
-
-        const repeatedDeps = Object.keys(repeatedDependencies);
-
-        console.log(workspaces);
-        console.log(deps);
-        console.log(repeatedDependencies);
-
-        if (repeatedDeps.length > 0) {
-            const githubToken = process.env.GITHUB_TOKEN;
-            const client = new github.GitHub(githubToken);
-
-            const context = github.context;
-            if (context.payload.pull_request == null) {
-                core.setFailed('No pull request found.');
-                return;
-            }
-
-            const pull_request_number = context.payload.pull_request.number;
-            let body = '## Dependencies check \n\n';
-
-            body = `${body}Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle\n`;
-            body = `${body}| Dependency | Added by | Added Version | Base version\n| :-----------: |:-------------:| :----------:| :----------:|\n`;
-
-            repeatedDeps.forEach((repeatedDep) => {
-                const versions = repeatedDependencies[repeatedDep];
-                versions.forEach((v) => {
-                    const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} | ${deps[repeatedDep]} |\n`;
-                    body = `${body}${row}`;
-                });
-            });
-
-
-            client.issues.createComment({
-                ...context.repo,
-                issue_number: pull_request_number,
-                body,
-            });
-
-            throw new Error('There are deps with different versions');
-        }
-    } catch (error) {
-        core.setFailed(error.message);
-    }
-}
-
-main();
-
-module.exports = {
-    main,
-};
 
 
 /***/ }),
