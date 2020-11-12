@@ -12,7 +12,7 @@ jobs:
       - name: Checkout	
         uses: actions/checkout@v2	
       - name: Check dependencies
-        uses: ./packages/ga-monorepolyser
+        uses: .
         with:
           check-dependencies: true
         env:

@@ -1,5 +1,0 @@
-name: 'Monorepolyser'
-description: 'Awesome set of tools and validators for your yarn monorepo'
-runs:
-  using: 'node12'
-  main: 'dist/index.js'
