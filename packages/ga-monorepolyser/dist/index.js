@@ -18865,66 +18865,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(738));
-const github = __importStar(__webpack_require__(230));
-const dependencies_1 = __webpack_require__(773);
-const repeatedDependencies = {};
-const deps = {};
+const ga_check_dependencies_1 = __webpack_require__(969);
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const workspaces = dependencies_1.getWorkspaces();
-        const { packages } = yield dependencies_1.getPackagesFromWorkspaces(workspaces);
-        Object.keys(packages).forEach((pkgName) => {
-            const pkg = packages[pkgName];
-            const { dependencies } = pkg;
-            if (dependencies) {
-                Object.keys(dependencies).forEach((dep) => {
-                    const version = dependencies[dep];
-                    if (deps[dep]) {
-                        const detectedVersion = deps[dep];
-                        if (version !== detectedVersion) {
-                            if (!repeatedDependencies[dep]) {
-                                repeatedDependencies[dep] = [];
-                            }
-                            repeatedDependencies[dep].push({
-                                addedBy: pkgName,
-                                version,
-                            });
-                        }
-                    }
-                    else {
-                        deps[dep] = version;
-                    }
-                });
-            }
-        });
-        const repeatedDeps = Object.keys(repeatedDependencies);
-        if (repeatedDeps.length > 0) {
-            const githubToken = process.env.GITHUB_TOKEN;
-            const client = new github.GitHub(githubToken);
-            const { context } = github;
-            if (context.payload.pull_request == null) {
-                core.setFailed('No pull request found.');
-                return;
-            }
-            const pullRequestNumber = context.payload.pull_request.number;
-            let body = '## Dependencies check \n\n';
-            body = `${body}Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle\n`;
-            body = `${body}| Dependency | Added by | Added Version | Base version\n| :-----------: |:-------------:| :----------:| :----------:|\n`;
-            repeatedDeps.forEach((repeatedDep) => {
-                const versions = repeatedDependencies[repeatedDep];
-                versions.forEach((v) => {
-                    const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} | ${deps[repeatedDep]} |\n`;
-                    body = `${body}${row}`;
-                });
-            });
-            client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                issue_number: pullRequestNumber, body }));
-            throw new Error('There are deps with different versions');
-        }
-    }
-    catch (error) {
-        core.setFailed(error.message);
+    const shouldCheckDependencies = core.getInput('check-dependencies');
+    if (shouldCheckDependencies) {
+        yield ga_check_dependencies_1.main();
     }
 });
 main();
@@ -27693,6 +27638,109 @@ function removeHook (state, name, method) {
 
   state.registry[name].splice(index, 1)
 }
+
+
+/***/ }),
+
+/***/ 969:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.main = void 0;
+const core = __importStar(__webpack_require__(738));
+const github = __importStar(__webpack_require__(230));
+const dependencies_1 = __webpack_require__(773);
+const repeatedDependencies = {};
+const deps = {};
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const workspaces = dependencies_1.getWorkspaces();
+        const { packages } = yield dependencies_1.getPackagesFromWorkspaces(workspaces);
+        Object.keys(packages).forEach((pkgName) => {
+            const pkg = packages[pkgName];
+            const { dependencies } = pkg;
+            if (dependencies) {
+                Object.keys(dependencies).forEach((dep) => {
+                    const version = dependencies[dep];
+                    if (deps[dep]) {
+                        const detectedVersion = deps[dep];
+                        if (version !== detectedVersion) {
+                            if (!repeatedDependencies[dep]) {
+                                repeatedDependencies[dep] = [];
+                            }
+                            repeatedDependencies[dep].push({
+                                addedBy: pkgName,
+                                version,
+                            });
+                        }
+                    }
+                    else {
+                        deps[dep] = version;
+                    }
+                });
+            }
+        });
+        const repeatedDeps = Object.keys(repeatedDependencies);
+        if (repeatedDeps.length > 0) {
+            const githubToken = process.env.GITHUB_TOKEN;
+            const client = new github.GitHub(githubToken);
+            const { context } = github;
+            if (context.payload.pull_request == null) {
+                core.setFailed('No pull request found.');
+                return;
+            }
+            const pullRequestNumber = context.payload.pull_request.number;
+            let body = '## Dependencies check \n\n';
+            body = `${body}Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle\n`;
+            body = `${body}| Dependency | Added by | Added Version | Base version\n| :-----------: |:-------------:| :----------:| :----------:|\n`;
+            repeatedDeps.forEach((repeatedDep) => {
+                const versions = repeatedDependencies[repeatedDep];
+                versions.forEach((v) => {
+                    const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} | ${deps[repeatedDep]} |\n`;
+                    body = `${body}${row}`;
+                });
+            });
+            client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                issue_number: pullRequestNumber, body }));
+            throw new Error('There are deps with different versions');
+        }
+    }
+    catch (error) {
+        core.setFailed(error.message);
+    }
+});
+exports.main = main;
 
 
 /***/ }),

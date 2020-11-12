@@ -80,4 +80,4 @@ const main = async () => {
   }
 };
 
-main();
+export { main };
