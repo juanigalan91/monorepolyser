@@ -1,4 +1,10 @@
-description: 'Generates the dependency graph for the monorepo'
+name: 'Monorepolyser'
+description: 'Awesome set of tools and validators for your yarn monorepo'
+inputs:
+  check-dependencies:
+    description: 'Whether the github action will check the monorepo dependencies integrity or not'
+    required: false
+    default: false
 runs:
   using: 'node12'
-  main: 'packages/ga-check-dependencies/dist/index.js' 
+  main: 'packages/ga-monorepolyser/dist/index.js' 

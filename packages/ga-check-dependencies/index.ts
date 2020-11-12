@@ -74,10 +74,13 @@ const main = async () => {
       });
 
       throw new Error('There are deps with different versions');
+    } else {
+      // eslint-disable-next-line no-console
+      console.log('All packages are using the same versions of their dependencies!');
     }
   } catch (error) {
     core.setFailed(error.message);
   }
 };
 
-main();
+export { main };

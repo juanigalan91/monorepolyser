@@ -1,12 +1,11 @@
 {
-    "name": "@monorepolyser/ga-check-dependencies",
+    "name": "@monorepolyser/ga-monorepolyser",
     "version": "1.0.0",
     "description": "",
     "main": "index.ts",
     "dependencies": {
-        "@actions/github": "^2.1.0",
         "@actions/core": "^1.2.4",
-        "@monorepolyser/dependencies": "1.0.0"
+        "@monorepolyser/ga-check-dependencies": "1.0.0"
     },
     "scripts": {
         "build": "ncc build ./index.ts"
