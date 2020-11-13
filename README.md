@@ -2,6 +2,9 @@
 
 Awesome Github Action to analyse your yarn monorepo!
 
+## Requirements
+This Github Action assumes that you are using yarn workspaces in order to manage your monorepo. If your `package.json` has a key called `workspaces` where you confgire where your packages are, then you are good to go!
+
 ## Functionalities
 ### Dependencies check
 
