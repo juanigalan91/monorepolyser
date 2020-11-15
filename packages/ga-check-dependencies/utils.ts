@@ -1,4 +1,4 @@
-import { getWorkspaces, getPackagesFromWorkspaces } from '@monorepolyser/dependencies';
+import { getPackagesFromWorkspaces } from '@monorepolyser/dependencies';
 
 import { IncoherentDependency } from './types';
 
@@ -15,8 +15,7 @@ export interface GetIncoherentDependencies {
 const getIncoherentDependencies = (): GetIncoherentDependencies => {
   const incoherentDependencies: Record<string, IncoherentDependency[]> = {};
   const deps: Record<string, string> = {};
-  const workspaces = getWorkspaces();
-  const { packages } = getPackagesFromWorkspaces(workspaces);
+  const { packages } = getPackagesFromWorkspaces();
 
   /**
    * For each of the found packages in each workspace, we iterate through their dependencies

@@ -5,16 +5,16 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test:dependencies": "yarn workspace @monorepolyser/dependencies test",
-    "test:ga-check-dependencies": "yarn workspace @monorepolyser/ga-check-dependencies test",
-    "build": "yarn workspace @monorepolyser/ga-monorepolyser build"
+    "build": "yarn workspace @monorepolyser/ga-monorepolyser build",
+    "test": "jest --coverage"
   },
-  "pre-commit": [
-    "build"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/juanigalan91/monorepolyser.git"
+  },
+  "engines": {
+    "node": "^13.7.0",
+    "yarn": "^1.16.0"
   },
   "keywords": [],
   "author": "",
@@ -38,8 +38,9 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "jest": "^26.6.3",
     "pre-commit": "^1.2.2",
-    "prettier": "^2.1.2",
+    "ts-jest": "^26.4.4",
     "typescript": "^4.0.5"
   }
 }

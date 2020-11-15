@@ -5,12 +5,8 @@ import { Body } from 'package-json-types';
  * Retrieves the workspaces property from a package json
  * @param packageJson - package to retrieve the workspaces from
  */
-const getPackages = (packageJson: Body): Body['workspaces'] | null => {
+const getWorkspacesFromPackageJson = (packageJson: Body): Body['workspaces'] | null => {
   const { workspaces } = packageJson;
-
-  if (!workspaces) {
-    return null;
-  }
 
   if (Array.isArray(workspaces)) {
     return workspaces;
@@ -34,9 +30,9 @@ const getRootPackageJson = (): Body => {
 
 /** Returns the workspaces property located on the root of the target repo */
 const getWorkspaces = (): Body['workspaces'] => {
-  const packages = getPackages(getRootPackageJson());
+  const workspaces = getWorkspacesFromPackageJson(getRootPackageJson());
 
-  return packages;
+  return workspaces;
 };
 
-export { getPackages, getRootPackageJson, getWorkingDirectory, getWorkspaces };
+export { getWorkspacesFromPackageJson, getRootPackageJson, getWorkingDirectory, getWorkspaces };
