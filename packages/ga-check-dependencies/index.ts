@@ -1,11 +1,13 @@
 import * as core from '@actions/core';
 import { addCommentToCurrentPR, Comment } from '@monorepolyser/ga-utils';
+import { getProjectMetadata } from '@monorepolyser/dependencies';
 
 import { getIncoherentDependencies } from './utils';
 
 const main = async () => {
   try {
-    const { incoherentDependencies, deps } = getIncoherentDependencies();
+    const project = getProjectMetadata();
+    const { incoherentDependencies, deps } = getIncoherentDependencies(project);
 
     const repeatedDeps = Object.keys(incoherentDependencies);
 

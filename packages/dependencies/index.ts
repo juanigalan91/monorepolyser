@@ -8,7 +8,8 @@ import { getWorkingDirectory, getRootPackageJson, getWorkspaces } from './utils'
  * with their dependencies, name, version and development dependencies.
  * @param workspaces - list of workspaces to parse
  */
-const getPackagesFromWorkspaces = (workspaces: Body['workspaces']): ProjectMetadata => {
+const getProjectMetadata = (): ProjectMetadata => {
+  const workspaces = getWorkspaces();
   const root = getWorkingDirectory();
   const rootPackageJson = getRootPackageJson();
   const packages: Record<string, Body> = {};
@@ -24,13 +25,8 @@ const getPackagesFromWorkspaces = (workspaces: Body['workspaces']): ProjectMetad
       // eslint-disable-next-line import/no-dynamic-require, global-require
       const pkg = require(`${root}/${match}`);
 
-      const { name, dependencies, devDependencies, version } = pkg;
-      packages[name] = {
-        name,
-        version,
-        dependencies,
-        devDependencies,
-      };
+      const { name } = pkg;
+      packages[name] = pkg;
     });
   });
 
@@ -53,4 +49,4 @@ const getPackagesFromWorkspaces = (workspaces: Body['workspaces']): ProjectMetad
   return projectMetadata;
 };
 
-export { getWorkspaces, getPackagesFromWorkspaces };
+export { getProjectMetadata };

@@ -20,6 +20,14 @@ Some of the packages in your monorepo use different dependencies, which can lead
 | axios | module-3 | 0.19.2 | ^0.18.0 |
 | axios | module-4 | 0.19.2 | ^0.18.0 |
 
+**How does it work?**
+Monorepolyser will go through the main package.json of your application as well as each package.json on your workspaces and validate that you are using the exact same version for each dependency on every package. If there is even a slightest difference between versions, Monorepolyser will save that difference and print it on the PR so it can be fixed.
+
+As for now, this module only validates the exact same version used on every package, but it is true that there are different scenarios where versions could be different but valid. For now this module does not implement that functionality just yet.
+
+**How does monorepolyser get the "base version"?**
+As for now, the action takes into consideration the base version as the first version detected by the script when it went through each of your package.json. An argument could be made that the base version should be the most used version, which is completely valid, we just do not support it right now since this is still in beta.
+
 ## Usage
 
 Inside your `.github/workflows/workflow.yml` file:

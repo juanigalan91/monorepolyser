@@ -1,4 +1,4 @@
-import { getWorkspaces, getPackagesFromWorkspaces } from '@monorepolyser/dependencies';
+import { ProjectMetadata } from '@monorepolyser/dependencies/types';
 
 import { IncoherentDependency } from './types';
 
@@ -12,11 +12,10 @@ export interface GetIncoherentDependencies {
 /**
  * Calculates if there are any incoherent dependencies on the current project
  */
-const getIncoherentDependencies = (): GetIncoherentDependencies => {
+const getIncoherentDependencies = (project: ProjectMetadata): GetIncoherentDependencies => {
   const incoherentDependencies: Record<string, IncoherentDependency[]> = {};
   const deps: Record<string, string> = {};
-  const workspaces = getWorkspaces();
-  const { packages } = getPackagesFromWorkspaces(workspaces);
+  const { packages } = project;
 
   /**
    * For each of the found packages in each workspace, we iterate through their dependencies
