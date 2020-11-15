@@ -30,7 +30,7 @@ jobs:
           yarn install --frozen-lockfile --ignore-optional --ignore-scripts
   test:
     runs-on: ubuntu-latest
-    needs: dependencies
+    needs: install-dependencies
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@722adc6 #v2
