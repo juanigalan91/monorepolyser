@@ -20,15 +20,17 @@ class Comment {
   }
 
   addTable({ columns = [], rows = [] }: { columns: string[]; rows: string[][] }) {
-    this.body = `${this.body}${columns.map((column) => `| ${column} |`).join('')}`;
+    this.body = `${this.body}| ${columns.map((column) => ` ${column} |`).join('')}`;
     this.addBreakline();
-    this.body = `${this.body}${'|:----------:|'.repeat(columns.length)}`;
+    this.body = `${this.body}| ${':----------:|'.repeat(columns.length)}`;
     this.addBreakline();
 
     rows.forEach((row) => {
       if (row && row.length > 0) {
+        this.body = `${this.body} |`;
+
         row.forEach((value) => {
-          this.body = `${this.body}| ${value} |`;
+          this.body = `${this.body} ${value} |`;
         });
 
         this.addBreakline();

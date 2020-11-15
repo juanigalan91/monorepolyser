@@ -9,6 +9,9 @@
     "test:ga-check-dependencies": "yarn workspace @monorepolyser/ga-check-dependencies test",
     "build": "yarn workspace @monorepolyser/ga-monorepolyser build"
   },
+  "pre-commit": [
+    "build"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/juanigalan91/monorepolyser.git"
@@ -35,6 +38,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "pre-commit": "^1.2.2",
     "prettier": "^2.1.2",
     "typescript": "^4.0.5"
   }
