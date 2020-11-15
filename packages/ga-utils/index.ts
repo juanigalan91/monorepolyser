@@ -1,4 +1,5 @@
 import * as github from '@actions/github';
+import { Comment } from './Comment';
 
 const getCurrentPR = () => {
   const { context } = github;
@@ -6,7 +7,7 @@ const getCurrentPR = () => {
   return context.payload.pull_request || null;
 };
 
-const addCommentToCurrentPR = (comment: string) => {
+const addCommentToCurrentPR = (comment: Comment) => {
   const currentPR = getCurrentPR();
 
   if (currentPR) {
@@ -19,9 +20,9 @@ const addCommentToCurrentPR = (comment: string) => {
       ...context.repo,
       // eslint-disable-next-line @typescript-eslint/camelcase
       issue_number: currentPR.number,
-      body: comment,
+      body: comment.getBody(),
     });
   }
 };
 
-export { addCommentToCurrentPR };
+export { addCommentToCurrentPR, Comment };

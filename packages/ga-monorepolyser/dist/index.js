@@ -187,8 +187,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addCommentToCurrentPR = void 0;
+exports.Comment = exports.addCommentToCurrentPR = void 0;
 const github = __importStar(__webpack_require__(230));
+const Comment_1 = __webpack_require__(308);
+Object.defineProperty(exports, "Comment", { enumerable: true, get: function () { return Comment_1.Comment; } });
 const getCurrentPR = () => {
     const { context } = github;
     return context.payload.pull_request || null;
@@ -201,7 +203,7 @@ const addCommentToCurrentPR = (comment) => {
         const { context } = github;
         client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
             // eslint-disable-next-line @typescript-eslint/camelcase
-            issue_number: currentPR.number, body: comment }));
+            issue_number: currentPR.number, body: comment.getBody() }));
     }
 };
 exports.addCommentToCurrentPR = addCommentToCurrentPR;
@@ -13721,24 +13723,41 @@ exports.getUserAgent = getUserAgent;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getIncoherentDependencies = void 0;
 const dependencies_1 = __webpack_require__(773);
+/**
+ * Calculates if there are any incoherent dependencies on the current project
+ */
 const getIncoherentDependencies = () => {
     const incoherentDependencies = {};
     const deps = {};
     const workspaces = dependencies_1.getWorkspaces();
     const { packages } = dependencies_1.getPackagesFromWorkspaces(workspaces);
+    /**
+     * For each of the found packages in each workspace, we iterate through their dependencies
+     * and we try to find if there are packages using different versions
+     */
     Object.keys(packages).forEach((pkgName) => {
         const pkg = packages[pkgName];
         const { dependencies } = pkg;
         if (dependencies) {
             Object.keys(dependencies).forEach((dep) => {
                 const version = dependencies[dep];
+                /**
+                 * If the dependency was found, it means that another package is using it and we need to
+                 * check that we are using the same dependency version.
+                 */
                 if (deps[dep]) {
                     const detectedVersion = deps[dep];
                     if (version !== detectedVersion) {
+                        /**
+                         * If the version is different, we need to add it to the list of incoherent dependencies.
+                         * Since multiple versions for the same package could be coherent, for each dependency
+                         * we have a list of possible incoherent dependencies.
+                         */
                         if (!incoherentDependencies[dep]) {
                             incoherentDependencies[dep] = [];
                         }
                         incoherentDependencies[dep].push({
+                            name: dep,
                             addedBy: pkgName,
                             version,
                         });
@@ -16878,6 +16897,51 @@ function register (state, name, method, options) {
       }, method)()
     })
 }
+
+
+/***/ }),
+
+/***/ 308:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Comment = void 0;
+class Comment {
+    constructor() {
+        this.body = '';
+    }
+    addTitle({ title, level = 1 }) {
+        this.body = `${this.body}${'#'.repeat(level)} ${title}`;
+        this.addBreakline();
+    }
+    addBreakline() {
+        this.body = `${this.body}\n`;
+    }
+    addText({ text }) {
+        this.body = `${this.body}${text}`;
+        this.addBreakline();
+    }
+    addTable({ columns = [], rows = [] }) {
+        this.body = `${this.body}${columns.map((column) => `| ${column} |`).join('')}`;
+        this.addBreakline();
+        this.body = `${this.body}${'|:----------:|'.repeat(columns.length)}`;
+        this.addBreakline();
+        rows.forEach((row) => {
+            if (row && row.length > 0) {
+                row.forEach((value) => {
+                    this.body = `${this.body}| ${value} |`;
+                });
+                this.addBreakline();
+            }
+        });
+    }
+    getBody() {
+        return this.body;
+    }
+}
+exports.Comment = Comment;
 
 
 /***/ }),
@@ -27808,17 +27872,27 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         const { incoherentDependencies, deps } = utils_1.getIncoherentDependencies();
         const repeatedDeps = Object.keys(incoherentDependencies);
         if (repeatedDeps.length > 0) {
-            let body = '## Dependencies check \n\n';
-            body = `${body}Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle\n`;
-            body = `${body}| Dependency | Added by | Added Version | Base version\n| :-----------: |:-------------:| :----------:| :----------:|\n`;
+            const comment = new ga_utils_1.Comment();
+            comment.addTitle({
+                title: 'Dependencies check',
+                level: 2,
+            });
+            comment.addText({
+                text: 'Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle',
+            });
+            const rows = [];
             repeatedDeps.forEach((repeatedDep) => {
                 const versions = incoherentDependencies[repeatedDep];
                 versions.forEach((v) => {
-                    const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} | ${deps[repeatedDep]} |\n`;
-                    body = `${body}${row}`;
+                    const row = [repeatedDep, v.addedBy, v.version, deps[repeatedDep]];
+                    rows.push(row);
                 });
             });
-            ga_utils_1.addCommentToCurrentPR(body);
+            comment.addTable({
+                columns: ['Dependency', 'Added by', 'Added version', 'Base Version'],
+                rows,
+            });
+            ga_utils_1.addCommentToCurrentPR(comment);
             throw new Error('There are deps with different versions');
         }
         else {
