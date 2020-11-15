@@ -1,0 +1,53 @@
+name: Unit testing
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  
+jobs:
+  install-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Setup node env"
+        uses: actions/setup-node@1c5c137 #v1.4.0
+        with:
+          node-version: '13.7.0'
+      - name: "Get cache hash"
+        id: cache-prep
+        run: echo "::set-output name=hash::"$(cat yarn.lock {packages}/**/package.json | sha1sum | egrep -o '^\w+')
+      - name: "Cache dependencies"
+        id: cache
+        uses: actions/cache@70655ec #v1.1.2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-dependency-hash-${{ steps.cache-prep.outputs.hash }}
+      - name: "Install dependencies"
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          yarn remove -W toolkit-client --ignore-scripts # skip private dependency
+          yarn install --frozen-lockfile --ignore-optional --ignore-scripts
+  test:
+    runs-on: ubuntu-latest
+    needs: dependencies
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@722adc6 #v2
+      - name: "Setup node env"
+        uses: actions/setup-node@1c5c137 #v1.4.0
+        with:
+          node-version: '13.7.0'
+      - name: "Get cache hash"
+        id: cache-prep
+        run: echo "::set-output name=hash::"$(cat yarn.lock {packages}/**/package.json | sha1sum | egrep -o '^\w+')
+      - name: "Cache dependencies"
+        uses: actions/cache@70655ec #v1.1.2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-dependency-hash-${{ steps.cache-prep.outputs.hash }}
+      - name: "Run tests"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          yarn test
