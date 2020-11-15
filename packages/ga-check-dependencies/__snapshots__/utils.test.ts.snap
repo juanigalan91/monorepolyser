@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Check Dependencies - Utils returns incoherent dependencies when a package is using a different version 1`] = `
+Object {
+  "deps": Object {
+    "jest": "26.8.3",
+    "lodash": "0.19.0",
+    "react": "16.8.3",
+  },
+  "incoherentDependencies": Object {
+    "react": Array [
+      Object {
+        "addedBy": "@module/home",
+        "name": "react",
+        "version": "16.8.4",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Check Dependencies - Utils returns incoherent dependencies when a package is using several different versions 1`] = `
+Object {
+  "deps": Object {
+    "jest": "26.8.3",
+    "lodash": "0.19.0",
+    "react": "16.8.3",
+  },
+  "incoherentDependencies": Object {
+    "react": Array [
+      Object {
+        "addedBy": "@module/home",
+        "name": "react",
+        "version": "16.8.4",
+      },
+      Object {
+        "addedBy": "@module/search",
+        "name": "react",
+        "version": "16.8.5",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Check Dependencies - Utils returns no incoherent dependencies when all packages use the same versions 1`] = `
+Object {
+  "deps": Object {
+    "jest": "26.8.3",
+    "lodash": "0.19.0",
+    "react": "16.8.3",
+  },
+  "incoherentDependencies": Object {},
+}
+`;
