@@ -8,7 +8,7 @@ import { getWorkingDirectory, getRootPackageJson, getWorkspaces } from './utils'
  * with their dependencies, name, version and development dependencies.
  * @param workspaces - list of workspaces to parse
  */
-const getPackagesFromWorkspaces = (): ProjectMetadata => {
+const getProjectMetadata = (): ProjectMetadata => {
   const workspaces = getWorkspaces();
   const root = getWorkingDirectory();
   const rootPackageJson = getRootPackageJson();
@@ -49,4 +49,4 @@ const getPackagesFromWorkspaces = (): ProjectMetadata => {
   return projectMetadata;
 };
 
-export { getPackagesFromWorkspaces };
+export { getProjectMetadata };

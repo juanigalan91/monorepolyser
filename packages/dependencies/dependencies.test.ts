@@ -67,7 +67,7 @@ jest.mock(
 
 describe('Dependencies', () => {
   it('returns the workspace packages grouped by package name', () => {
-    const project = dependencies.getPackagesFromWorkspaces();
+    const project = dependencies.getProjectMetadata();
 
     expect(project).toMatchSnapshot();
     expect(project.packages).toBeDefined();
