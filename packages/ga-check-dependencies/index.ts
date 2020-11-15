@@ -10,7 +10,7 @@ const deps: Record<string, string> = {};
 const main = async () => {
   try {
     const workspaces = getWorkspaces();
-    const { packages } = await getPackagesFromWorkspaces(workspaces);
+    const { packages } = getPackagesFromWorkspaces(workspaces);
 
     Object.keys(packages).forEach((pkgName) => {
       const pkg = packages[pkgName];
