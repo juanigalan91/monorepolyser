@@ -11,7 +11,6 @@ This Github Action assumes that you are using yarn workspaces in order to manage
 Checks the integrity of your package's dependencies and validates that all of your packages are using the same dependencies on every single package. This allows a quick validation that you are not using 2 different versions of the same package, which they could possibly end up in your final bundle. This check will validate that you only use one version of a certain dependency!
 
 If you have any errors, the Github Action will show a comment on your PR, like this:
-## Dependencies check 
 
 Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle
 | Dependency | Added by | Added Version | Base version
