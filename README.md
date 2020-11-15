@@ -37,7 +37,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.1.14
+    uses: juanigalan91/monorepolyser@0.2.0
     with:
       check-dependencies: true
       env:
