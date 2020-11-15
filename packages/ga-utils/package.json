@@ -1,0 +1,9 @@
+{
+    "name": "@monorepolyser/ga-utils",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.ts",
+    "dependencies": {
+        "@actions/github": "^2.1.0"
+    }
+}

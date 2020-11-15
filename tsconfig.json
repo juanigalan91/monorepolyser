@@ -14,6 +14,7 @@
     "include": [
       "packages/ga-check-dependencies",
       "packages/ga-monorepolyser",
+      "packages/ga-utils",
       "packages/dependencies"
     ]
   }

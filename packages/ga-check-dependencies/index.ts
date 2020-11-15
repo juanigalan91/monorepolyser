@@ -1,77 +1,29 @@
 import * as core from '@actions/core';
-import * as github from '@actions/github';
-import { getWorkspaces, getPackagesFromWorkspaces } from '@monorepolyser/dependencies';
+import { addCommentToCurrentPR } from '@monorepolyser/ga-utils';
 
-import { RepeatedDependency } from './types';
-
-const repeatedDependencies: Record<string, RepeatedDependency[]> = {};
-const deps: Record<string, string> = {};
+import { getIncoherentDependencies } from './utils';
 
 const main = async () => {
   try {
-    const workspaces = getWorkspaces();
-    const { packages } = getPackagesFromWorkspaces(workspaces);
+    const { incoherentDependencies, deps } = getIncoherentDependencies();
 
-    Object.keys(packages).forEach((pkgName) => {
-      const pkg = packages[pkgName];
-      const { dependencies } = pkg;
-
-      if (dependencies) {
-        Object.keys(dependencies).forEach((dep) => {
-          const version = dependencies[dep];
-
-          if (deps[dep]) {
-            const detectedVersion = deps[dep];
-
-            if (version !== detectedVersion) {
-              if (!repeatedDependencies[dep]) {
-                repeatedDependencies[dep] = [];
-              }
-
-              repeatedDependencies[dep].push({
-                addedBy: pkgName,
-                version,
-              });
-            }
-          } else {
-            deps[dep] = version;
-          }
-        });
-      }
-    });
-
-    const repeatedDeps = Object.keys(repeatedDependencies);
+    const repeatedDeps = Object.keys(incoherentDependencies);
 
     if (repeatedDeps.length > 0) {
-      const githubToken = process.env.GITHUB_TOKEN;
-      const client = new github.GitHub(githubToken);
-
-      const { context } = github;
-      if (context.payload.pull_request == null) {
-        core.setFailed('No pull request found.');
-        return;
-      }
-
-      const pullRequestNumber = context.payload.pull_request.number;
       let body = '## Dependencies check \n\n';
 
       body = `${body}Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle\n`;
       body = `${body}| Dependency | Added by | Added Version | Base version\n| :-----------: |:-------------:| :----------:| :----------:|\n`;
 
       repeatedDeps.forEach((repeatedDep) => {
-        const versions = repeatedDependencies[repeatedDep];
+        const versions = incoherentDependencies[repeatedDep];
         versions.forEach((v) => {
           const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} | ${deps[repeatedDep]} |\n`;
           body = `${body}${row}`;
         });
       });
 
-      client.issues.createComment({
-        ...context.repo,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        issue_number: pullRequestNumber,
-        body,
-      });
+      addCommentToCurrentPR(body);
 
       throw new Error('There are deps with different versions');
     } else {
