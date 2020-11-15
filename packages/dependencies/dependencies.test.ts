@@ -74,7 +74,7 @@ describe('Dependencies', () => {
     expect(project.workspaces).toBeDefined();
 
     expect(Object.keys(project.packages)).toHaveLength(4);
-    expect(project.packages['@module/ljkslkdflkdfslkljdfglhjdgf']).toBeDefined();
+    expect(project.packages['@module/admin']).toBeDefined();
     expect(project.packages['@module/home']).toBeDefined();
     expect(project.packages['@module/root']).toBeDefined();
     expect(project.packages['@module/search']).toBeDefined();
