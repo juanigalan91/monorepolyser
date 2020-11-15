@@ -1,68 +1,43 @@
-import * as path from 'path';
 import glob from 'glob';
 import { Body } from 'package-json-types';
 import { ProjectMetadata } from './types';
+import { getWorkingDirectory, getRootPackageJson, getWorkspaces } from './utils';
 
-const getPackages = (packageJson: Body): Body['workspaces'] | null => {
-  const { workspaces } = packageJson;
-
-  if (!workspaces) {
-    return null;
-  }
-
-  if (Array.isArray(workspaces)) {
-    return workspaces;
-  }
-
-  return null;
-};
-
-const getWorkingDirectory = (): string => {
-  return process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : process.cwd();
-};
-
-const getRootPackageJson = (): Body => {
-  const root = getWorkingDirectory();
-
-  // eslint-disable-next-line import/no-dynamic-require, global-require
-  return require(path.join(root, 'package.json'));
-};
-
-const getWorkspaces = (): Body['workspaces'] => {
-  const packages = getPackages(getRootPackageJson());
-
-  return packages;
-};
-
-const getPackagesFromWorkspaces = (workspaces: Body['workspaces']): Promise<ProjectMetadata> => {
+/**
+ * Retrieves the metadata for a specific list of workspaces, returning the packages in that workspaces
+ * with their dependencies, name, version and development dependencies.
+ * @param workspaces - list of workspaces to parse
+ */
+const getPackagesFromWorkspaces = (workspaces: Body['workspaces']): ProjectMetadata => {
   const root = getWorkingDirectory();
   const rootPackageJson = getRootPackageJson();
   const packages: Record<string, Body> = {};
-  const promises: Array<Promise<any>> = [];
 
+  /**
+   * For each workspace retrieve the different package jsons that could be in that workspace,
+   * load up each package json and retrieve their metadata.
+   */
   workspaces.forEach((workspace) => {
-    promises.push(
-      new Promise((resolve) => {
-        glob(`${workspace}/package.json`, { cwd: root }, (err, matches) => {
-          matches.forEach((match) => {
-            // eslint-disable-next-line import/no-dynamic-require, global-require
-            const pkg = require(`${root}/${match}`);
+    const matches = glob.sync(`${workspace}/package.json`, { cwd: root });
 
-            const { name, dependencies, devDependencies, version } = pkg;
-            packages[name] = {
-              name,
-              version,
-              dependencies,
-              devDependencies,
-            };
-          });
+    matches.forEach((match) => {
+      // eslint-disable-next-line import/no-dynamic-require, global-require
+      const pkg = require(`${root}/${match}`);
 
-          resolve();
-        });
-      })
-    );
+      const { name, dependencies, devDependencies, version } = pkg;
+      packages[name] = {
+        name,
+        version,
+        dependencies,
+        devDependencies,
+      };
+    });
   });
 
+  /**
+   * We also want to include the root package json metadata because these will be also dependencies
+   * that will be installed, so we want to check them as well
+   */
   packages[rootPackageJson.name] = {
     name: rootPackageJson.name,
     version: rootPackageJson.version,
@@ -70,14 +45,12 @@ const getPackagesFromWorkspaces = (workspaces: Body['workspaces']): Promise<Proj
     devDependencies: rootPackageJson.devDependencies,
   };
 
-  return Promise.all(promises).then(() => {
-    const projectMetadata: ProjectMetadata = {
-      packages,
-      workspaces,
-    };
+  const projectMetadata: ProjectMetadata = {
+    packages,
+    workspaces,
+  };
 
-    return projectMetadata;
-  });
+  return projectMetadata;
 };
 
 export { getWorkspaces, getPackagesFromWorkspaces };

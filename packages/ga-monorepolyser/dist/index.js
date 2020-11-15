@@ -162,6 +162,55 @@ module.exports = require("tls");
 
 /***/ }),
 
+/***/ 26:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Comment = exports.addCommentToCurrentPR = void 0;
+const github = __importStar(__webpack_require__(230));
+const Comment_1 = __webpack_require__(308);
+Object.defineProperty(exports, "Comment", { enumerable: true, get: function () { return Comment_1.Comment; } });
+const getCurrentPR = () => {
+    const { context } = github;
+    return context.payload.pull_request || null;
+};
+const addCommentToCurrentPR = (comment) => {
+    const currentPR = getCurrentPR();
+    if (currentPR) {
+        const githubToken = process.env.GITHUB_TOKEN;
+        const client = new github.GitHub(githubToken);
+        const { context } = github;
+        client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            issue_number: currentPR.number, body: comment.getBody() }));
+    }
+};
+exports.addCommentToCurrentPR = addCommentToCurrentPR;
+
+
+/***/ }),
+
 /***/ 30:
 /***/ (function(module) {
 
@@ -192,6 +241,70 @@ if (typeof Object.create === 'function') {
     }
   }
 }
+
+
+/***/ }),
+
+/***/ 36:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getWorkspaces = exports.getWorkingDirectory = exports.getRootPackageJson = exports.getPackages = void 0;
+const path = __importStar(__webpack_require__(622));
+/**
+ * Retrieves the workspaces property from a package json
+ * @param packageJson - package to retrieve the workspaces from
+ */
+const getPackages = (packageJson) => {
+    const { workspaces } = packageJson;
+    if (!workspaces) {
+        return null;
+    }
+    if (Array.isArray(workspaces)) {
+        return workspaces;
+    }
+    return null;
+};
+exports.getPackages = getPackages;
+/** Retrieves the current working directory for the target repo */
+const getWorkingDirectory = () => {
+    return process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : process.cwd();
+};
+exports.getWorkingDirectory = getWorkingDirectory;
+/** Returns the package json located on the root of the target repo */
+const getRootPackageJson = () => {
+    const root = getWorkingDirectory();
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    return require(path.join(root, 'package.json'));
+};
+exports.getRootPackageJson = getRootPackageJson;
+/** Returns the workspaces property located on the root of the target repo */
+const getWorkspaces = () => {
+    const packages = getPackages(getRootPackageJson());
+    return packages;
+};
+exports.getWorkspaces = getWorkspaces;
 
 
 /***/ }),
@@ -13602,6 +13715,70 @@ exports.getUserAgent = getUserAgent;
 
 /***/ }),
 
+/***/ 60:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getIncoherentDependencies = void 0;
+const dependencies_1 = __webpack_require__(773);
+/**
+ * Calculates if there are any incoherent dependencies on the current project
+ */
+const getIncoherentDependencies = () => {
+    const incoherentDependencies = {};
+    const deps = {};
+    const workspaces = dependencies_1.getWorkspaces();
+    const { packages } = dependencies_1.getPackagesFromWorkspaces(workspaces);
+    /**
+     * For each of the found packages in each workspace, we iterate through their dependencies
+     * and we try to find if there are packages using different versions
+     */
+    Object.keys(packages).forEach((pkgName) => {
+        const pkg = packages[pkgName];
+        const { dependencies } = pkg;
+        if (dependencies) {
+            Object.keys(dependencies).forEach((dep) => {
+                const version = dependencies[dep];
+                /**
+                 * If the dependency was found, it means that another package is using it and we need to
+                 * check that we are using the same dependency version.
+                 */
+                if (deps[dep]) {
+                    const detectedVersion = deps[dep];
+                    if (version !== detectedVersion) {
+                        /**
+                         * If the version is different, we need to add it to the list of incoherent dependencies.
+                         * Since multiple versions for the same package could be coherent, for each dependency
+                         * we have a list of possible incoherent dependencies.
+                         */
+                        if (!incoherentDependencies[dep]) {
+                            incoherentDependencies[dep] = [];
+                        }
+                        incoherentDependencies[dep].push({
+                            name: dep,
+                            addedBy: pkgName,
+                            version,
+                        });
+                    }
+                }
+                else {
+                    deps[dep] = version;
+                }
+            });
+        }
+    });
+    return {
+        incoherentDependencies,
+        deps,
+    };
+};
+exports.getIncoherentDependencies = getIncoherentDependencies;
+
+
+/***/ }),
+
 /***/ 87:
 /***/ (function(module) {
 
@@ -16720,6 +16897,52 @@ function register (state, name, method, options) {
       }, method)()
     })
 }
+
+
+/***/ }),
+
+/***/ 308:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Comment = void 0;
+class Comment {
+    constructor() {
+        this.body = '';
+    }
+    addTitle({ title, level = 1 }) {
+        this.body = `${this.body}${'#'.repeat(level)} ${title}`;
+        this.addBreakline();
+    }
+    addBreakline() {
+        this.body = `${this.body}\n`;
+    }
+    addText({ text }) {
+        this.body = `${this.body}${text}`;
+        this.addBreakline();
+    }
+    addTable({ columns = [], rows = [] }) {
+        this.body = `${this.body}| ${columns.map((column) => ` ${column} |`).join('')}`;
+        this.addBreakline();
+        this.body = `${this.body}| ${':----------:|'.repeat(columns.length)}`;
+        this.addBreakline();
+        rows.forEach((row) => {
+            if (row && row.length > 0) {
+                this.body = `${this.body} |`;
+                row.forEach((value) => {
+                    this.body = `${this.body} ${value} |`;
+                });
+                this.addBreakline();
+            }
+        });
+    }
+    getBody() {
+        return this.body;
+    }
+}
+exports.Comment = Comment;
 
 
 /***/ }),
@@ -24738,91 +24961,56 @@ function unmonkeypatch () {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPackagesFromWorkspaces = exports.getWorkspaces = void 0;
-const path = __importStar(__webpack_require__(622));
 const glob_1 = __importDefault(__webpack_require__(757));
-const getPackages = (packageJson) => {
-    const { workspaces } = packageJson;
-    if (!workspaces) {
-        return null;
-    }
-    if (Array.isArray(workspaces)) {
-        return workspaces;
-    }
-    return null;
-};
-const getWorkingDirectory = () => {
-    return process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : process.cwd();
-};
-const getRootPackageJson = () => {
-    const root = getWorkingDirectory();
-    // eslint-disable-next-line import/no-dynamic-require, global-require
-    return require(path.join(root, 'package.json'));
-};
-const getWorkspaces = () => {
-    const packages = getPackages(getRootPackageJson());
-    return packages;
-};
-exports.getWorkspaces = getWorkspaces;
+const utils_1 = __webpack_require__(36);
+Object.defineProperty(exports, "getWorkspaces", { enumerable: true, get: function () { return utils_1.getWorkspaces; } });
+/**
+ * Retrieves the metadata for a specific list of workspaces, returning the packages in that workspaces
+ * with their dependencies, name, version and development dependencies.
+ * @param workspaces - list of workspaces to parse
+ */
 const getPackagesFromWorkspaces = (workspaces) => {
-    const root = getWorkingDirectory();
-    const rootPackageJson = getRootPackageJson();
+    const root = utils_1.getWorkingDirectory();
+    const rootPackageJson = utils_1.getRootPackageJson();
     const packages = {};
-    const promises = [];
+    /**
+     * For each workspace retrieve the different package jsons that could be in that workspace,
+     * load up each package json and retrieve their metadata.
+     */
     workspaces.forEach((workspace) => {
-        promises.push(new Promise((resolve) => {
-            glob_1.default(`${workspace}/package.json`, { cwd: root }, (err, matches) => {
-                matches.forEach((match) => {
-                    // eslint-disable-next-line import/no-dynamic-require, global-require
-                    const pkg = require(`${root}/${match}`);
-                    const { name, dependencies, devDependencies, version } = pkg;
-                    packages[name] = {
-                        name,
-                        version,
-                        dependencies,
-                        devDependencies,
-                    };
-                });
-                resolve();
-            });
-        }));
+        const matches = glob_1.default.sync(`${workspace}/package.json`, { cwd: root });
+        matches.forEach((match) => {
+            // eslint-disable-next-line import/no-dynamic-require, global-require
+            const pkg = require(`${root}/${match}`);
+            const { name, dependencies, devDependencies, version } = pkg;
+            packages[name] = {
+                name,
+                version,
+                dependencies,
+                devDependencies,
+            };
+        });
     });
+    /**
+     * We also want to include the root package json metadata because these will be also dependencies
+     * that will be installed, so we want to check them as well
+     */
     packages[rootPackageJson.name] = {
         name: rootPackageJson.name,
         version: rootPackageJson.version,
         dependencies: rootPackageJson.dependencies,
         devDependencies: rootPackageJson.devDependencies,
     };
-    return Promise.all(promises).then(() => {
-        const projectMetadata = {
-            packages,
-            workspaces,
-        };
-        return projectMetadata;
-    });
+    const projectMetadata = {
+        packages,
+        workspaces,
+    };
+    return projectMetadata;
 };
 exports.getPackagesFromWorkspaces = getPackagesFromWorkspaces;
 
@@ -27678,61 +27866,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.main = void 0;
 const core = __importStar(__webpack_require__(738));
-const github = __importStar(__webpack_require__(230));
-const dependencies_1 = __webpack_require__(773);
-const repeatedDependencies = {};
-const deps = {};
+const ga_utils_1 = __webpack_require__(26);
+const utils_1 = __webpack_require__(60);
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const workspaces = dependencies_1.getWorkspaces();
-        const { packages } = yield dependencies_1.getPackagesFromWorkspaces(workspaces);
-        Object.keys(packages).forEach((pkgName) => {
-            const pkg = packages[pkgName];
-            const { dependencies } = pkg;
-            if (dependencies) {
-                Object.keys(dependencies).forEach((dep) => {
-                    const version = dependencies[dep];
-                    if (deps[dep]) {
-                        const detectedVersion = deps[dep];
-                        if (version !== detectedVersion) {
-                            if (!repeatedDependencies[dep]) {
-                                repeatedDependencies[dep] = [];
-                            }
-                            repeatedDependencies[dep].push({
-                                addedBy: pkgName,
-                                version,
-                            });
-                        }
-                    }
-                    else {
-                        deps[dep] = version;
-                    }
-                });
-            }
-        });
-        const repeatedDeps = Object.keys(repeatedDependencies);
+        const { incoherentDependencies, deps } = utils_1.getIncoherentDependencies();
+        const repeatedDeps = Object.keys(incoherentDependencies);
         if (repeatedDeps.length > 0) {
-            const githubToken = process.env.GITHUB_TOKEN;
-            const client = new github.GitHub(githubToken);
-            const { context } = github;
-            if (context.payload.pull_request == null) {
-                core.setFailed('No pull request found.');
-                return;
-            }
-            const pullRequestNumber = context.payload.pull_request.number;
-            let body = '## Dependencies check \n\n';
-            body = `${body}Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle\n`;
-            body = `${body}| Dependency | Added by | Added Version | Base version\n| :-----------: |:-------------:| :----------:| :----------:|\n`;
+            const comment = new ga_utils_1.Comment();
+            comment.addTitle({
+                title: 'Dependencies check',
+                level: 2,
+            });
+            comment.addText({
+                text: 'Some of the packages in your monorepo use different dependencies, which can lead to multiple versions ending up in your production bundle',
+            });
+            const rows = [];
             repeatedDeps.forEach((repeatedDep) => {
-                const versions = repeatedDependencies[repeatedDep];
+                const versions = incoherentDependencies[repeatedDep];
                 versions.forEach((v) => {
-                    const row = `| ${repeatedDep} | ${v.addedBy} | ${v.version} | ${deps[repeatedDep]} |\n`;
-                    body = `${body}${row}`;
+                    const row = [repeatedDep, v.addedBy, v.version, deps[repeatedDep]];
+                    rows.push(row);
                 });
             });
-            client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                issue_number: pullRequestNumber, body }));
+            comment.addTable({
+                columns: ['Dependency', 'Added by', 'Added version', 'Base Version'],
+                rows,
+            });
+            ga_utils_1.addCommentToCurrentPR(comment);
             throw new Error('There are deps with different versions');
         }
         else {
