@@ -6,10 +6,9 @@ import { getWorkingDirectory, getRootPackageJson, getWorkspaces } from './utils'
 /**
  * Retrieves the metadata for a specific list of workspaces, returning the packages in that workspaces
  * with their dependencies, name, version and development dependencies.
- * @param workspaces - list of workspaces to parse
  */
-const getProjectMetadata = (): ProjectMetadata => {
-  const workspaces = getWorkspaces();
+const getProjectMetadata = ({ workspacesToIgnore = [] }): ProjectMetadata => {
+  const workspaces = getWorkspaces({ workspacesToIgnore });
   const root = getWorkingDirectory();
   const rootPackageJson = getRootPackageJson();
   const packages: Record<string, Body> = {};

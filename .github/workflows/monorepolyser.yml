@@ -15,5 +15,6 @@ jobs:
         uses: ./
         with:
           check-dependencies: true
+          ignore-workspaces: 'packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
