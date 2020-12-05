@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.ts",
     "dependencies": {
-        "@actions/core": "^1.2.4",
+        "@actions/core": "^1.2.6",
         "@monorepolyser/ga-check-dependencies": "1.0.0"
     },
     "scripts": {
