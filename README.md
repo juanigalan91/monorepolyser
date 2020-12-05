@@ -37,9 +37,25 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.0
+    uses: juanigalan91/monorepolyser@0.2.1
+    with:
+      # Whether you want to execute the check dependencies action or not
+      check-dependencies: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+If there is a workspace that you want to ignore, you can set the `ignore-workspaces` flag like this:
+
+```yaml
+steps:
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check dependencies
+    uses: juanigalan91/monorepolyser@0.2.1
     with:
       check-dependencies: true
+      ignore-workspaces: 'dev-packages,third-parties' # lists of workspaces to ignore from the check, list of strings separated by a comma
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
