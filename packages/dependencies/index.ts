@@ -3,11 +3,15 @@ import { Body } from 'package-json-types';
 import { ProjectMetadata } from './types';
 import { getWorkingDirectory, getRootPackageJson, getWorkspaces } from './utils';
 
+export interface GetProjectMetadataOptions {
+  workspacesToIgnore?: string[];
+}
 /**
  * Retrieves the metadata for a specific list of workspaces, returning the packages in that workspaces
  * with their dependencies, name, version and development dependencies.
  */
-const getProjectMetadata = ({ workspacesToIgnore = [] }): ProjectMetadata => {
+const getProjectMetadata = (options?: GetProjectMetadataOptions): ProjectMetadata => {
+  const { workspacesToIgnore = [] } = options || {};
   const workspaces = getWorkspaces({ workspacesToIgnore });
   const root = getWorkingDirectory();
   const rootPackageJson = getRootPackageJson();
