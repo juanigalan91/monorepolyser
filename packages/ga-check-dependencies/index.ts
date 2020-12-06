@@ -4,9 +4,9 @@ import { getProjectMetadata } from '@monorepolyser/dependencies';
 
 import { getIncoherentDependencies } from './utils';
 
-const main = async () => {
+const main = async ({ workspacesToIgnore = [] }) => {
   try {
-    const project = getProjectMetadata();
+    const project = getProjectMetadata({ workspacesToIgnore });
     const { incoherentDependencies, deps } = getIncoherentDependencies(project);
 
     const repeatedDeps = Object.keys(incoherentDependencies);

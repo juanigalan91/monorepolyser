@@ -31,4 +31,31 @@ describe('Dependencies Utils', () => {
 
     expect(workspaces).toEqual(null);
   });
+
+  it('returns an empty array since the only workspace was ignored', () => {
+    const workspaces = utils.filterWorkspaces({
+      workspaces: ['packages/**/**'],
+      workspacesToIgnore: ['packages'],
+    });
+
+    expect(workspaces).toEqual([]);
+  });
+
+  it('returns list of workspaces since not all of them were ignored', () => {
+    const workspaces = utils.filterWorkspaces({
+      workspaces: ['packages/**/**', 'dev-packages/**/**'],
+      workspacesToIgnore: ['packages'],
+    });
+
+    expect(workspaces).toEqual(['dev-packages/**/**']);
+  });
+
+  it('returns all workspaces since none of them were ignored', () => {
+    const workspaces = utils.filterWorkspaces({
+      workspaces: ['packages/**/**', 'dev-packages/**/**'],
+      workspacesToIgnore: [],
+    });
+
+    expect(workspaces).toEqual(['packages/**/**', 'dev-packages/**/**']);
+  });
 });

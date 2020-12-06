@@ -5,6 +5,10 @@ inputs:
     description: 'Whether the github action will check the monorepo dependencies integrity or not'
     required: false
     default: false
+  ignore-workspaces:
+    description: 'List of workspaces separated by comma that will be ignored during the execution of this action'
+    required: false
+    default: ''
 runs:
   using: 'node12'
   main: 'packages/ga-monorepolyser/dist/index.js' 

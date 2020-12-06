@@ -28,11 +28,27 @@ const getRootPackageJson = (): Body => {
   return require(path.join(root, 'package.json'));
 };
 
-/** Returns the workspaces property located on the root of the target repo */
-const getWorkspaces = (): Body['workspaces'] => {
-  const workspaces = getWorkspacesFromPackageJson(getRootPackageJson());
+const filterWorkspaces = ({ workspacesToIgnore = [], workspaces = [] }): Body['workspaces'] => {
+  return workspaces.filter((workspace) => {
+    for (let i = 0; i < workspacesToIgnore.length; i += 1) {
+      const workspaceToIgnore = workspacesToIgnore[i];
 
-  return workspaces;
+      if (workspace.indexOf(workspaceToIgnore) === 0) {
+        // eslint-disable-next-line no-console
+        console.log(`ignoring workspace ${workspaceToIgnore} since it was specified in the action config`);
+        return false;
+      }
+    }
+
+    return true;
+  });
 };
 
-export { getWorkspacesFromPackageJson, getRootPackageJson, getWorkingDirectory, getWorkspaces };
+/** Returns the workspaces property located on the root of the target repo */
+const getWorkspaces = ({ workspacesToIgnore = [] }): Body['workspaces'] => {
+  const workspaces = getWorkspacesFromPackageJson(getRootPackageJson());
+
+  return filterWorkspaces({ workspaces, workspacesToIgnore });
+};
+
+export { getWorkspacesFromPackageJson, getRootPackageJson, getWorkingDirectory, getWorkspaces, filterWorkspaces };
