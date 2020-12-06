@@ -28960,10 +28960,14 @@ const ga_check_dependencies_1 = __webpack_require__(5099);
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const shouldCheckDependencies = core.getInput('check-dependencies') === 'true';
     const includeMainPackageJson = core.getInput('include-main-package-json') === 'true';
-    const workspacesToIgnore = core.getInput('ignore-workspaces') || '';
+    const workspacesToIgnore = core.getInput('ignore-workspaces');
     const onlyWarn = core.getInput('only-warn') === 'true';
     if (shouldCheckDependencies) {
-        yield ga_check_dependencies_1.main({ workspacesToIgnore: workspacesToIgnore.split(','), includeMainPackageJson, onlyWarn });
+        yield ga_check_dependencies_1.main({
+            workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
+            includeMainPackageJson,
+            onlyWarn,
+        });
     }
 });
 main();
