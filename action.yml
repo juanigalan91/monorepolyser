@@ -9,6 +9,10 @@ inputs:
     description: 'List of workspaces separated by comma that will be ignored during the execution of this action'
     required: false
     default: ''
+  include-main-package-json:
+    description: 'Whether the main package json of the repository should be considered for the integrity check or not'
+    required: false
+    default: true
 runs:
   using: 'node12'
   main: 'packages/ga-monorepolyser/dist/index.js' 

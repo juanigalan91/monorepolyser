@@ -5,13 +5,20 @@ import { getWorkingDirectory, getRootPackageJson, getWorkspaces } from './utils'
 
 export interface GetProjectMetadataOptions {
   workspacesToIgnore?: string[];
+  includeMainPackageJson?: boolean;
 }
+
+const GET_PROJECT_METADATA_DEFAULTS: GetProjectMetadataOptions = {
+  workspacesToIgnore: [],
+  includeMainPackageJson: true,
+};
+
 /**
  * Retrieves the metadata for a specific list of workspaces, returning the packages in that workspaces
  * with their dependencies, name, version and development dependencies.
  */
-const getProjectMetadata = (options?: GetProjectMetadataOptions): ProjectMetadata => {
-  const { workspacesToIgnore = [] } = options || {};
+const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS): ProjectMetadata => {
+  const { workspacesToIgnore } = options;
   const workspaces = getWorkspaces({ workspacesToIgnore });
   const root = getWorkingDirectory();
   const rootPackageJson = getRootPackageJson();
@@ -37,12 +44,14 @@ const getProjectMetadata = (options?: GetProjectMetadataOptions): ProjectMetadat
    * We also want to include the root package json metadata because these will be also dependencies
    * that will be installed, so we want to check them as well
    */
-  packages[rootPackageJson.name] = {
-    name: rootPackageJson.name,
-    version: rootPackageJson.version,
-    dependencies: rootPackageJson.dependencies,
-    devDependencies: rootPackageJson.devDependencies,
-  };
+  if (options.includeMainPackageJson) {
+    packages[rootPackageJson.name] = {
+      name: rootPackageJson.name,
+      version: rootPackageJson.version,
+      dependencies: rootPackageJson.dependencies,
+      devDependencies: rootPackageJson.devDependencies,
+    };
+  }
 
   const projectMetadata: ProjectMetadata = {
     packages,
