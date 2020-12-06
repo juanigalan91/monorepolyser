@@ -34,6 +34,7 @@ const filterWorkspaces = ({ workspacesToIgnore = [], workspaces = [] }): Body['w
       const workspaceToIgnore = workspacesToIgnore[i];
 
       console.log(workspace);
+      console.log(workspacesToIgnore);
 
       if (workspace.indexOf(workspaceToIgnore) === 0) {
         // eslint-disable-next-line no-console
