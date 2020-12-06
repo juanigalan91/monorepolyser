@@ -39,3 +39,35 @@ Object {
   ],
 }
 `;
+
+exports[`Dependencies returns the workspace packages grouped by package name but it ignores the root package 1`] = `
+Object {
+  "packages": Object {
+    "@module/admin": Object {
+      "dependencies": Object {
+        "react": "16.8.3",
+      },
+      "name": "@module/admin",
+      "version": "1.0.0",
+    },
+    "@module/home": Object {
+      "dependencies": Object {
+        "lodash": "0.19.0",
+        "react": "16.8.3",
+      },
+      "name": "@module/home",
+      "version": "1.0.0",
+    },
+    "@module/search": Object {
+      "dependencies": Object {
+        "react": "16.8.3",
+      },
+      "name": "@module/search",
+      "version": "1.0.0",
+    },
+  },
+  "workspaces": Array [
+    "packages/**",
+  ],
+}
+`;
