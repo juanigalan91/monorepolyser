@@ -59,3 +59,19 @@ steps:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+If you want to ignore
+
+```yaml
+steps:
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check dependencies
+    uses: juanigalan91/monorepolyser@0.2.1
+    with:
+      check-dependencies: true
+      ignore-workspaces: 'dev-packages,third-parties' # lists of workspaces to ignore from the check, list of strings separated by a comma
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
