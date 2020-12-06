@@ -1,12 +1,18 @@
 import * as core from '@actions/core';
 import { addCommentToCurrentPR, Comment } from '@monorepolyser/ga-utils';
-import { getProjectMetadata } from '@monorepolyser/dependencies';
+import { getProjectMetadata, GetProjectMetadataOptions } from '@monorepolyser/dependencies';
 
 import { getIncoherentDependencies } from './utils';
 
-const main = async ({ workspacesToIgnore = [] }) => {
+export interface MainOptions extends GetProjectMetadataOptions {
+  onlyWarn?: boolean;
+}
+
+const main = async (options?: MainOptions) => {
+  const { onlyWarn = false, ...projectMetadataOptions } = options || {};
+
   try {
-    const project = getProjectMetadata({ workspacesToIgnore });
+    const project = getProjectMetadata(projectMetadataOptions);
     const { incoherentDependencies, deps } = getIncoherentDependencies(project);
 
     const repeatedDeps = Object.keys(incoherentDependencies);
@@ -39,13 +45,17 @@ const main = async ({ workspacesToIgnore = [] }) => {
 
       addCommentToCurrentPR(comment);
 
-      throw new Error('There are deps with different versions');
+      if (!onlyWarn) {
+        throw new Error('There are deps with different versions');
+      }
     } else {
       // eslint-disable-next-line no-console
       console.log('All packages are using the same versions of their dependencies!');
     }
   } catch (error) {
-    core.setFailed(error.message);
+    if (!onlyWarn) {
+      core.setFailed(error.message);
+    }
   }
 };
 

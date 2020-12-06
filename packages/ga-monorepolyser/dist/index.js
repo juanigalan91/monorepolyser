@@ -28632,12 +28632,16 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getProjectMetadata = void 0;
 const glob_1 = __importDefault(__webpack_require__(8390));
 const utils_1 = __webpack_require__(7478);
+const GET_PROJECT_METADATA_DEFAULTS = {
+    workspacesToIgnore: [],
+    includeMainPackageJson: true,
+};
 /**
  * Retrieves the metadata for a specific list of workspaces, returning the packages in that workspaces
  * with their dependencies, name, version and development dependencies.
  */
-const getProjectMetadata = (options) => {
-    const { workspacesToIgnore = [] } = options || {};
+const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
+    const { workspacesToIgnore } = options;
     const workspaces = utils_1.getWorkspaces({ workspacesToIgnore });
     const root = utils_1.getWorkingDirectory();
     const rootPackageJson = utils_1.getRootPackageJson();
@@ -28659,12 +28663,14 @@ const getProjectMetadata = (options) => {
      * We also want to include the root package json metadata because these will be also dependencies
      * that will be installed, so we want to check them as well
      */
-    packages[rootPackageJson.name] = {
-        name: rootPackageJson.name,
-        version: rootPackageJson.version,
-        dependencies: rootPackageJson.dependencies,
-        devDependencies: rootPackageJson.devDependencies,
-    };
+    if (options.includeMainPackageJson) {
+        packages[rootPackageJson.name] = {
+            name: rootPackageJson.name,
+            version: rootPackageJson.version,
+            dependencies: rootPackageJson.dependencies,
+            devDependencies: rootPackageJson.devDependencies,
+        };
+    }
     const projectMetadata = {
         packages,
         workspaces,
@@ -28784,15 +28790,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.main = void 0;
 const core = __importStar(__webpack_require__(5261));
 const ga_utils_1 = __webpack_require__(5721);
 const dependencies_1 = __webpack_require__(8171);
 const utils_1 = __webpack_require__(4894);
-const main = ({ workspacesToIgnore = [] }) => __awaiter(void 0, void 0, void 0, function* () {
+const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
+    const _a = options || {}, { onlyWarn = false } = _a, projectMetadataOptions = __rest(_a, ["onlyWarn"]);
     try {
-        const project = dependencies_1.getProjectMetadata({ workspacesToIgnore });
+        const project = dependencies_1.getProjectMetadata(projectMetadataOptions);
         const { incoherentDependencies, deps } = utils_1.getIncoherentDependencies(project);
         const repeatedDeps = Object.keys(incoherentDependencies);
         if (repeatedDeps.length > 0) {
@@ -28817,7 +28835,9 @@ const main = ({ workspacesToIgnore = [] }) => __awaiter(void 0, void 0, void 0, 
                 rows,
             });
             ga_utils_1.addCommentToCurrentPR(comment);
-            throw new Error('There are deps with different versions');
+            if (!onlyWarn) {
+                throw new Error('There are deps with different versions');
+            }
         }
         else {
             // eslint-disable-next-line no-console
@@ -28825,7 +28845,9 @@ const main = ({ workspacesToIgnore = [] }) => __awaiter(void 0, void 0, void 0, 
         }
     }
     catch (error) {
-        core.setFailed(error.message);
+        if (!onlyWarn) {
+            core.setFailed(error.message);
+        }
     }
 });
 exports.main = main;
@@ -28932,10 +28954,16 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(5261));
 const ga_check_dependencies_1 = __webpack_require__(5099);
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    const shouldCheckDependencies = core.getInput('check-dependencies');
-    const workspacesToIgnore = core.getInput('ignore-workspaces') || '';
+    const shouldCheckDependencies = core.getInput('check-dependencies') === 'true';
+    const includeMainPackageJson = core.getInput('include-main-package-json') === 'true';
+    const workspacesToIgnore = core.getInput('ignore-workspaces');
+    const onlyWarn = core.getInput('only-warn') === 'true';
     if (shouldCheckDependencies) {
-        yield ga_check_dependencies_1.main({ workspacesToIgnore: workspacesToIgnore.split(',') });
+        yield ga_check_dependencies_1.main({
+            workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
+            includeMainPackageJson,
+            onlyWarn,
+        });
     }
 });
 main();
