@@ -28671,6 +28671,8 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
             devDependencies: rootPackageJson.devDependencies,
         };
     }
+    console.log(packages);
+    console.log(workspaces);
     const projectMetadata = {
         packages,
         workspaces,
@@ -28737,6 +28739,7 @@ const filterWorkspaces = ({ workspacesToIgnore = [], workspaces = [] }) => {
     return workspaces.filter((workspace) => {
         for (let i = 0; i < workspacesToIgnore.length; i += 1) {
             const workspaceToIgnore = workspacesToIgnore[i];
+            console.log(workspace);
             if (workspace.indexOf(workspaceToIgnore) === 0) {
                 // eslint-disable-next-line no-console
                 console.log(`ignoring workspace ${workspaceToIgnore} since it was specified in the action config`);
