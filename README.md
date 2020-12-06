@@ -60,7 +60,7 @@ steps:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-If you want to ignore
+If you want to ignore the main package json from this check, you can set the `include-main-package-json` flag like this:
 
 ```yaml
 steps:
@@ -70,7 +70,22 @@ steps:
     uses: juanigalan91/monorepolyser@0.2.1
     with:
       check-dependencies: true
-      ignore-workspaces: 'dev-packages,third-parties' # lists of workspaces to ignore from the check, list of strings separated by a comma
+      include-main-package-json: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+If you want this action to just warn by adding a comment on the PR rather than breaking the CI, you can set the `only-warn` flag like this:
+
+```yaml
+steps:
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check dependencies
+    uses: juanigalan91/monorepolyser@0.2.1
+    with:
+      check-dependencies: true
+      only-warn: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```

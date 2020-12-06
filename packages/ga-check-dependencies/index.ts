@@ -4,9 +4,15 @@ import { getProjectMetadata, GetProjectMetadataOptions } from '@monorepolyser/de
 
 import { getIncoherentDependencies } from './utils';
 
-const main = async (options?: GetProjectMetadataOptions) => {
+export interface MainOptions extends GetProjectMetadataOptions {
+  onlyWarn?: boolean;
+}
+
+const main = async (options?: MainOptions) => {
+  const { onlyWarn = false, ...projectMetadataOptions } = options || {};
+
   try {
-    const project = getProjectMetadata(options);
+    const project = getProjectMetadata(projectMetadataOptions);
     const { incoherentDependencies, deps } = getIncoherentDependencies(project);
 
     const repeatedDeps = Object.keys(incoherentDependencies);
@@ -39,13 +45,17 @@ const main = async (options?: GetProjectMetadataOptions) => {
 
       addCommentToCurrentPR(comment);
 
-      throw new Error('There are deps with different versions');
+      if (!onlyWarn) {
+        throw new Error('There are deps with different versions');
+      }
     } else {
       // eslint-disable-next-line no-console
       console.log('All packages are using the same versions of their dependencies!');
     }
   } catch (error) {
-    core.setFailed(error.message);
+    if (!onlyWarn) {
+      core.setFailed(error.message);
+    }
   }
 };
 
