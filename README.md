@@ -3,7 +3,7 @@
 Awesome Github Action to analyse your yarn monorepo!
 
 ## Requirements
-This Github Action assumes that you are using yarn workspaces in order to manage your monorepo. If your `package.json` has a key called `workspaces` where you confgire where your packages are, then you are good to go!
+This Github Action assumes that you are using yarn workspaces in order to manage your monorepo. If your `package.json` has a key called `workspaces` where you configure where your packages are, then you are good to go!
 
 ## Functionalities
 ### Dependencies check
@@ -37,7 +37,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.1
+    uses: juanigalan91/monorepolyser@0.2.2
     with:
       # Whether you want to execute the check dependencies action or not
       check-dependencies: true
@@ -52,7 +52,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.1
+    uses: juanigalan91/monorepolyser@0.2.2
     with:
       check-dependencies: true
       ignore-workspaces: 'dev-packages,third-parties' # lists of workspaces to ignore from the check, list of strings separated by a comma
@@ -67,7 +67,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.1
+    uses: juanigalan91/monorepolyser@0.2.2
     with:
       check-dependencies: true
       include-main-package-json: true
@@ -82,7 +82,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.1
+    uses: juanigalan91/monorepolyser@0.2.2
     with:
       check-dependencies: true
       only-warn: true
