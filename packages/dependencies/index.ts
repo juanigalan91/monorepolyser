@@ -53,9 +53,6 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS): ProjectMet
     };
   }
 
-  console.log(packages);
-  console.log(workspaces);
-
   const projectMetadata: ProjectMetadata = {
     packages,
     workspaces,
