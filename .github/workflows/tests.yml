@@ -11,7 +11,7 @@ jobs:
       - name: "Checkout repository"
         uses: actions/checkout@v2
       - name: "Setup node env"
-        uses: actions/setup-node@1c5c137 #v1.4.0
+        uses: actions/setup-node@c6fd00c #v2.1.2
         with:
           node-version: '13.7.0'
       - name: "Get cache hash"
@@ -33,7 +33,7 @@ jobs:
       - name: "Checkout repository"
         uses: actions/checkout@722adc6 #v2
       - name: "Setup node env"
-        uses: actions/setup-node@1c5c137 #v1.4.0
+        uses: actions/setup-node@c6fd00c #v2.1.2
         with:
           node-version: '13.7.0'
       - name: "Get cache hash"

@@ -79,4 +79,18 @@ describe('Dependencies', () => {
     expect(project.packages['@module/root']).toBeDefined();
     expect(project.packages['@module/search']).toBeDefined();
   });
+
+  it('returns the workspace packages grouped by package name but it ignores the root package', () => {
+    const project = dependencies.getProjectMetadata({ includeMainPackageJson: false });
+
+    expect(project).toMatchSnapshot();
+    expect(project.packages).toBeDefined();
+    expect(project.workspaces).toBeDefined();
+
+    expect(Object.keys(project.packages)).toHaveLength(3);
+    expect(project.packages['@module/admin']).toBeDefined();
+    expect(project.packages['@module/home']).toBeDefined();
+    expect(project.packages['@module/root']).not.toBeDefined();
+    expect(project.packages['@module/search']).toBeDefined();
+  });
 });

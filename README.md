@@ -3,7 +3,7 @@
 Awesome Github Action to analyse your yarn monorepo!
 
 ## Requirements
-This Github Action assumes that you are using yarn workspaces in order to manage your monorepo. If your `package.json` has a key called `workspaces` where you confgire where your packages are, then you are good to go!
+This Github Action assumes that you are using yarn workspaces in order to manage your monorepo. If your `package.json` has a key called `workspaces` where you configure where your packages are, then you are good to go!
 
 ## Functionalities
 ### Dependencies check
@@ -37,9 +37,56 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.0
+    uses: juanigalan91/monorepolyser@0.2.2
     with:
+      # Whether you want to execute the check dependencies action or not
       check-dependencies: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+If there is a workspace that you want to ignore, you can set the `ignore-workspaces` flag like this:
+
+```yaml
+steps:
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check dependencies
+    uses: juanigalan91/monorepolyser@0.2.2
+    with:
+      check-dependencies: true
+      ignore-workspaces: 'dev-packages,third-parties' # lists of workspaces to ignore from the check, list of strings separated by a comma
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+If you want to ignore the main package json from this check, you can set the `include-main-package-json` flag like this:
+
+```yaml
+steps:
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check dependencies
+    uses: juanigalan91/monorepolyser@0.2.2
+    with:
+      check-dependencies: true
+      include-main-package-json: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+If you want this action to just warn by adding a comment on the PR rather than breaking the CI, you can set the `only-warn` flag like this:
+
+```yaml
+steps:
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check dependencies
+    uses: juanigalan91/monorepolyser@0.2.2
+    with:
+      check-dependencies: true
+      only-warn: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
