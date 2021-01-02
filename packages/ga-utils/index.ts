@@ -25,4 +25,22 @@ const addCommentToCurrentPR = (comment: Comment) => {
   }
 };
 
-export { addCommentToCurrentPR, Comment };
+const addLabelsToCurrentPR = (labels: string[]) => {
+  const currentPR = getCurrentPR();
+
+  if (currentPR) {
+    const githubToken = process.env.GITHUB_TOKEN;
+    const client = new github.GitHub(githubToken);
+
+    const { context } = github;
+
+    client.issues.addLabels({
+      labels,
+      ...context.repo,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      issue_number: currentPR.number,
+    });
+  }
+};
+
+export { addCommentToCurrentPR, Comment, addLabelsToCurrentPR };

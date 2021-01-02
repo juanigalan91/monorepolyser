@@ -23,6 +23,8 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS): ProjectMet
   const root = getWorkingDirectory();
   const rootPackageJson = getRootPackageJson();
   const packages: Record<string, Body> = {};
+  const packagesByPath: Record<string, Body> = {};
+  let totalPackages = 0;
 
   /**
    * For each workspace retrieve the different package jsons that could be in that workspace,
@@ -37,6 +39,9 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS): ProjectMet
 
       const { name } = pkg;
       packages[name] = pkg;
+      packagesByPath[match] = pkg;
+
+      totalPackages += 1;
     });
   });
 
@@ -56,6 +61,8 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS): ProjectMet
   const projectMetadata: ProjectMetadata = {
     packages,
     workspaces,
+    totalPackages,
+    packagesByPath,
   };
 
   return projectMetadata;
