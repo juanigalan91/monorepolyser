@@ -1,5 +1,6 @@
 name: 'Monorepolyser'
 description: 'Awesome set of tools and validators for your yarn monorepo'
+icon: activity
 inputs:
   check-dependencies:
     description: 'Whether the github action will check the monorepo dependencies integrity or not'
