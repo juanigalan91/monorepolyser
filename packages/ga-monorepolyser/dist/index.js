@@ -28790,27 +28790,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.main = void 0;
 const core = __importStar(__webpack_require__(5261));
 const ga_utils_1 = __webpack_require__(5721);
-const dependencies_1 = __webpack_require__(8171);
 const utils_1 = __webpack_require__(4894);
 const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
-    const _a = options || {}, { onlyWarn = false } = _a, projectMetadataOptions = __rest(_a, ["onlyWarn"]);
+    const { onlyWarn = false, project } = options || {};
     try {
-        const project = dependencies_1.getProjectMetadata(projectMetadataOptions);
         const { incoherentDependencies, deps } = utils_1.getIncoherentDependencies(project);
         const repeatedDeps = Object.keys(incoherentDependencies);
         if (repeatedDeps.length > 0) {
@@ -28979,7 +28966,13 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
         owner: context.repo.owner,
         repo: context.repo.repo,
     });
-    console.log(response.data);
+    if (response && response.data && response.data.files) {
+        response.data.files.forEach((file) => {
+            const { filename } = file;
+            const tokens = filename.split('/');
+            console.log(tokens);
+        });
+    }
 });
 exports.main = main;
 
@@ -29023,21 +29016,30 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(5261));
 const ga_check_dependencies_1 = __webpack_require__(5099);
 const ga_impact_analysis_1 = __webpack_require__(2505);
+const dependencies_1 = __webpack_require__(8171);
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const shouldCheckDependencies = core.getInput('check-dependencies') === 'true';
     const includeMainPackageJson = core.getInput('include-main-package-json') === 'true';
     const shouldAnalyseImpact = core.getInput('impact-analysis') === 'true';
     const workspacesToIgnore = core.getInput('ignore-workspaces');
     const onlyWarn = core.getInput('only-warn') === 'true';
+    const projectMetadataOptions = {
+        workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
+        includeMainPackageJson,
+        onlyWarn,
+    };
+    const project = dependencies_1.getProjectMetadata(projectMetadataOptions);
     if (shouldCheckDependencies) {
         yield ga_check_dependencies_1.main({
-            workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
-            includeMainPackageJson,
+            project,
             onlyWarn,
         });
     }
     if (shouldAnalyseImpact) {
-        yield ga_impact_analysis_1.main();
+        yield ga_impact_analysis_1.main({
+            project,
+            onlyWarn,
+        });
     }
 });
 main();

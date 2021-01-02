@@ -34,7 +34,10 @@ const main = async (options?: MainOptions) => {
 
   if (response && response.data && response.data.files) {
     response.data.files.forEach((file) => {
+      const { filename } = file;
+      const tokens = filename.split('/');
 
+      console.log(tokens);
     });
   }
 };
