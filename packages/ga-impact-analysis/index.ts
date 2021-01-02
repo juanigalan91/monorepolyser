@@ -7,6 +7,7 @@ const main = async (options: MainOptions) => {
   const githubToken = process.env.GITHUB_TOKEN;
   const client = new github.GitHub(githubToken);
   const { project } = options;
+  const { totalPackages } = project;
   const { dependedOnPackages } = calculatePackagesDependencies(project);
 
   const { context } = github;
@@ -42,7 +43,13 @@ const main = async (options: MainOptions) => {
 
       if (isFileInAWorkspace(filename, project.workspaces)) {
         const [pkg, module] = filename.split('/');
-        console.log(project.packages[`${pkg}/${module}/package.json`]);
+        const packageInfo = project.packages[`${pkg}/${module}/package.json`];
+        const { name } = packageInfo;
+        const totalDependedOnPackages = dependedOnPackages[name];
+        const impact = (totalDependedOnPackages / totalPackages) * 100;
+
+        console.log(impact);
+        console.log(filename);
       }
     });
   }

@@ -19,7 +19,7 @@ const calculatePackagesDependencies = (project: ProjectMetadata) => {
     }
   });
 
-  return { dependedOnPackages, totalPackages: packages.length };
+  return { dependedOnPackages };
 };
 
 export { calculatePackagesDependencies };

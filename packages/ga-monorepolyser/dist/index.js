@@ -28646,6 +28646,7 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
     const root = utils_1.getWorkingDirectory();
     const rootPackageJson = utils_1.getRootPackageJson();
     const packages = {};
+    let totalPackages = 0;
     /**
      * For each workspace retrieve the different package jsons that could be in that workspace,
      * load up each package json and retrieve their metadata.
@@ -28658,6 +28659,7 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
             const { name } = pkg;
             packages[name] = pkg;
             packages[match] = pkg;
+            totalPackages += 1;
         });
     });
     /**
@@ -28675,6 +28677,7 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
     const projectMetadata = {
         packages,
         workspaces,
+        totalPackages,
     };
     return projectMetadata;
 };
@@ -28961,6 +28964,7 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     const githubToken = process.env.GITHUB_TOKEN;
     const client = new github.GitHub(githubToken);
     const { project } = options;
+    const { totalPackages } = project;
     const { dependedOnPackages } = utils_2.calculatePackagesDependencies(project);
     const { context } = github;
     const { eventName } = context;
@@ -28989,7 +28993,12 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
             const { filename } = file;
             if (utils_1.isFileInAWorkspace(filename, project.workspaces)) {
                 const [pkg, module] = filename.split('/');
-                console.log(project.packages[`${pkg}/${module}/package.json`]);
+                const packageInfo = project.packages[`${pkg}/${module}/package.json`];
+                const { name } = packageInfo;
+                const totalDependedOnPackages = dependedOnPackages[name];
+                const impact = (totalDependedOnPackages / totalPackages) * 100;
+                console.log(impact);
+                console.log(filename);
             }
         });
     }
@@ -29023,7 +29032,7 @@ const calculatePackagesDependencies = (project) => {
             });
         }
     });
-    return { dependedOnPackages, totalPackages: packages.length };
+    return { dependedOnPackages };
 };
 exports.calculatePackagesDependencies = calculatePackagesDependencies;
 
