@@ -29005,10 +29005,14 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
                 const totalDependedOnPackages = dependedOnPackages[name];
                 const impact = (totalDependedOnPackages / totalPackages) * 100;
                 if (impact >= highImpactThreshold) {
-                    analysis.high.push(name);
+                    if (analysis.high.indexOf(name) <= 0) {
+                        analysis.high.push(name);
+                    }
                 }
                 else {
-                    analysis.low.push(name);
+                    if (analysis.low.indexOf(name) <= 0) {
+                        analysis.low.push(name);
+                    }
                 }
             }
         });
@@ -29031,6 +29035,9 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
                     rows,
                 });
                 ga_utils_1.addCommentToCurrentPR(comment);
+            }
+            if (onHighImpact.indexOf('add-labels') >= 0) {
+                ga_utils_1.addLabelsToCurrentPR(highImpactLabels);
             }
         }
     }

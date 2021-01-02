@@ -17,5 +17,7 @@ jobs:
           check-dependencies: true
           impact-analysis: true
           high-impact-threshold: 50
+          on-high-impact: 'comment,add-labels'
+          high-impact-labels: 'high-impact'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,7 +1,7 @@
 import * as github from '@actions/github';
 import { MainOptions } from '@monorepolyser/dependencies/types';
 import { isFileInAWorkspace } from '@monorepolyser/dependencies/utils';
-import { addCommentToCurrentPR, Comment } from '@monorepolyser/ga-utils';
+import { addCommentToCurrentPR, Comment, addLabelsToCurrentPR } from '@monorepolyser/ga-utils';
 
 import { calculatePackagesDependencies } from './utils';
 
@@ -61,9 +61,13 @@ const main = async (options: ImpactAnalysisOptions) => {
         const impact = (totalDependedOnPackages / totalPackages) * 100;
 
         if (impact >= highImpactThreshold) {
-          analysis.high.push(name);
+          if (analysis.high.indexOf(name) <= 0) {
+            analysis.high.push(name);
+          }
         } else {
-          analysis.low.push(name);
+          if (analysis.low.indexOf(name) <= 0) {
+            analysis.low.push(name);
+          }
         }
       }
     });
@@ -92,6 +96,10 @@ const main = async (options: ImpactAnalysisOptions) => {
         });
   
         addCommentToCurrentPR(comment);
+      }
+
+      if (onHighImpact.indexOf('add-labels') >= 0) {
+        addLabelsToCurrentPR(highImpactLabels);
       }
     }
   }
