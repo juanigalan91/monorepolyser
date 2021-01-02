@@ -61,11 +61,11 @@ const main = async (options: ImpactAnalysisOptions) => {
         const impact = (totalDependedOnPackages / totalPackages) * 100;
 
         if (impact >= highImpactThreshold) {
-          if (analysis.high.indexOf(name) <= 0) {
+          if (analysis.high.indexOf(name) < 0) {
             analysis.high.push(name);
           }
         } else {
-          if (analysis.low.indexOf(name) <= 0) {
+          if (analysis.low.indexOf(name) < 0) {
             analysis.low.push(name);
           }
         }
@@ -80,21 +80,18 @@ const main = async (options: ImpactAnalysisOptions) => {
           title: 'Impact Analysis',
           level: 2,
         });
+
         comment.addText({
           text:
             'One or several core packages have been modified, and this PR has been flagged as high impact. The modified packages are the following:',
         });
   
-        const rows: string[][] = [];
         analysis.high.forEach((highImpactModule) => {
-          rows.push([highImpactModule]);
+          comment.addText({
+            text: highImpactModule,
+          });
         });
-  
-        comment.addTable({
-          columns: ['Package'],
-          rows,
-        });
-  
+
         addCommentToCurrentPR(comment);
       }
 

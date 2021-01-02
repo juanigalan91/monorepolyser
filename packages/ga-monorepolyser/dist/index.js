@@ -29005,12 +29005,12 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
                 const totalDependedOnPackages = dependedOnPackages[name];
                 const impact = (totalDependedOnPackages / totalPackages) * 100;
                 if (impact >= highImpactThreshold) {
-                    if (analysis.high.indexOf(name) <= 0) {
+                    if (analysis.high.indexOf(name) < 0) {
                         analysis.high.push(name);
                     }
                 }
                 else {
-                    if (analysis.low.indexOf(name) <= 0) {
+                    if (analysis.low.indexOf(name) < 0) {
                         analysis.low.push(name);
                     }
                 }
@@ -29026,13 +29026,10 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
                 comment.addText({
                     text: 'One or several core packages have been modified, and this PR has been flagged as high impact. The modified packages are the following:',
                 });
-                const rows = [];
                 analysis.high.forEach((highImpactModule) => {
-                    rows.push([highImpactModule]);
-                });
-                comment.addTable({
-                    columns: ['Package'],
-                    rows,
+                    comment.addText({
+                        text: highImpactModule,
+                    });
                 });
                 ga_utils_1.addCommentToCurrentPR(comment);
             }
