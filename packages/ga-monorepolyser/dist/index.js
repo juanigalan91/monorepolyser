@@ -29026,10 +29026,13 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
                 comment.addText({
                     text: 'One or several core packages have been modified, and this PR has been flagged as high impact. The modified packages are the following:',
                 });
+                const rows = [];
                 analysis.high.forEach((highImpactModule) => {
-                    comment.addText({
-                        text: highImpactModule,
-                    });
+                    rows.push([highImpactModule]);
+                });
+                comment.addTable({
+                    columns: ['Package'],
+                    rows,
                 });
                 ga_utils_1.addCommentToCurrentPR(comment);
             }

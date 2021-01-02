@@ -80,18 +80,21 @@ const main = async (options: ImpactAnalysisOptions) => {
           title: 'Impact Analysis',
           level: 2,
         });
-
         comment.addText({
           text:
             'One or several core packages have been modified, and this PR has been flagged as high impact. The modified packages are the following:',
         });
   
+        const rows: string[][] = [];
         analysis.high.forEach((highImpactModule) => {
-          comment.addText({
-            text: highImpactModule,
-          });
+          rows.push([highImpactModule]);
         });
-
+  
+        comment.addTable({
+          columns: ['Package'],
+          rows,
+        });
+  
         addCommentToCurrentPR(comment);
       }
 
