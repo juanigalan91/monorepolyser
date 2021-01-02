@@ -51,4 +51,27 @@ const getWorkspaces = ({ workspacesToIgnore = [] }): Body['workspaces'] => {
   return filterWorkspaces({ workspaces, workspacesToIgnore });
 };
 
-export { getWorkspacesFromPackageJson, getRootPackageJson, getWorkingDirectory, getWorkspaces, filterWorkspaces };
+const isFileInAWorkspace = (filename: string, workspaces: string[]) => {
+  const tokens = filename.split('/');
+  let isInWorkspace = false;
+
+  if (tokens.length > 1) {
+    const [firstFolder] = tokens;
+
+    for (let i = 0; i < workspaces.length && !isInWorkspace; i += 1) {
+      const workspace = workspaces[i];
+      isInWorkspace = isInWorkspace || workspace.indexOf(firstFolder) === 0;
+    }
+  }
+
+  return isInWorkspace;
+};
+
+export {
+  getWorkspacesFromPackageJson,
+  getRootPackageJson,
+  getWorkingDirectory,
+  getWorkspaces,
+  filterWorkspaces,
+  isFileInAWorkspace,
+};

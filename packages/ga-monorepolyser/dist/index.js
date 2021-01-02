@@ -28707,7 +28707,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.filterWorkspaces = exports.getWorkspaces = exports.getWorkingDirectory = exports.getRootPackageJson = exports.getWorkspacesFromPackageJson = void 0;
+exports.isFileInAWorkspace = exports.filterWorkspaces = exports.getWorkspaces = exports.getWorkingDirectory = exports.getRootPackageJson = exports.getWorkspacesFromPackageJson = void 0;
 const path = __importStar(__webpack_require__(5622));
 /**
  * Retrieves the workspaces property from a package json
@@ -28753,6 +28753,19 @@ const getWorkspaces = ({ workspacesToIgnore = [] }) => {
     return filterWorkspaces({ workspaces, workspacesToIgnore });
 };
 exports.getWorkspaces = getWorkspaces;
+const isFileInAWorkspace = (filename, workspaces) => {
+    const tokens = filename.split('/');
+    let isInWorkspace = false;
+    if (tokens.length > 1) {
+        const [firstFolder] = tokens;
+        for (let i = 0; i < workspaces.length && !isInWorkspace; i += 1) {
+            const workspace = workspaces[i];
+            isInWorkspace = isInWorkspace || workspace.indexOf(firstFolder) === 0;
+        }
+    }
+    return isInWorkspace;
+};
+exports.isFileInAWorkspace = isFileInAWorkspace;
 
 
 /***/ }),
@@ -28940,10 +28953,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.main = void 0;
 const github = __importStar(__webpack_require__(4312));
+const utils_1 = __webpack_require__(7478);
 const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
     const githubToken = process.env.GITHUB_TOKEN;
     const client = new github.GitHub(githubToken);
+    const { project } = options;
     const { context } = github;
     const { eventName } = context;
     let base;
@@ -28969,8 +28984,9 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     if (response && response.data && response.data.files) {
         response.data.files.forEach((file) => {
             const { filename } = file;
-            const tokens = filename.split('/');
-            console.log(tokens);
+            if (utils_1.isFileInAWorkspace(filename, project.workspaces)) {
+                console.log(filename);
+            }
         });
     }
 });

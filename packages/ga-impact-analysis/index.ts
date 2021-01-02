@@ -1,9 +1,11 @@
 import * as github from '@actions/github';
 import { MainOptions } from '@monorepolyser/dependencies/types';
+import { isFileInAWorkspace } from '@monorepolyser/dependencies/utils';
 
-const main = async (options?: MainOptions) => {
+const main = async (options: MainOptions) => {
   const githubToken = process.env.GITHUB_TOKEN;
   const client = new github.GitHub(githubToken);
+  const { project } = options;
 
   const { context } = github;
 
@@ -35,9 +37,10 @@ const main = async (options?: MainOptions) => {
   if (response && response.data && response.data.files) {
     response.data.files.forEach((file) => {
       const { filename } = file;
-      const tokens = filename.split('/');
 
-      console.log(tokens);
+      if (isFileInAWorkspace(filename, project.workspaces)) {
+        console.log(filename);
+      }
     });
   }
 };
