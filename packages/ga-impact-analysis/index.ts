@@ -7,7 +7,7 @@ const main = async (options: MainOptions) => {
   const githubToken = process.env.GITHUB_TOKEN;
   const client = new github.GitHub(githubToken);
   const { project } = options;
-  const dependedOnPackages = calculatePackagesDependencies(project);
+  const { dependedOnPackages } = calculatePackagesDependencies(project);
 
   const { context } = github;
 
@@ -36,14 +36,13 @@ const main = async (options: MainOptions) => {
     repo: context.repo.repo,
   });
 
-  console.log(dependedOnPackages);
-
   if (response && response.data && response.data.files) {
     response.data.files.forEach((file) => {
       const { filename } = file;
 
       if (isFileInAWorkspace(filename, project.workspaces)) {
-        console.log(filename);
+        const [pkg, module] = filename.split('/');
+        console.log(project.packages[`${pkg}/${module}/package.json`]);
       }
     });
   }

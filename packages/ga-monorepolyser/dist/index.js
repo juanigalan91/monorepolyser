@@ -28657,6 +28657,7 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
             const pkg = require(`${root}/${match}`);
             const { name } = pkg;
             packages[name] = pkg;
+            packages[match] = pkg;
         });
     });
     /**
@@ -28960,7 +28961,7 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     const githubToken = process.env.GITHUB_TOKEN;
     const client = new github.GitHub(githubToken);
     const { project } = options;
-    const dependedOnPackages = utils_2.calculatePackagesDependencies(project);
+    const { dependedOnPackages } = utils_2.calculatePackagesDependencies(project);
     const { context } = github;
     const { eventName } = context;
     let base;
@@ -28983,12 +28984,12 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
         owner: context.repo.owner,
         repo: context.repo.repo,
     });
-    console.log(dependedOnPackages);
     if (response && response.data && response.data.files) {
         response.data.files.forEach((file) => {
             const { filename } = file;
             if (utils_1.isFileInAWorkspace(filename, project.workspaces)) {
-                console.log(filename);
+                const [pkg, module] = filename.split('/');
+                console.log(project.packages[`${pkg}/${module}/package.json`]);
             }
         });
     }
@@ -29022,7 +29023,7 @@ const calculatePackagesDependencies = (project) => {
             });
         }
     });
-    return dependedOnPackages;
+    return { dependedOnPackages, totalPackages: packages.length };
 };
 exports.calculatePackagesDependencies = calculatePackagesDependencies;
 

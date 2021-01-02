@@ -37,6 +37,7 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS): ProjectMet
 
       const { name } = pkg;
       packages[name] = pkg;
+      packages[match] = pkg;
     });
   });
 
