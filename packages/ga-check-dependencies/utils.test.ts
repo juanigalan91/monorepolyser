@@ -31,6 +31,7 @@ describe('Check Dependencies - Utils', () => {
           version: '1.0.0',
         },
       },
+      packagesByPath: {},
       workspaces: ['packages/**'],
     };
 
@@ -71,6 +72,7 @@ describe('Check Dependencies - Utils', () => {
           version: '1.0.0',
         },
       },
+      packagesByPath: {},
       workspaces: ['packages/**'],
     };
 
@@ -120,6 +122,7 @@ describe('Check Dependencies - Utils', () => {
           },
         },
       },
+      packagesByPath: {},
       workspaces: ['packages/**'],
     };
 

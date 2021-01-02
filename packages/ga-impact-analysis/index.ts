@@ -43,7 +43,7 @@ const main = async (options: MainOptions) => {
 
       if (isFileInAWorkspace(filename, project.workspaces)) {
         const [pkg, module] = filename.split('/');
-        const packageInfo = project.packages[`${pkg}/${module}/package.json`];
+        const packageInfo = project.packagesByPath[`${pkg}/${module}/package.json`];
         const { name } = packageInfo;
         const totalDependedOnPackages = dependedOnPackages[name];
         const impact = (totalDependedOnPackages / totalPackages) * 100;

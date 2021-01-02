@@ -28646,6 +28646,7 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
     const root = utils_1.getWorkingDirectory();
     const rootPackageJson = utils_1.getRootPackageJson();
     const packages = {};
+    const packagesByPath = {};
     let totalPackages = 0;
     /**
      * For each workspace retrieve the different package jsons that could be in that workspace,
@@ -28658,7 +28659,7 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
             const pkg = require(`${root}/${match}`);
             const { name } = pkg;
             packages[name] = pkg;
-            packages[match] = pkg;
+            packagesByPath[match] = pkg;
             totalPackages += 1;
         });
     });
@@ -28678,6 +28679,7 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
         packages,
         workspaces,
         totalPackages,
+        packagesByPath,
     };
     return projectMetadata;
 };
@@ -28993,7 +28995,7 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
             const { filename } = file;
             if (utils_1.isFileInAWorkspace(filename, project.workspaces)) {
                 const [pkg, module] = filename.split('/');
-                const packageInfo = project.packages[`${pkg}/${module}/package.json`];
+                const packageInfo = project.packagesByPath[`${pkg}/${module}/package.json`];
                 const { name } = packageInfo;
                 const totalDependedOnPackages = dependedOnPackages[name];
                 const impact = (totalDependedOnPackages / totalPackages) * 100;

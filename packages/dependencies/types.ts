@@ -5,6 +5,7 @@ export interface ProjectMetadata {
   workspaces: Body['workspaces'];
   /** Key/value object where each key is a package name and the value is the package.json information */
   packages: Record<string, Body>;
+  packagesByPath: Record<string, Body>;
   /** how many packages there are in all workspaces */
   totalPackages?: number;
 }
