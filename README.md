@@ -45,7 +45,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.2
+    uses: juanigalan91/monorepolyser@0.2.3
     with:
       # Whether you want to execute the check dependencies action or not
       check-dependencies: true
@@ -60,7 +60,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.2
+    uses: juanigalan91/monorepolyser@0.2.3
     with:
       check-dependencies: true
       ignore-workspaces: 'dev-packages,third-parties' # lists of workspaces to ignore from the check, list of strings separated by a comma
@@ -75,7 +75,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.2
+    uses: juanigalan91/monorepolyser@0.2.3
     with:
       check-dependencies: true
       include-main-package-json: true
@@ -90,7 +90,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.2
+    uses: juanigalan91/monorepolyser@0.2.3
     with:
       check-dependencies: true
       only-warn: true
@@ -105,7 +105,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check impact
-    uses: ./
+    uses: juanigalan91/monorepolyser@0.2.3
     with:
       impact-analysis: true
     env:
@@ -119,7 +119,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check impact
-    uses: ./
+    uses: juanigalan91/monorepolyser@0.2.3
     with:
       impact-analysis: true
       high-impact-threshold: 50 # percentage (0-100) of the packages that will be impacted by this PR in order for it to be of high impact

@@ -1,9 +1,11 @@
 # Change log
 
 ## Unreleased
+
+## 0.2.3 (current)
 - Impact Analysis
 
-## 0.2.2 (current)
+## 0.2.2
 - Added the possibility to ignore main package json
 - Added the possibility to just warn rather than break the CI
 
