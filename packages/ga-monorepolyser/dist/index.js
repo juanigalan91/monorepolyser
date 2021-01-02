@@ -28954,11 +28954,13 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.main = void 0;
 const github = __importStar(__webpack_require__(4312));
 const utils_1 = __webpack_require__(7478);
+const utils_2 = __webpack_require__(355);
 const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
     const githubToken = process.env.GITHUB_TOKEN;
     const client = new github.GitHub(githubToken);
     const { project } = options;
+    const dependedOnPackages = utils_2.calculatePackagesDependencies(project);
     const { context } = github;
     const { eventName } = context;
     let base;
@@ -28981,6 +28983,7 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
         owner: context.repo.owner,
         repo: context.repo.repo,
     });
+    console.log(dependedOnPackages);
     if (response && response.data && response.data.files) {
         response.data.files.forEach((file) => {
             const { filename } = file;
@@ -28991,6 +28994,37 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.main = main;
+
+
+/***/ }),
+
+/***/ 355:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.calculatePackagesDependencies = void 0;
+const calculatePackagesDependencies = (project) => {
+    const dependedOnPackages = {};
+    const { packages } = project;
+    Object.keys(packages).forEach((pkgName) => {
+        const pkg = packages[pkgName];
+        const { dependencies } = pkg;
+        if (dependencies) {
+            Object.keys(dependencies).forEach((dep) => {
+                if (dependedOnPackages[dep]) {
+                    dependedOnPackages[dep] += 1;
+                }
+                else {
+                    dependedOnPackages[dep] = 1;
+                }
+            });
+        }
+    });
+    return dependedOnPackages;
+};
+exports.calculatePackagesDependencies = calculatePackagesDependencies;
 
 
 /***/ }),

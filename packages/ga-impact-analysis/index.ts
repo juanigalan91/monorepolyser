@@ -1,11 +1,13 @@
 import * as github from '@actions/github';
 import { MainOptions } from '@monorepolyser/dependencies/types';
 import { isFileInAWorkspace } from '@monorepolyser/dependencies/utils';
+import { calculatePackagesDependencies } from './utils';
 
 const main = async (options: MainOptions) => {
   const githubToken = process.env.GITHUB_TOKEN;
   const client = new github.GitHub(githubToken);
   const { project } = options;
+  const dependedOnPackages = calculatePackagesDependencies(project);
 
   const { context } = github;
 
@@ -33,6 +35,8 @@ const main = async (options: MainOptions) => {
     owner: context.repo.owner,
     repo: context.repo.repo,
   });
+
+  console.log(dependedOnPackages);
 
   if (response && response.data && response.data.files) {
     response.data.files.forEach((file) => {
