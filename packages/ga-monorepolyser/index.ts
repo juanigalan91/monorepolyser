@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import { main as checkDependencies } from '@monorepolyser/ga-check-dependencies';
 import { main as impactAnalysis } from '@monorepolyser/ga-impact-analysis';
+import { getProjectMetadata } from '@monorepolyser/dependencies';
 
 const main = async () => {
   const shouldCheckDependencies: boolean = core.getInput('check-dependencies') === 'true';
@@ -9,16 +10,26 @@ const main = async () => {
   const workspacesToIgnore: string = core.getInput('ignore-workspaces');
   const onlyWarn: boolean = core.getInput('only-warn') === 'true';
 
+  const projectMetadataOptions = {
+    workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
+    includeMainPackageJson,
+    onlyWarn,
+  };
+
+  const project = getProjectMetadata(projectMetadataOptions);
+
   if (shouldCheckDependencies) {
     await checkDependencies({
-      workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
-      includeMainPackageJson,
+      project,
       onlyWarn,
     });
   }
 
   if (shouldAnalyseImpact) {
-    await impactAnalysis();
+    await impactAnalysis({
+      project,
+      onlyWarn,
+    });
   }
 };
 

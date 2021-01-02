@@ -1,18 +1,13 @@
 import * as core from '@actions/core';
 import { addCommentToCurrentPR, Comment } from '@monorepolyser/ga-utils';
-import { getProjectMetadata, GetProjectMetadataOptions } from '@monorepolyser/dependencies';
+import { MainOptions } from '@monorepolyser/dependencies/types';
 
 import { getIncoherentDependencies } from './utils';
 
-export interface MainOptions extends GetProjectMetadataOptions {
-  onlyWarn?: boolean;
-}
-
 const main = async (options?: MainOptions) => {
-  const { onlyWarn = false, ...projectMetadataOptions } = options || {};
+  const { onlyWarn = false, project } = options || {};
 
   try {
-    const project = getProjectMetadata(projectMetadataOptions);
     const { incoherentDependencies, deps } = getIncoherentDependencies(project);
 
     const repeatedDeps = Object.keys(incoherentDependencies);

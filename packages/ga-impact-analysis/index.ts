@@ -1,7 +1,7 @@
-import * as core from '@actions/core';
 import * as github from '@actions/github';
+import { MainOptions } from '@monorepolyser/dependencies/types';
 
-const main = async (options?: any) => {
+const main = async (options?: MainOptions) => {
   const githubToken = process.env.GITHUB_TOKEN;
   const client = new github.GitHub(githubToken);
 
@@ -32,7 +32,11 @@ const main = async (options?: any) => {
     repo: context.repo.repo,
   });
 
-  console.log(response.data);
+  if (response && response.data && response.data.files) {
+    response.data.files.forEach((file) => {
+
+    });
+  }
 };
 
 export { main };

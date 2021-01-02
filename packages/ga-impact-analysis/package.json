@@ -5,6 +5,6 @@
     "main": "index.ts",
     "dependencies": {
         "@actions/github": "^2.1.0",
-        "@actions/core": "^1.2.6"
+        "@monorepolyser/dependencies": "1.0.0"
     }
 }

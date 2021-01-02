@@ -6,3 +6,8 @@ export interface ProjectMetadata {
   /** Key/value object where each key is a package name and the value is the package.json information */
   packages: Record<string, Body>;
 }
+
+export interface MainOptions {
+  onlyWarn?: boolean;
+  project: ProjectMetadata;
+}
