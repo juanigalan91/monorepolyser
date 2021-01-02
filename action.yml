@@ -17,6 +17,10 @@ inputs:
     description: 'Whether this action should only throw a warning or an error'
     required: false
     default: false
+  impact-analysis:
+    description: 'Whether this action should check the impact of the PRs changes or not'
+    required: false
+    default: false
 runs:
   using: 'node12'
   main: 'packages/ga-monorepolyser/dist/index.js' 

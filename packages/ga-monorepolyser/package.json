@@ -5,7 +5,8 @@
     "main": "index.ts",
     "dependencies": {
         "@actions/core": "^1.2.6",
-        "@monorepolyser/ga-check-dependencies": "1.0.0"
+        "@monorepolyser/ga-check-dependencies": "1.0.0",
+        "@monorepolyser/ga-impact-analysis": "1.0.0"
     },
     "scripts": {
         "build": "ncc build ./index.ts"
