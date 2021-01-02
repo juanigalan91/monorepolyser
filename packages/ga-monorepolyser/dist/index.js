@@ -28960,14 +28960,19 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.main = void 0;
 const github = __importStar(__webpack_require__(4312));
 const utils_1 = __webpack_require__(7478);
+const ga_utils_1 = __webpack_require__(5721);
 const utils_2 = __webpack_require__(355);
 const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
     const githubToken = process.env.GITHUB_TOKEN;
     const client = new github.GitHub(githubToken);
-    const { project } = options;
+    const { project, highImpactThreshold, onHighImpact, highImpactLabels } = options;
     const { totalPackages } = project;
     const { dependedOnPackages } = utils_2.calculatePackagesDependencies(project);
+    const analysis = {
+        high: [],
+        low: [],
+    };
     const { context } = github;
     const { eventName } = context;
     let base;
@@ -28999,10 +29004,35 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
                 const { name } = packageInfo;
                 const totalDependedOnPackages = dependedOnPackages[name];
                 const impact = (totalDependedOnPackages / totalPackages) * 100;
-                console.log(impact);
-                console.log(filename);
+                if (impact >= highImpactThreshold) {
+                    analysis.high.push(name);
+                }
+                else {
+                    analysis.low.push(name);
+                }
             }
         });
+        if (analysis.high.length > 0) {
+            if (onHighImpact.indexOf('comment') >= 0) {
+                const comment = new ga_utils_1.Comment();
+                comment.addTitle({
+                    title: 'Impact Analysis',
+                    level: 2,
+                });
+                comment.addText({
+                    text: 'One or several core packages have been modified, and this PR has been flagged as high impact. The modified packages are the following:',
+                });
+                const rows = [];
+                analysis.high.forEach((highImpactModule) => {
+                    rows.push([highImpactModule]);
+                });
+                comment.addTable({
+                    columns: ['Package'],
+                    rows,
+                });
+                ga_utils_1.addCommentToCurrentPR(comment);
+            }
+        }
     }
 });
 exports.main = main;
@@ -29084,6 +29114,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const includeMainPackageJson = core.getInput('include-main-package-json') === 'true';
     const shouldAnalyseImpact = core.getInput('impact-analysis') === 'true';
     const workspacesToIgnore = core.getInput('ignore-workspaces');
+    const onHighImpact = core.getInput('on-high-impact').split(',');
+    const highImpactLabels = core.getInput('high-impact-labels').split(',');
+    const highImpactThreshold = parseInt(core.getInput('high-impact-threshold'), 10);
     const onlyWarn = core.getInput('only-warn') === 'true';
     const projectMetadataOptions = {
         workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
@@ -29101,6 +29134,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         yield ga_impact_analysis_1.main({
             project,
             onlyWarn,
+            highImpactThreshold,
+            onHighImpact,
+            highImpactLabels,
         });
     }
 });
@@ -29180,7 +29216,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Comment = exports.addCommentToCurrentPR = void 0;
+exports.addLabelsToCurrentPR = exports.Comment = exports.addCommentToCurrentPR = void 0;
 const github = __importStar(__webpack_require__(4312));
 const Comment_1 = __webpack_require__(1117);
 Object.defineProperty(exports, "Comment", ({ enumerable: true, get: function () { return Comment_1.Comment; } }));
@@ -29200,6 +29236,18 @@ const addCommentToCurrentPR = (comment) => {
     }
 };
 exports.addCommentToCurrentPR = addCommentToCurrentPR;
+const addLabelsToCurrentPR = (labels) => {
+    const currentPR = getCurrentPR();
+    if (currentPR) {
+        const githubToken = process.env.GITHUB_TOKEN;
+        const client = new github.GitHub(githubToken);
+        const { context } = github;
+        client.issues.addLabels(Object.assign(Object.assign({ labels }, context.repo), { 
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            issue_number: currentPR.number }));
+    }
+};
+exports.addLabelsToCurrentPR = addLabelsToCurrentPR;
 
 
 /***/ }),

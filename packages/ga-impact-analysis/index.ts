@@ -1,14 +1,26 @@
 import * as github from '@actions/github';
 import { MainOptions } from '@monorepolyser/dependencies/types';
 import { isFileInAWorkspace } from '@monorepolyser/dependencies/utils';
+import { addCommentToCurrentPR, Comment } from '@monorepolyser/ga-utils';
+
 import { calculatePackagesDependencies } from './utils';
 
-const main = async (options: MainOptions) => {
+export interface ImpactAnalysisOptions extends MainOptions {
+  highImpactThreshold: number;
+  highImpactLabels: string[];
+  onHighImpact: string[];
+}
+
+const main = async (options: ImpactAnalysisOptions) => {
   const githubToken = process.env.GITHUB_TOKEN;
   const client = new github.GitHub(githubToken);
-  const { project } = options;
+  const { project, highImpactThreshold, onHighImpact, highImpactLabels } = options;
   const { totalPackages } = project;
   const { dependedOnPackages } = calculatePackagesDependencies(project);
+  const analysis: Record<string, string[]> = {
+    high: [],
+    low: [],
+  };
 
   const { context } = github;
 
@@ -48,10 +60,40 @@ const main = async (options: MainOptions) => {
         const totalDependedOnPackages = dependedOnPackages[name];
         const impact = (totalDependedOnPackages / totalPackages) * 100;
 
-        console.log(impact);
-        console.log(filename);
+        if (impact >= highImpactThreshold) {
+          analysis.high.push(name);
+        } else {
+          analysis.low.push(name);
+        }
       }
     });
+
+    if (analysis.high.length > 0) {
+      if (onHighImpact.indexOf('comment') >= 0) {
+        const comment = new Comment();
+
+        comment.addTitle({
+          title: 'Impact Analysis',
+          level: 2,
+        });
+        comment.addText({
+          text:
+            'One or several core packages have been modified, and this PR has been flagged as high impact. The modified packages are the following:',
+        });
+  
+        const rows: string[][] = [];
+        analysis.high.forEach((highImpactModule) => {
+          rows.push([highImpactModule]);
+        });
+  
+        comment.addTable({
+          columns: ['Package'],
+          rows,
+        });
+  
+        addCommentToCurrentPR(comment);
+      }
+    }
   }
 };
 

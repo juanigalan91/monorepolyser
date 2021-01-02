@@ -16,5 +16,6 @@ jobs:
         with:
           check-dependencies: true
           impact-analysis: true
+          high-impact-threshold: 50
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

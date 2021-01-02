@@ -8,6 +8,9 @@ const main = async () => {
   const includeMainPackageJson: boolean = core.getInput('include-main-package-json') === 'true';
   const shouldAnalyseImpact: boolean = core.getInput('impact-analysis') === 'true';
   const workspacesToIgnore: string = core.getInput('ignore-workspaces');
+  const onHighImpact: string[] = core.getInput('on-high-impact').split(',');
+  const highImpactLabels: string[] = core.getInput('high-impact-labels').split(',');
+  const highImpactThreshold: number = parseInt(core.getInput('high-impact-threshold'), 10);
   const onlyWarn: boolean = core.getInput('only-warn') === 'true';
 
   const projectMetadataOptions = {
@@ -29,6 +32,9 @@ const main = async () => {
     await impactAnalysis({
       project,
       onlyWarn,
+      highImpactThreshold,
+      onHighImpact,
+      highImpactLabels,
     });
   }
 };
