@@ -98,3 +98,33 @@ steps:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+### Impact analysis
+
+```yaml
+steps:		
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check impact
+    uses: ./
+    with:
+      impact-analysis: true
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+If you want to override the impact analysis base configuration:
+
+```yaml
+steps:		
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check impact
+    uses: ./
+    with:
+      impact-analysis: true
+      high-impact-threshold: 50 # percentage (0-100) of the packages that will be impacted by this PR in order for it to be of high impact
+      on-high-impact: 'comment,add-labels' # action to be executed on high impact PR. it can be 'comment', 'add-labels' or multiple, separated by a comma
+      high-impact-labels: 'high-impact' # Labels to be added (separated by a comma) if the PR has a high impact
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
