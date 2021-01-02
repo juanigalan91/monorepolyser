@@ -28646,6 +28646,8 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
     const root = utils_1.getWorkingDirectory();
     const rootPackageJson = utils_1.getRootPackageJson();
     const packages = {};
+    const packagesByPath = {};
+    let totalPackages = 0;
     /**
      * For each workspace retrieve the different package jsons that could be in that workspace,
      * load up each package json and retrieve their metadata.
@@ -28657,6 +28659,8 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
             const pkg = require(`${root}/${match}`);
             const { name } = pkg;
             packages[name] = pkg;
+            packagesByPath[match] = pkg;
+            totalPackages += 1;
         });
     });
     /**
@@ -28674,6 +28678,8 @@ const getProjectMetadata = (options = GET_PROJECT_METADATA_DEFAULTS) => {
     const projectMetadata = {
         packages,
         workspaces,
+        totalPackages,
+        packagesByPath,
     };
     return projectMetadata;
 };
@@ -28707,7 +28713,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.filterWorkspaces = exports.getWorkspaces = exports.getWorkingDirectory = exports.getRootPackageJson = exports.getWorkspacesFromPackageJson = void 0;
+exports.isFileInAWorkspace = exports.filterWorkspaces = exports.getWorkspaces = exports.getWorkingDirectory = exports.getRootPackageJson = exports.getWorkspacesFromPackageJson = void 0;
 const path = __importStar(__webpack_require__(5622));
 /**
  * Retrieves the workspaces property from a package json
@@ -28753,6 +28759,19 @@ const getWorkspaces = ({ workspacesToIgnore = [] }) => {
     return filterWorkspaces({ workspaces, workspacesToIgnore });
 };
 exports.getWorkspaces = getWorkspaces;
+const isFileInAWorkspace = (filename, workspaces) => {
+    const tokens = filename.split('/');
+    let isInWorkspace = false;
+    if (tokens.length > 1) {
+        const [firstFolder] = tokens;
+        for (let i = 0; i < workspaces.length && !isInWorkspace; i += 1) {
+            const workspace = workspaces[i];
+            isInWorkspace = isInWorkspace || workspace.indexOf(firstFolder) === 0;
+        }
+    }
+    return isInWorkspace;
+};
+exports.isFileInAWorkspace = isFileInAWorkspace;
 
 
 /***/ }),
@@ -28790,27 +28809,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.main = void 0;
 const core = __importStar(__webpack_require__(5261));
 const ga_utils_1 = __webpack_require__(5721);
-const dependencies_1 = __webpack_require__(8171);
 const utils_1 = __webpack_require__(4894);
 const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
-    const _a = options || {}, { onlyWarn = false } = _a, projectMetadataOptions = __rest(_a, ["onlyWarn"]);
+    const { onlyWarn = false, project } = options || {};
     try {
-        const project = dependencies_1.getProjectMetadata(projectMetadataOptions);
         const { incoherentDependencies, deps } = utils_1.getIncoherentDependencies(project);
         const repeatedDeps = Object.keys(incoherentDependencies);
         if (repeatedDeps.length > 0) {
@@ -28917,6 +28923,161 @@ exports.getIncoherentDependencies = getIncoherentDependencies;
 
 /***/ }),
 
+/***/ 2505:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.main = void 0;
+const github = __importStar(__webpack_require__(4312));
+const utils_1 = __webpack_require__(7478);
+const ga_utils_1 = __webpack_require__(5721);
+const utils_2 = __webpack_require__(355);
+const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d;
+    const githubToken = process.env.GITHUB_TOKEN;
+    const client = new github.GitHub(githubToken);
+    const { project, highImpactThreshold, onHighImpact, highImpactLabels } = options;
+    const { totalPackages } = project;
+    const { dependedOnPackages } = utils_2.calculatePackagesDependencies(project);
+    const analysis = {
+        high: [],
+        low: [],
+    };
+    const { context } = github;
+    const { eventName } = context;
+    let base;
+    let head;
+    switch (eventName) {
+        case 'pull_request':
+            base = (_b = (_a = context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.base) === null || _b === void 0 ? void 0 : _b.sha;
+            head = (_d = (_c = context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.head) === null || _d === void 0 ? void 0 : _d.sha;
+            break;
+        case 'push':
+            base = context.payload.before;
+            head = context.payload.after;
+            break;
+        default:
+            break;
+    }
+    const response = yield client.repos.compareCommits({
+        base,
+        head,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+    });
+    if (response && response.data && response.data.files) {
+        response.data.files.forEach((file) => {
+            const { filename } = file;
+            if (utils_1.isFileInAWorkspace(filename, project.workspaces)) {
+                const [pkg, module] = filename.split('/');
+                const packageInfo = project.packagesByPath[`${pkg}/${module}/package.json`];
+                const { name } = packageInfo;
+                const totalDependedOnPackages = dependedOnPackages[name];
+                const impact = (totalDependedOnPackages / totalPackages) * 100;
+                if (impact >= highImpactThreshold) {
+                    if (analysis.high.indexOf(name) < 0) {
+                        analysis.high.push(name);
+                    }
+                }
+                else {
+                    if (analysis.low.indexOf(name) < 0) {
+                        analysis.low.push(name);
+                    }
+                }
+            }
+        });
+        if (analysis.high.length > 0) {
+            if (onHighImpact.indexOf('comment') >= 0) {
+                const comment = new ga_utils_1.Comment();
+                comment.addTitle({
+                    title: 'Impact Analysis',
+                    level: 2,
+                });
+                comment.addText({
+                    text: 'One or several core packages have been modified, and this PR has been flagged as high impact. The modified packages are the following:',
+                });
+                const rows = [];
+                analysis.high.forEach((highImpactModule) => {
+                    rows.push([highImpactModule]);
+                });
+                comment.addTable({
+                    columns: ['Package'],
+                    rows,
+                });
+                ga_utils_1.addCommentToCurrentPR(comment);
+            }
+            if (onHighImpact.indexOf('add-labels') >= 0) {
+                ga_utils_1.addLabelsToCurrentPR(highImpactLabels);
+            }
+        }
+    }
+});
+exports.main = main;
+
+
+/***/ }),
+
+/***/ 355:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.calculatePackagesDependencies = void 0;
+const calculatePackagesDependencies = (project) => {
+    const dependedOnPackages = {};
+    const { packages } = project;
+    Object.keys(packages).forEach((pkgName) => {
+        const pkg = packages[pkgName];
+        const { dependencies } = pkg;
+        if (dependencies) {
+            Object.keys(dependencies).forEach((dep) => {
+                if (dependedOnPackages[dep]) {
+                    dependedOnPackages[dep] += 1;
+                }
+                else {
+                    dependedOnPackages[dep] = 1;
+                }
+            });
+        }
+    });
+    return { dependedOnPackages };
+};
+exports.calculatePackagesDependencies = calculatePackagesDependencies;
+
+
+/***/ }),
+
 /***/ 6009:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -28953,16 +29114,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(5261));
 const ga_check_dependencies_1 = __webpack_require__(5099);
+const ga_impact_analysis_1 = __webpack_require__(2505);
+const dependencies_1 = __webpack_require__(8171);
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const shouldCheckDependencies = core.getInput('check-dependencies') === 'true';
     const includeMainPackageJson = core.getInput('include-main-package-json') === 'true';
+    const shouldAnalyseImpact = core.getInput('impact-analysis') === 'true';
     const workspacesToIgnore = core.getInput('ignore-workspaces');
+    const onHighImpact = core.getInput('on-high-impact').split(',');
+    const highImpactLabels = core.getInput('high-impact-labels').split(',');
+    const highImpactThreshold = parseInt(core.getInput('high-impact-threshold'), 10);
     const onlyWarn = core.getInput('only-warn') === 'true';
+    const projectMetadataOptions = {
+        workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
+        includeMainPackageJson,
+        onlyWarn,
+    };
+    const project = dependencies_1.getProjectMetadata(projectMetadataOptions);
     if (shouldCheckDependencies) {
         yield ga_check_dependencies_1.main({
-            workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
-            includeMainPackageJson,
+            project,
             onlyWarn,
+        });
+    }
+    if (shouldAnalyseImpact) {
+        yield ga_impact_analysis_1.main({
+            project,
+            onlyWarn,
+            highImpactThreshold,
+            onHighImpact,
+            highImpactLabels,
         });
     }
 });
@@ -29042,7 +29223,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Comment = exports.addCommentToCurrentPR = void 0;
+exports.addLabelsToCurrentPR = exports.Comment = exports.addCommentToCurrentPR = void 0;
 const github = __importStar(__webpack_require__(4312));
 const Comment_1 = __webpack_require__(1117);
 Object.defineProperty(exports, "Comment", ({ enumerable: true, get: function () { return Comment_1.Comment; } }));
@@ -29062,6 +29243,18 @@ const addCommentToCurrentPR = (comment) => {
     }
 };
 exports.addCommentToCurrentPR = addCommentToCurrentPR;
+const addLabelsToCurrentPR = (labels) => {
+    const currentPR = getCurrentPR();
+    if (currentPR) {
+        const githubToken = process.env.GITHUB_TOKEN;
+        const client = new github.GitHub(githubToken);
+        const { context } = github;
+        client.issues.addLabels(Object.assign(Object.assign({ labels }, context.repo), { 
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            issue_number: currentPR.number }));
+    }
+};
+exports.addLabelsToCurrentPR = addLabelsToCurrentPR;
 
 
 /***/ }),

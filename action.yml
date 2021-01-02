@@ -17,6 +17,22 @@ inputs:
     description: 'Whether this action should only throw a warning or an error'
     required: false
     default: false
+  impact-analysis:
+    description: 'Whether this action should check the impact of the PRs changes or not'
+    required: false
+    default: false
+  high-impact-threshold:
+    description: 'Percentage of packages impacted that determines that the PR has a high impact'
+    required: false
+    default: 60
+  on-high-impact:
+    description: 'Action to be executed on high impact PR. It can be "comment", "add-labels" or multiple actions, separating them by a comma'
+    required: false
+    default: 'comment'
+  high-impact-labels:
+    description: 'Labels to be added (separated by a comma) if the PR has a high impact'
+    required: false
+    default: ''
 runs:
   using: 'node12'
   main: 'packages/ga-monorepolyser/dist/index.js' 

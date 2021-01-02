@@ -28,10 +28,18 @@ As for now, this module only validates the exact same version used on every pack
 **How does monorepolyser get the "base version"?**
 As for now, the action takes into consideration the base version as the first version detected by the script when it went through each of your package.json. An argument could be made that the base version should be the most used version, which is completely valid, we just do not support it right now since this is still in beta.
 
+### Impact Analysis
+
+This feature determines whether the PR changes have a high or low impact on the entire project. If the PR has a high impact, this action also allows to either comment which packages that were modified caused the current PR to be flagged as high impact, or add labels to the PR.
+
+**How does it work?**
+Monorepolyser will go through all the packages declared in your workspaces and calculate how many packages depend on each of them. Once that number is obtained, Monorepolyser will then retrieve the high impact threshold defined on the `worflow.yml` (or 60 by default) and if there the percentage of packages that depend on a specific module is higher than the threshold, then the PR will be flagged as high impact.
+
 ## Usage
 
 Inside your `.github/workflows/workflow.yml` file:
 
+### Check dependencies 
 ```yaml
 steps:
   - name: Checkout	
@@ -90,3 +98,33 @@ steps:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+### Impact analysis
+
+```yaml
+steps:		
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check impact
+    uses: ./
+    with:
+      impact-analysis: true
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+If you want to override the impact analysis base configuration:
+
+```yaml
+steps:		
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check impact
+    uses: ./
+    with:
+      impact-analysis: true
+      high-impact-threshold: 50 # percentage (0-100) of the packages that will be impacted by this PR in order for it to be of high impact
+      on-high-impact: 'comment,add-labels' # action to be executed on high impact PR. it can be 'comment', 'add-labels' or multiple, separated by a comma
+      high-impact-labels: 'high-impact' # Labels to be added (separated by a comma) if the PR has a high impact
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```

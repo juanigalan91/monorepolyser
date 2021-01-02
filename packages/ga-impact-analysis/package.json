@@ -1,0 +1,11 @@
+{
+    "name": "@monorepolyser/ga-impact-analysis",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.ts",
+    "dependencies": {
+        "@actions/github": "^2.1.0",
+        "@monorepolyser/dependencies": "1.0.0",
+        "@monorepolyser/ga-utils": "1.0.0"
+    }
+}

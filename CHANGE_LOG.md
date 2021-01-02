@@ -1,6 +1,7 @@
 # Change log
 
 ## Unreleased
+- Impact Analysis
 
 ## 0.2.2 (current)
 - Added the possibility to ignore main package json
