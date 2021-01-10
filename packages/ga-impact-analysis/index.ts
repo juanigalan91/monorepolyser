@@ -106,8 +106,8 @@ const main = async (options: ImpactAnalysisOptions) => {
     let verboseComment;
     const verboseRows: any[][] = [];
 
-    Object(dependedOnPackages)
-      .keys()
+    Object
+      .keys(dependedOnPackages)
       .forEach((key: string) => {
         const dependedModules = dependedOnPackages[key];
 
