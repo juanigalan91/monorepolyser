@@ -10,7 +10,13 @@ export interface ProjectMetadata {
   totalPackages?: number;
 }
 
+export enum VERBOSE {
+  LOGS = 'logs',
+  COMMENT = 'comment',
+}
+
 export interface MainOptions {
   onlyWarn?: boolean;
   project: ProjectMetadata;
+  verbose?: VERBOSE;
 }

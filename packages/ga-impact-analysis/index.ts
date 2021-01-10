@@ -1,5 +1,5 @@
 import * as github from '@actions/github';
-import { MainOptions } from '@monorepolyser/dependencies/types';
+import { MainOptions, VERBOSE } from '@monorepolyser/dependencies/types';
 import { isFileInAWorkspace } from '@monorepolyser/dependencies/utils';
 import { addCommentToCurrentPR, Comment, addLabelsToCurrentPR } from '@monorepolyser/ga-utils';
 
@@ -14,7 +14,7 @@ export interface ImpactAnalysisOptions extends MainOptions {
 const main = async (options: ImpactAnalysisOptions) => {
   const githubToken = process.env.GITHUB_TOKEN;
   const client = new github.GitHub(githubToken);
-  const { project, highImpactThreshold, onHighImpact, highImpactLabels } = options;
+  const { project, highImpactThreshold, onHighImpact, highImpactLabels, verbose } = options;
   const { totalPackages } = project;
   const { dependedOnPackages } = calculatePackagesDependencies(project);
   const analysis: Record<string, string[]> = {
@@ -64,10 +64,8 @@ const main = async (options: ImpactAnalysisOptions) => {
           if (analysis.high.indexOf(name) < 0) {
             analysis.high.push(name);
           }
-        } else {
-          if (analysis.low.indexOf(name) < 0) {
-            analysis.low.push(name);
-          }
+        } else if (analysis.low.indexOf(name) < 0) {
+          analysis.low.push(name);
         }
       }
     });
@@ -84,23 +82,73 @@ const main = async (options: ImpactAnalysisOptions) => {
           text:
             'One or several core packages have been modified, and this PR has been flagged as high impact. The modified packages are the following:',
         });
-  
+
         const rows: string[][] = [];
         analysis.high.forEach((highImpactModule) => {
           rows.push([highImpactModule]);
         });
-  
+
         comment.addTable({
           columns: ['Package'],
           rows,
         });
-  
+
         addCommentToCurrentPR(comment);
       }
 
       if (onHighImpact.indexOf('add-labels') >= 0) {
         addLabelsToCurrentPR(highImpactLabels);
       }
+    }
+  }
+
+  if (verbose) {
+    let verboseComment;
+    const verboseRows: any[][] = [];
+
+    Object
+      .keys(dependedOnPackages)
+      .forEach((key: string) => {
+        const dependedModules = dependedOnPackages[key];
+
+        verboseRows.push([key, dependedModules]);
+      });
+
+    verboseRows.sort((a, b) => {
+      const [, aDeps] = a;
+      const [, bDeps] = b;
+
+      return bDeps - aDeps;
+    });
+
+    switch (verbose) {
+      case VERBOSE.COMMENT:
+        verboseComment = new Comment();
+
+        verboseComment.addTitle({
+          title: 'Impact Analysis',
+          level: 2,
+        });
+
+        verboseComment.addText({
+          text:
+            'Here is a report your packages dependencies, showing the packages order from most depended on to least depended on:',
+        });
+
+        verboseComment.addTable({
+          columns: ['Package', 'Packages that depend on this package'],
+          rows: verboseRows,
+        });
+
+        addCommentToCurrentPR(verboseComment);
+
+        break;
+      default:
+        // eslint-disable-next-line no-console
+        console.log('Here is a report your packages dependencies, showing the packages order from most depended on to least depended on:');
+        // eslint-disable-next-line no-console
+        console.log(verboseRows);
+        break;
     }
   }
 };
