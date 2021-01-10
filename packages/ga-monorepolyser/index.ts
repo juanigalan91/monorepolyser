@@ -2,6 +2,7 @@ import * as core from '@actions/core';
 import { main as checkDependencies } from '@monorepolyser/ga-check-dependencies';
 import { main as impactAnalysis } from '@monorepolyser/ga-impact-analysis';
 import { getProjectMetadata } from '@monorepolyser/dependencies';
+import { VERBOSE } from '@monorepolyser/dependencies/types';
 
 const main = async () => {
   const shouldCheckDependencies: boolean = core.getInput('check-dependencies') === 'true';
@@ -12,6 +13,7 @@ const main = async () => {
   const highImpactLabels: string[] = core.getInput('high-impact-labels').split(',');
   const highImpactThreshold: number = parseInt(core.getInput('high-impact-threshold'), 10);
   const onlyWarn: boolean = core.getInput('only-warn') === 'true';
+  const verbose: VERBOSE = core.getInput('verbose') as VERBOSE;
 
   const projectMetadataOptions = {
     workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
@@ -25,6 +27,7 @@ const main = async () => {
     await checkDependencies({
       project,
       onlyWarn,
+      verbose,
     });
   }
 
@@ -35,6 +38,7 @@ const main = async () => {
       highImpactThreshold,
       onHighImpact,
       highImpactLabels,
+      verbose,
     });
   }
 };

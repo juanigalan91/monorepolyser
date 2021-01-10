@@ -128,3 +128,19 @@ steps:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+If you want to have the analysis printed, you can choose to print this on the logs or on the PR as a comment. To do so, you can use the `verbose` parameter
+
+
+```yaml
+steps:		
+  - name: Checkout	
+    uses: actions/checkout@v2	
+  - name: Check impact
+    uses: juanigalan91/monorepolyser@0.2.3
+    with:
+      impact-analysis: true
+      verbose: 'logs' # where to print the analysis. This can be 'logs' and you would need to search this actions logs to see it, or 'comment' and this will add a comment to the PR
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
