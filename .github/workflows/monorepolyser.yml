@@ -30,5 +30,6 @@ jobs:
           high-impact-threshold: 50
           on-high-impact: 'comment,add-labels'
           high-impact-labels: 'high-impact'
+          verbose: 'logs'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

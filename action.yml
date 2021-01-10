@@ -33,6 +33,10 @@ inputs:
     description: 'Labels to be added (separated by a comma) if the PR has a high impact'
     required: false
     default: ''
+  verbose:
+    description: 'Whether this action logs the results of its analysis or not. It can be "comment" or "logs"'
+    required: false
+    default: false
 runs:
   using: 'node12'
   main: 'packages/ga-monorepolyser/dist/index.js' 
