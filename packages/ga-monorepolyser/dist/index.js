@@ -29059,8 +29059,8 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     if (verbose) {
         let verboseComment;
         const verboseRows = [];
-        Object(dependedOnPackages)
-            .keys()
+        Object
+            .keys(dependedOnPackages)
             .forEach((key) => {
             const dependedModules = dependedOnPackages[key];
             verboseRows.push([key, dependedModules]);
