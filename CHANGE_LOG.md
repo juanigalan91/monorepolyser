@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-## 0.2.3 (current)
+## 0.2.4 (current)
+- Allow to print the impact analysis
+
+## 0.2.3
 - Impact Analysis
 
 ## 0.2.2
