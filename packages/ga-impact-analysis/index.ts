@@ -118,7 +118,7 @@ const main = async (options: ImpactAnalysisOptions) => {
       const [, aDeps] = a;
       const [, bDeps] = b;
 
-      return aDeps - bDeps;
+      return bDeps - aDeps;
     });
 
     switch (verbose) {
@@ -144,6 +144,8 @@ const main = async (options: ImpactAnalysisOptions) => {
 
         break;
       default:
+        // eslint-disable-next-line no-console
+        console.log('Here is a report your packages dependencies, showing the packages order from most depended on to least depended on:');
         // eslint-disable-next-line no-console
         console.log(verboseRows);
         break;

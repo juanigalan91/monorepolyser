@@ -29068,7 +29068,7 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
         verboseRows.sort((a, b) => {
             const [, aDeps] = a;
             const [, bDeps] = b;
-            return aDeps - bDeps;
+            return bDeps - aDeps;
         });
         switch (verbose) {
             case types_1.VERBOSE.COMMENT:
@@ -29087,6 +29087,8 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
                 ga_utils_1.addCommentToCurrentPR(verboseComment);
                 break;
             default:
+                // eslint-disable-next-line no-console
+                console.log('Here is a report your packages dependencies, showing the packages order from most depended on to least depended on:');
                 // eslint-disable-next-line no-console
                 console.log(verboseRows);
                 break;
