@@ -28688,6 +28688,22 @@ exports.getProjectMetadata = getProjectMetadata;
 
 /***/ }),
 
+/***/ 6522:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.VERBOSE = void 0;
+var VERBOSE;
+(function (VERBOSE) {
+    VERBOSE["LOGS"] = "logs";
+    VERBOSE["COMMENT"] = "comment";
+})(VERBOSE = exports.VERBOSE || (exports.VERBOSE = {}));
+
+
+/***/ }),
+
 /***/ 7478:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -28959,6 +28975,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.main = void 0;
 const github = __importStar(__webpack_require__(4312));
+const types_1 = __webpack_require__(6522);
 const utils_1 = __webpack_require__(7478);
 const ga_utils_1 = __webpack_require__(5721);
 const utils_2 = __webpack_require__(355);
@@ -28966,7 +28983,7 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
     const githubToken = process.env.GITHUB_TOKEN;
     const client = new github.GitHub(githubToken);
-    const { project, highImpactThreshold, onHighImpact, highImpactLabels } = options;
+    const { project, highImpactThreshold, onHighImpact, highImpactLabels, verbose } = options;
     const { totalPackages } = project;
     const { dependedOnPackages } = utils_2.calculatePackagesDependencies(project);
     const analysis = {
@@ -29009,10 +29026,8 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
                         analysis.high.push(name);
                     }
                 }
-                else {
-                    if (analysis.low.indexOf(name) < 0) {
-                        analysis.low.push(name);
-                    }
+                else if (analysis.low.indexOf(name) < 0) {
+                    analysis.low.push(name);
                 }
             }
         });
@@ -29039,6 +29054,42 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
             if (onHighImpact.indexOf('add-labels') >= 0) {
                 ga_utils_1.addLabelsToCurrentPR(highImpactLabels);
             }
+        }
+    }
+    if (verbose) {
+        let verboseComment;
+        const verboseRows = [];
+        Object(dependedOnPackages)
+            .keys()
+            .forEach((key) => {
+            const dependedModules = dependedOnPackages[key];
+            verboseRows.push([key, dependedModules]);
+        });
+        verboseRows.sort((a, b) => {
+            const [, aDeps] = a;
+            const [, bDeps] = b;
+            return aDeps - bDeps;
+        });
+        switch (verbose) {
+            case types_1.VERBOSE.COMMENT:
+                verboseComment = new ga_utils_1.Comment();
+                verboseComment.addTitle({
+                    title: 'Impact Analysis',
+                    level: 2,
+                });
+                verboseComment.addText({
+                    text: 'Here is a report your packages dependencies, showing the packages order from most depended on to least depended on:',
+                });
+                verboseComment.addTable({
+                    columns: ['Package', 'Packages that depend on this package'],
+                    rows: verboseRows,
+                });
+                ga_utils_1.addCommentToCurrentPR(verboseComment);
+                break;
+            default:
+                // eslint-disable-next-line no-console
+                console.log(verboseRows);
+                break;
         }
     }
 });
@@ -29125,6 +29176,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const highImpactLabels = core.getInput('high-impact-labels').split(',');
     const highImpactThreshold = parseInt(core.getInput('high-impact-threshold'), 10);
     const onlyWarn = core.getInput('only-warn') === 'true';
+    const verbose = core.getInput('verbose');
     const projectMetadataOptions = {
         workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
         includeMainPackageJson,
@@ -29135,6 +29187,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         yield ga_check_dependencies_1.main({
             project,
             onlyWarn,
+            verbose,
         });
     }
     if (shouldAnalyseImpact) {
@@ -29144,6 +29197,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             highImpactThreshold,
             onHighImpact,
             highImpactLabels,
+            verbose,
         });
     }
 });
