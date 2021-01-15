@@ -56,16 +56,19 @@ const main = async (options: ImpactAnalysisOptions) => {
       if (isFileInAWorkspace(filename, project.workspaces)) {
         const [pkg, module] = filename.split('/');
         const packageInfo = project.packagesByPath[`${pkg}/${module}/package.json`];
-        const { name } = packageInfo;
-        const totalDependedOnPackages = dependedOnPackages[name];
-        const impact = (totalDependedOnPackages / totalPackages) * 100;
 
-        if (impact >= highImpactThreshold) {
-          if (analysis.high.indexOf(name) < 0) {
-            analysis.high.push(name);
+        if (packageInfo) {
+          const { name } = packageInfo;
+          const totalDependedOnPackages = dependedOnPackages[name];
+          const impact = (totalDependedOnPackages / totalPackages) * 100;
+
+          if (impact >= highImpactThreshold) {
+            if (analysis.high.indexOf(name) < 0) {
+              analysis.high.push(name);
+            }
+          } else if (analysis.low.indexOf(name) < 0) {
+            analysis.low.push(name);
           }
-        } else if (analysis.low.indexOf(name) < 0) {
-          analysis.low.push(name);
         }
       }
     });
