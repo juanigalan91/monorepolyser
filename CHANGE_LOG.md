@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-## 0.2.4 (current)
+## 0.2.5
+- Fix bug when the file changed is outside the workspace
+
+## 0.2.4
 - Allow to print the impact analysis
 
 ## 0.2.3

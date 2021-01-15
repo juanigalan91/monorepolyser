@@ -56,16 +56,19 @@ const main = async (options: ImpactAnalysisOptions) => {
       if (isFileInAWorkspace(filename, project.workspaces)) {
         const [pkg, module] = filename.split('/');
         const packageInfo = project.packagesByPath[`${pkg}/${module}/package.json`];
-        const { name } = packageInfo;
-        const totalDependedOnPackages = dependedOnPackages[name];
-        const impact = (totalDependedOnPackages / totalPackages) * 100;
 
-        if (impact >= highImpactThreshold) {
-          if (analysis.high.indexOf(name) < 0) {
-            analysis.high.push(name);
+        if (packageInfo) {
+          const { name } = packageInfo;
+          const totalDependedOnPackages = dependedOnPackages[name];
+          const impact = (totalDependedOnPackages / totalPackages) * 100;
+
+          if (impact >= highImpactThreshold) {
+            if (analysis.high.indexOf(name) < 0) {
+              analysis.high.push(name);
+            }
+          } else if (analysis.low.indexOf(name) < 0) {
+            analysis.low.push(name);
           }
-        } else if (analysis.low.indexOf(name) < 0) {
-          analysis.low.push(name);
         }
       }
     });
@@ -145,7 +148,9 @@ const main = async (options: ImpactAnalysisOptions) => {
         break;
       default:
         // eslint-disable-next-line no-console
-        console.log('Here is a report your packages dependencies, showing the packages order from most depended on to least depended on:');
+        console.log(
+          'Here is a report your packages dependencies, showing the packages order from most depended on to least depended on:'
+        );
         // eslint-disable-next-line no-console
         console.log(verboseRows);
         break;
