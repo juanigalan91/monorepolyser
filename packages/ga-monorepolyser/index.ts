@@ -14,6 +14,7 @@ const main = async () => {
   const highImpactThreshold: number = parseInt(core.getInput('high-impact-threshold'), 10);
   const onlyWarn: boolean = core.getInput('only-warn') === 'true';
   const verbose: VERBOSE = core.getInput('verbose') as VERBOSE;
+  const highImpactPackagesRegexp: string | null = core.getInput('high-impact-packages-regexp');
 
   const projectMetadataOptions = {
     workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
@@ -39,6 +40,7 @@ const main = async () => {
       onHighImpact,
       highImpactLabels,
       verbose,
+      highImpactPackagesRegexp,
     });
   }
 };
