@@ -38,6 +38,10 @@ inputs:
     description: 'Whether this action logs the results of its analysis or not. It can be "comment" or "logs"'
     required: false
     default: false
+  high-impact-packages-regexp:
+    description: 'Regexp that determines which packages should be consider as high impact, no matter the impact analysis'
+    required: false
+    default: null
 runs:
   using: 'node12'
   main: 'packages/ga-monorepolyser/dist/index.js' 

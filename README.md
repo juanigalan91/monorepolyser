@@ -45,7 +45,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.5
+    uses: juanigalan91/monorepolyser@0.2.6
     with:
       # Whether you want to execute the check dependencies action or not
       check-dependencies: true
@@ -60,7 +60,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.5
+    uses: juanigalan91/monorepolyser@0.2.6
     with:
       check-dependencies: true
       ignore-workspaces: 'dev-packages,third-parties' # lists of workspaces to ignore from the check, list of strings separated by a comma
@@ -75,7 +75,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.5
+    uses: juanigalan91/monorepolyser@0.2.6
     with:
       check-dependencies: true
       include-main-package-json: true
@@ -90,7 +90,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check dependencies
-    uses: juanigalan91/monorepolyser@0.2.5
+    uses: juanigalan91/monorepolyser@0.2.6
     with:
       check-dependencies: true
       only-warn: true
@@ -105,7 +105,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check impact
-    uses: juanigalan91/monorepolyser@0.2.5
+    uses: juanigalan91/monorepolyser@0.2.6
     with:
       impact-analysis: true
     env:
@@ -119,12 +119,13 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check impact
-    uses: juanigalan91/monorepolyser@0.2.5
+    uses: juanigalan91/monorepolyser@0.2.6
     with:
       impact-analysis: true
       high-impact-threshold: 50 # percentage (0-100) of the packages that will be impacted by this PR in order for it to be of high impact
       on-high-impact: 'comment,add-labels' # action to be executed on high impact PR. it can be 'comment', 'add-labels' or multiple, separated by a comma
       high-impact-labels: 'high-impact' # Labels to be added (separated by a comma) if the PR has a high impact
+      high-impact-packages-regexp: '@monorepolyser\/(ga-utils|ga-impact-analysis)' # Regular expression to manually flag packages as high impact
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -137,7 +138,7 @@ steps:
   - name: Checkout	
     uses: actions/checkout@v2	
   - name: Check impact
-    uses: juanigalan91/monorepolyser@0.2.5
+    uses: juanigalan91/monorepolyser@0.2.6
     with:
       impact-analysis: true
       verbose: 'logs' # where to print the analysis. This can be 'logs' and you would need to search this actions logs to see it, or 'comment' and this will add a comment to the PR

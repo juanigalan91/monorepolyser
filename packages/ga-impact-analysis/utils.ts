@@ -22,4 +22,26 @@ const calculatePackagesDependencies = (project: ProjectMetadata) => {
   return { dependedOnPackages };
 };
 
-export { calculatePackagesDependencies };
+const getPackagesFlaggedManuallyAsHighImpact = (project: ProjectMetadata, highImpactPackagesRegexp: string | null) => {
+  const { packages } = project;
+  const flaggedPackages: string[] = [];
+
+  if (highImpactPackagesRegexp) {
+    const regexp = new RegExp(highImpactPackagesRegexp);
+
+    Object.keys(packages).forEach((pkgName) => {
+      const { name } = packages[pkgName];
+
+      if (regexp.test(name)) {
+        flaggedPackages.push(name);
+      }
+    });
+
+    // eslint-disable-next-line no-console
+    console.log('The following packages will be manually flagged as high impact', flaggedPackages);
+  }
+
+  return flaggedPackages;
+};
+
+export { calculatePackagesDependencies, getPackagesFlaggedManuallyAsHighImpact };
