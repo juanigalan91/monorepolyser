@@ -28983,11 +28983,11 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
     const githubToken = process.env.GITHUB_TOKEN;
     const client = new github.GitHub(githubToken);
-    const { project, highImpactThreshold, onHighImpact, highImpactLabels, verbose } = options;
+    const { project, highImpactThreshold, onHighImpact, highImpactLabels, verbose, highImpactPackagesRegexp } = options;
     const { totalPackages } = project;
     const { dependedOnPackages } = utils_2.calculatePackagesDependencies(project);
     const analysis = {
-        high: [],
+        high: utils_2.getPackagesFlaggedManuallyAsHighImpact(project, highImpactPackagesRegexp),
         low: [],
     };
     const { context } = github;
@@ -29061,9 +29061,7 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     if (verbose) {
         let verboseComment;
         const verboseRows = [];
-        Object
-            .keys(dependedOnPackages)
-            .forEach((key) => {
+        Object.keys(dependedOnPackages).forEach((key) => {
             const dependedModules = dependedOnPackages[key];
             verboseRows.push([key, dependedModules]);
         });
@@ -29108,7 +29106,7 @@ exports.main = main;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.calculatePackagesDependencies = void 0;
+exports.getPackagesFlaggedManuallyAsHighImpact = exports.calculatePackagesDependencies = void 0;
 const calculatePackagesDependencies = (project) => {
     const dependedOnPackages = {};
     const { packages } = project;
@@ -29129,6 +29127,21 @@ const calculatePackagesDependencies = (project) => {
     return { dependedOnPackages };
 };
 exports.calculatePackagesDependencies = calculatePackagesDependencies;
+const getPackagesFlaggedManuallyAsHighImpact = (project, highImpactPackagesRegexp) => {
+    const { packages } = project;
+    const flaggedPackages = [];
+    if (highImpactPackagesRegexp) {
+        const regexp = new RegExp(highImpactPackagesRegexp);
+        Object.keys(packages).forEach((pkgName) => {
+            const { name } = packages[pkgName];
+            if (regexp.test(name)) {
+                flaggedPackages.push(name);
+            }
+        });
+    }
+    return flaggedPackages;
+};
+exports.getPackagesFlaggedManuallyAsHighImpact = getPackagesFlaggedManuallyAsHighImpact;
 
 
 /***/ }),
@@ -29181,6 +29194,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const highImpactThreshold = parseInt(core.getInput('high-impact-threshold'), 10);
     const onlyWarn = core.getInput('only-warn') === 'true';
     const verbose = core.getInput('verbose');
+    const highImpactPackagesRegexp = core.getInput('high-impact-packages-regexp');
     const projectMetadataOptions = {
         workspacesToIgnore: workspacesToIgnore.length > 0 ? workspacesToIgnore.split(',') : [],
         includeMainPackageJson,
@@ -29202,6 +29216,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             onHighImpact,
             highImpactLabels,
             verbose,
+            highImpactPackagesRegexp,
         });
     }
 });

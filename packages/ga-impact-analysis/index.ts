@@ -3,27 +3,28 @@ import { MainOptions, VERBOSE } from '@monorepolyser/dependencies/types';
 import { isFileInAWorkspace } from '@monorepolyser/dependencies/utils';
 import { addCommentToCurrentPR, Comment, addLabelsToCurrentPR } from '@monorepolyser/ga-utils';
 
-import { calculatePackagesDependencies } from './utils';
+import { calculatePackagesDependencies, getPackagesFlaggedManuallyAsHighImpact } from './utils';
 
 export interface ImpactAnalysisOptions extends MainOptions {
   highImpactThreshold: number;
   highImpactLabels: string[];
   onHighImpact: string[];
+  highImpactPackagesRegexp: string | null;
 }
 
 const main = async (options: ImpactAnalysisOptions) => {
   const githubToken = process.env.GITHUB_TOKEN;
   const client = new github.GitHub(githubToken);
-  const { project, highImpactThreshold, onHighImpact, highImpactLabels, verbose } = options;
+  const { project, highImpactThreshold, onHighImpact, highImpactLabels, verbose, highImpactPackagesRegexp } = options;
   const { totalPackages } = project;
   const { dependedOnPackages } = calculatePackagesDependencies(project);
+
   const analysis: Record<string, string[]> = {
-    high: [],
+    high: getPackagesFlaggedManuallyAsHighImpact(project, highImpactPackagesRegexp),
     low: [],
   };
 
   const { context } = github;
-
   const { eventName } = context;
 
   let base: string | undefined;
@@ -109,13 +110,11 @@ const main = async (options: ImpactAnalysisOptions) => {
     let verboseComment;
     const verboseRows: any[][] = [];
 
-    Object
-      .keys(dependedOnPackages)
-      .forEach((key: string) => {
-        const dependedModules = dependedOnPackages[key];
+    Object.keys(dependedOnPackages).forEach((key: string) => {
+      const dependedModules = dependedOnPackages[key];
 
-        verboseRows.push([key, dependedModules]);
-      });
+      verboseRows.push([key, dependedModules]);
+    });
 
     verboseRows.sort((a, b) => {
       const [, aDeps] = a;

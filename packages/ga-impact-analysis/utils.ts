@@ -22,4 +22,23 @@ const calculatePackagesDependencies = (project: ProjectMetadata) => {
   return { dependedOnPackages };
 };
 
-export { calculatePackagesDependencies };
+const getPackagesFlaggedManuallyAsHighImpact = (project: ProjectMetadata, highImpactPackagesRegexp: string | null) => {
+  const { packages } = project;
+  const flaggedPackages: string[] = [];
+
+  if (highImpactPackagesRegexp) {
+    const regexp = new RegExp(highImpactPackagesRegexp);
+
+    Object.keys(packages).forEach((pkgName) => {
+      const { name } = packages[pkgName];
+
+      if (regexp.test(name)) {
+        flaggedPackages.push(name);
+      }
+    });
+  }
+
+  return flaggedPackages;
+};
+
+export { calculatePackagesDependencies, getPackagesFlaggedManuallyAsHighImpact };
