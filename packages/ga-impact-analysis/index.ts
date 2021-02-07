@@ -18,9 +18,10 @@ const main = async (options: ImpactAnalysisOptions) => {
   const { project, highImpactThreshold, onHighImpact, highImpactLabels, verbose, highImpactPackagesRegexp } = options;
   const { totalPackages } = project;
   const { dependedOnPackages } = calculatePackagesDependencies(project);
+  const manuallyFlaggedPackages = getPackagesFlaggedManuallyAsHighImpact(project, highImpactPackagesRegexp);
 
   const analysis: Record<string, string[]> = {
-    high: getPackagesFlaggedManuallyAsHighImpact(project, highImpactPackagesRegexp),
+    high: [],
     low: [],
   };
 
@@ -69,6 +70,12 @@ const main = async (options: ImpactAnalysisOptions) => {
             }
           } else if (analysis.low.indexOf(name) < 0) {
             analysis.low.push(name);
+          }
+
+          if (manuallyFlaggedPackages.indexOf(name) >= 0) {
+            if (analysis.high.indexOf(name) < 0) {
+              analysis.high.push(name);
+            }
           }
         }
       }
