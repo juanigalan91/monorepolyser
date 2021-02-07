@@ -28986,8 +28986,9 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
     const { project, highImpactThreshold, onHighImpact, highImpactLabels, verbose, highImpactPackagesRegexp } = options;
     const { totalPackages } = project;
     const { dependedOnPackages } = utils_2.calculatePackagesDependencies(project);
+    const manuallyFlaggedPackages = utils_2.getPackagesFlaggedManuallyAsHighImpact(project, highImpactPackagesRegexp);
     const analysis = {
-        high: utils_2.getPackagesFlaggedManuallyAsHighImpact(project, highImpactPackagesRegexp),
+        high: [],
         low: [],
     };
     const { context } = github;
@@ -29029,6 +29030,11 @@ const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
                     }
                     else if (analysis.low.indexOf(name) < 0) {
                         analysis.low.push(name);
+                    }
+                    if (manuallyFlaggedPackages.indexOf(name) >= 0) {
+                        if (analysis.high.indexOf(name) < 0) {
+                            analysis.high.push(name);
+                        }
                     }
                 }
             }
@@ -29138,6 +29144,8 @@ const getPackagesFlaggedManuallyAsHighImpact = (project, highImpactPackagesRegex
                 flaggedPackages.push(name);
             }
         });
+        // eslint-disable-next-line no-console
+        console.log('The following packages will be manually flagged as high impact', flaggedPackages);
     }
     return flaggedPackages;
 };

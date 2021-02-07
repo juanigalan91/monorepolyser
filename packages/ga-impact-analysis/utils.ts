@@ -36,6 +36,9 @@ const getPackagesFlaggedManuallyAsHighImpact = (project: ProjectMetadata, highIm
         flaggedPackages.push(name);
       }
     });
+
+    // eslint-disable-next-line no-console
+    console.log('The following packages will be manually flagged as high impact', flaggedPackages);
   }
 
   return flaggedPackages;
