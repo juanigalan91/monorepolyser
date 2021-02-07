@@ -31,5 +31,6 @@ jobs:
           on-high-impact: 'comment,add-labels'
           high-impact-labels: 'high-impact'
           verbose: 'comment'
+          high-impact-packages-regexp: '@monorepolyser\/(ga-utils|ga-impact-analysis)'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
