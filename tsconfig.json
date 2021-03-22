@@ -16,6 +16,7 @@
       "packages/ga-monorepolyser",
       "packages/ga-impact-analysis",
       "packages/ga-utils",
-      "packages/dependencies"
+      "packages/dependencies",
+      "packages/analyser"
     ]
   }
