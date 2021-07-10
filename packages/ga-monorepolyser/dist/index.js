@@ -29244,9 +29244,12 @@ exports.Comment = void 0;
 class Comment {
     constructor() {
         this.body = '';
+        this.title = '';
     }
     addTitle({ title, level = 1 }) {
-        this.body = `${this.body}${'#'.repeat(level)} ${title}`;
+        const commentTitle = `${'#'.repeat(level)} ${title}`;
+        this.body = `${this.body}${commentTitle}`;
+        this.title = commentTitle;
         this.addBreakline();
     }
     addBreakline() {
@@ -29273,6 +29276,9 @@ class Comment {
     }
     getBody() {
         return this.body;
+    }
+    getTitle() {
+        return this.title;
     }
 }
 exports.Comment = Comment;
@@ -29304,6 +29310,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.addLabelsToCurrentPR = exports.Comment = exports.addCommentToCurrentPR = void 0;
 const github = __importStar(__webpack_require__(4312));
@@ -29313,24 +29328,44 @@ const getCurrentPR = () => {
     const { context } = github;
     return context.payload.pull_request || null;
 };
-const addCommentToCurrentPR = (comment) => {
+const retriveCommentIdFromPr = (comment) => __awaiter(void 0, void 0, void 0, function* () {
     const currentPR = getCurrentPR();
     if (currentPR) {
         const githubToken = process.env.GITHUB_TOKEN;
         const client = new github.GitHub(githubToken);
         const { context } = github;
-        client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
+        const response = yield client.issues.listComments(Object.assign(Object.assign({}, context.repo), { 
             // eslint-disable-next-line @typescript-eslint/camelcase
-            issue_number: currentPR.number, body: comment.getBody() }));
-        client.issues
-            .listComments(Object.assign(Object.assign({}, context.repo), { 
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            issue_number: currentPR.number }))
-            .then((comments) => {
-            console.log(JSON.stringify(comments.data));
-        });
+            issue_number: currentPR.number }));
+        for (let i = 0; i < response.data.length; i++) {
+            const comm = response.data[i];
+            if (comm.body.indexOf(comment.getTitle()) === 0) {
+                console.log('comment found!', comm.id);
+                return comm.id;
+            }
+        }
     }
-};
+    return undefined;
+});
+const addCommentToCurrentPR = (comment) => __awaiter(void 0, void 0, void 0, function* () {
+    const currentPR = getCurrentPR();
+    if (currentPR) {
+        const githubToken = process.env.GITHUB_TOKEN;
+        const client = new github.GitHub(githubToken);
+        const { context } = github;
+        const commentId = yield retriveCommentIdFromPr(comment);
+        if (commentId) {
+            client.issues.updateComment(Object.assign(Object.assign({}, context.repo), { 
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                comment_id: commentId, body: comment.getBody() }));
+        }
+        else {
+            client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                issue_number: currentPR.number, body: comment.getBody() }));
+        }
+    }
+});
 exports.addCommentToCurrentPR = addCommentToCurrentPR;
 const addLabelsToCurrentPR = (labels) => {
     const currentPR = getCurrentPR();
