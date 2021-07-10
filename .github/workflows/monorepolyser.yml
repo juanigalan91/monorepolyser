@@ -27,7 +27,7 @@ jobs:
         uses: ./
         with:
           impact-analysis: true
-          high-impact-threshold: 50
+          high-impact-threshold: 10
           on-high-impact: 'comment,add-labels'
           high-impact-labels: 'high-impact'
           verbose: 'comment'

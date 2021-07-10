@@ -86,7 +86,7 @@ const main = async (options: ImpactAnalysisOptions) => {
         const comment = new Comment();
 
         comment.addTitle({
-          title: 'Impact Analysis',
+          title: 'Impact Analysis - Changes',
           level: 2,
         });
         comment.addText({
@@ -135,7 +135,7 @@ const main = async (options: ImpactAnalysisOptions) => {
         verboseComment = new Comment();
 
         verboseComment.addTitle({
-          title: 'Impact Analysis',
+          title: 'Impact Analysis - Report',
           level: 2,
         });
 
