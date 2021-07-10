@@ -1,12 +1,17 @@
 class Comment {
   body: string;
 
+  title: string;
+
   constructor() {
     this.body = '';
+    this.title = '';
   }
 
   addTitle({ title, level = 1 }: { title: string; level?: number }) {
-    this.body = `${this.body}${'#'.repeat(level)} ${title}`;
+    const commentTitle = `${'#'.repeat(level)} ${title}`;
+    this.body = `${this.body}${commentTitle}`;
+    this.title = commentTitle;
     this.addBreakline();
   }
 
@@ -40,6 +45,10 @@ class Comment {
 
   getBody() {
     return this.body;
+  }
+
+  getTitle() {
+    return this.title;
   }
 }
 
