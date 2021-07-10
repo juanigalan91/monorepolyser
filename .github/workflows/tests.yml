@@ -11,7 +11,7 @@ jobs:
       - name: "Checkout repository"
         uses: actions/checkout@v2
       - name: "Setup node env"
-        uses: actions/setup-node@c6fd00c #v2.1.2
+        uses: actions/setup-node@c6fd00ceb9747fb23ffdf72987450a2664414867 #v2.1.2
         with:
           node-version: '13.7.0'
       - name: "Get cache hash"
@@ -19,7 +19,7 @@ jobs:
         run: echo "::set-output name=hash::"$(cat yarn.lock {packages}/**/package.json | sha1sum | egrep -o '^\w+')
       - name: "Cache dependencies"
         id: cache
-        uses: actions/cache@70655ec #v1.1.2
+        uses: actions/cache@70655ec8323daeeaa7ef06d7c56e1b9191396cbe #v1.1.2
         with:
           path: node_modules
           key: ${{ runner.os }}-dependency-hash-${{ steps.cache-prep.outputs.hash }}
