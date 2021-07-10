@@ -22,6 +22,14 @@ const addCommentToCurrentPR = (comment: Comment) => {
       issue_number: currentPR.number,
       body: comment.getBody(),
     });
+
+    const comments = client.issues.listComments({
+      ...context.repo,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      issue_number: currentPR.number,
+    });
+
+    console.log(comments);
   }
 };
 
