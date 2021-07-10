@@ -13,8 +13,6 @@ const GET_PROJECT_METADATA_DEFAULTS: GetProjectMetadataOptions = {
   includeMainPackageJson: true,
 };
 
-console.log('change');
-
 /**
  * Retrieves the metadata for a specific list of workspaces, returning the packages in that workspaces
  * with their dependencies, name, version and development dependencies.

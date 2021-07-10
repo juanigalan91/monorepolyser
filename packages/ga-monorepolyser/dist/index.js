@@ -28636,7 +28636,6 @@ const GET_PROJECT_METADATA_DEFAULTS = {
     workspacesToIgnore: [],
     includeMainPackageJson: true,
 };
-console.log('change');
 /**
  * Retrieves the metadata for a specific list of workspaces, returning the packages in that workspaces
  * with their dependencies, name, version and development dependencies.
@@ -29355,12 +29354,14 @@ const addCommentToCurrentPR = (comment) => __awaiter(void 0, void 0, void 0, fun
         const { context } = github;
         const commentId = yield retriveCommentIdFromPr(comment);
         if (commentId) {
+            // eslint-disable-next-line no-console
             console.log('Comment with title ', comment.getTitle(), ' found, updating comment');
             client.issues.updateComment(Object.assign(Object.assign({}, context.repo), { 
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 comment_id: commentId, body: comment.getBody() }));
         }
         else {
+            // eslint-disable-next-line no-console
             console.log('Creating new comment with title ', comment.getTitle());
             client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
                 // eslint-disable-next-line @typescript-eslint/camelcase

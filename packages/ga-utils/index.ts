@@ -47,6 +47,7 @@ const addCommentToCurrentPR = async (comment: Comment) => {
     const commentId = await retriveCommentIdFromPr(comment);
 
     if (commentId) {
+      // eslint-disable-next-line no-console
       console.log('Comment with title ', comment.getTitle(), ' found, updating comment');
 
       client.issues.updateComment({
@@ -56,6 +57,7 @@ const addCommentToCurrentPR = async (comment: Comment) => {
         body: comment.getBody(),
       });
     } else {
+      // eslint-disable-next-line no-console
       console.log('Creating new comment with title ', comment.getTitle());
 
       client.issues.createComment({

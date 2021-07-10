@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.2.7
+- Update existing PR comment instead of creating a new one in order to avoid spamming the PR
+
+## 0.2.6
+- Allows to pass in a regular expression to manually add packages to the high impact analysis
+
 ## 0.2.5
 - Fix bug when the file changed is outside the workspace
 
