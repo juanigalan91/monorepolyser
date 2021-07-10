@@ -29322,10 +29322,13 @@ const addCommentToCurrentPR = (comment) => {
         client.issues.createComment(Object.assign(Object.assign({}, context.repo), { 
             // eslint-disable-next-line @typescript-eslint/camelcase
             issue_number: currentPR.number, body: comment.getBody() }));
-        const comments = client.issues.listComments(Object.assign(Object.assign({}, context.repo), { 
+        client.issues
+            .listComments(Object.assign(Object.assign({}, context.repo), { 
             // eslint-disable-next-line @typescript-eslint/camelcase
-            issue_number: currentPR.number }));
-        console.log(comments);
+            issue_number: currentPR.number }))
+            .then((comments) => {
+            console.log(JSON.stringify(comments.data));
+        });
     }
 };
 exports.addCommentToCurrentPR = addCommentToCurrentPR;
