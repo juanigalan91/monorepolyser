@@ -13,7 +13,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.3.4
     - name: Invoke workflow
-        uses: benc-uk/workflow-dispatch@v1
+      uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Unit testing
           token: ${{ secrets.WORKFLOW_RUN }}
