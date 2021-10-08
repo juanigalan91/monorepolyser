@@ -22,6 +22,7 @@ async function run() {
         ref,
       }
     });
+
   } catch (error) {
     core.setFailed(error.message)
   }
