@@ -1,5 +1,0 @@
-name: 'Reviewed and tested'
-description: 'Launches CI when the PR was reviewed and tested'
-runs:
-  using: 'node12'
-  main: 'dist/index.js'
