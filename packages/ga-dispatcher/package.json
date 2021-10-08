@@ -1,0 +1,13 @@
+{
+  "name": "@monorepolyser/ga-ci-dispatcher",
+  "version": "1.0.0",
+  "description": "Github action for dispatching the CI",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/github": "^2.1.0",
+    "@actions/core": "^1.2.6"
+  },
+  "scripts": {
+    "build": "npx @vercel/ncc build ./index.js"
+  }
+}

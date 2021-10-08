@@ -1,8 +1,8 @@
 name: Unit testing
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  repository_dispatch:
+    types: [trigger_ci]
   
 jobs:
   install-dependencies:
