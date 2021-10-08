@@ -1,8 +1,7 @@
 name: Unit testing
 
-on:
-  repository_dispatch:
-    types: [trigger_ci]
+on: 
+  workflow_dispatch:
   
 jobs:
   install-dependencies:
