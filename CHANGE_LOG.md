@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.2.8
+- Check dev dependencies as well
+
 ## 0.2.7
 - Update existing PR comment instead of creating a new one in order to avoid spamming the PR
 
