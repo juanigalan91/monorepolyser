@@ -16,6 +16,9 @@ describe('Check Dependencies - Utils', () => {
             lodash: '0.19.0',
             react: '16.8.3',
           },
+          devDependencies: {
+            redux: '0.20.0',
+          },
           name: '@module/home',
           version: '1.0.0',
         },
@@ -39,7 +42,7 @@ describe('Check Dependencies - Utils', () => {
 
     expect(deps).toMatchSnapshot();
     expect(Object.keys(deps.incoherentDependencies)).toHaveLength(0);
-    expect(Object.keys(deps.deps)).toHaveLength(3);
+    expect(Object.keys(deps.deps)).toHaveLength(4);
   });
 
   it('returns incoherent dependencies when a package is using a different version', () => {
@@ -48,6 +51,9 @@ describe('Check Dependencies - Utils', () => {
         '@module/admin': {
           dependencies: {
             react: '16.8.3',
+          },
+          devDependencies: {
+            redux: '0.20.0',
           },
           name: '@module/admin',
           version: '1.0.0',
@@ -66,6 +72,9 @@ describe('Check Dependencies - Utils', () => {
           },
           name: '@module/root',
           version: '1.0.0',
+          devDependencies: {
+            redux: '0.20.1',
+          },
         },
         '@module/search': {
           name: '@module/search',
@@ -83,10 +92,10 @@ describe('Check Dependencies - Utils', () => {
     const reactDep = deps.incoherentDependencies.react;
 
     expect(deps).toMatchSnapshot();
-    expect(incohorentDeps).toHaveLength(1);
+    expect(incohorentDeps).toHaveLength(2);
     expect(reactDep).toHaveLength(1);
     expect(reactDep[0].addedBy).toEqual('@module/home');
-    expect(Object.keys(deps.deps)).toHaveLength(3);
+    expect(Object.keys(deps.deps)).toHaveLength(4);
   });
 
   it('returns incoherent dependencies when a package is using several different versions', () => {

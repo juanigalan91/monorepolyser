@@ -23,40 +23,42 @@ const getIncoherentDependencies = (project: ProjectMetadata): GetIncoherentDepen
    */
   Object.keys(packages).forEach((pkgName) => {
     const pkg = packages[pkgName];
-    const { dependencies } = pkg;
+    const { dependencies, devDependencies } = pkg;
 
-    if (dependencies) {
-      Object.keys(dependencies).forEach((dep) => {
-        const version = dependencies[dep];
+    [dependencies, devDependencies].forEach((ds) => {
+      if (ds) {
+        Object.keys(ds).forEach((dep) => {
+          const version = ds[dep];
 
-        /**
-         * If the dependency was found, it means that another package is using it and we need to
-         * check that we are using the same dependency version.
-         */
-        if (deps[dep]) {
-          const detectedVersion = deps[dep];
+          /**
+           * If the dependency was found, it means that another package is using it and we need to
+           * check that we are using the same dependency version.
+           */
+          if (deps[dep]) {
+            const detectedVersion = deps[dep];
 
-          if (version !== detectedVersion) {
-            /**
-             * If the version is different, we need to add it to the list of incoherent dependencies.
-             * Since multiple versions for the same package could be coherent, for each dependency
-             * we have a list of possible incoherent dependencies.
-             */
-            if (!incoherentDependencies[dep]) {
-              incoherentDependencies[dep] = [];
+            if (version !== detectedVersion) {
+              /**
+               * If the version is different, we need to add it to the list of incoherent dependencies.
+               * Since multiple versions for the same package could be coherent, for each dependency
+               * we have a list of possible incoherent dependencies.
+               */
+              if (!incoherentDependencies[dep]) {
+                incoherentDependencies[dep] = [];
+              }
+
+              incoherentDependencies[dep].push({
+                name: dep,
+                addedBy: pkgName,
+                version,
+              });
             }
-
-            incoherentDependencies[dep].push({
-              name: dep,
-              addedBy: pkgName,
-              version,
-            });
+          } else {
+            deps[dep] = version;
           }
-        } else {
-          deps[dep] = version;
-        }
-      });
-    }
+        });
+      }
+    });
   });
 
   return {
