@@ -19,4 +19,5 @@ export interface MainOptions {
   onlyWarn?: boolean;
   project: ProjectMetadata;
   verbose?: VERBOSE;
+  dependenciesToIgnore: string[];
 }

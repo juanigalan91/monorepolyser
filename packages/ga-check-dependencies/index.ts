@@ -5,10 +5,10 @@ import { MainOptions } from '@monorepolyser/dependencies/types';
 import { getIncoherentDependencies } from './utils';
 
 const main = async (options?: MainOptions) => {
-  const { onlyWarn = false, project } = options || {};
+  const { onlyWarn = false, project, dependenciesToIgnore } = options || {};
 
   try {
-    const { incoherentDependencies, deps } = getIncoherentDependencies(project);
+    const { incoherentDependencies, deps } = getIncoherentDependencies(project, dependenciesToIgnore);
 
     const repeatedDeps = Object.keys(incoherentDependencies);
 
