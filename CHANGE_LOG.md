@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.2.9
+- Ignore specific dependencies by id
+
 ## 0.2.8
 - Check dev dependencies as well
 
