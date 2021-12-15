@@ -9,6 +9,7 @@ const main = async () => {
   const includeMainPackageJson: boolean = core.getInput('include-main-package-json') === 'true';
   const shouldAnalyseImpact: boolean = core.getInput('impact-analysis') === 'true';
   const workspacesToIgnore: string = core.getInput('ignore-workspaces');
+  const dependenciesToIgnore: string[] = core.getInput('dependencies-to-ignore').split(',');
   const onHighImpact: string[] = core.getInput('on-high-impact').split(',');
   const highImpactLabels: string[] = core.getInput('high-impact-labels').split(',');
   const highImpactThreshold: number = parseInt(core.getInput('high-impact-threshold'), 10);
@@ -29,6 +30,7 @@ const main = async () => {
       project,
       onlyWarn,
       verbose,
+      dependenciesToIgnore,
     });
   }
 
@@ -41,6 +43,7 @@ const main = async () => {
       highImpactLabels,
       verbose,
       highImpactPackagesRegexp,
+      dependenciesToIgnore,
     });
   }
 };

@@ -28831,9 +28831,9 @@ const core = __importStar(__webpack_require__(5261));
 const ga_utils_1 = __webpack_require__(5721);
 const utils_1 = __webpack_require__(4894);
 const main = (options) => __awaiter(void 0, void 0, void 0, function* () {
-    const { onlyWarn = false, project } = options || {};
+    const { onlyWarn = false, project, dependenciesToIgnore } = options || {};
     try {
-        const { incoherentDependencies, deps } = utils_1.getIncoherentDependencies(project);
+        const { incoherentDependencies, deps } = utils_1.getIncoherentDependencies(project, dependenciesToIgnore);
         const repeatedDeps = Object.keys(incoherentDependencies);
         if (repeatedDeps.length > 0) {
             const comment = new ga_utils_1.Comment();
@@ -28887,7 +28887,7 @@ exports.getIncoherentDependencies = void 0;
 /**
  * Calculates if there are any incoherent dependencies on the current project
  */
-const getIncoherentDependencies = (project) => {
+const getIncoherentDependencies = (project, dependenciesToIgnore) => {
     const incoherentDependencies = {};
     const deps = {};
     const { packages } = project;
@@ -28901,31 +28901,37 @@ const getIncoherentDependencies = (project) => {
         [dependencies, devDependencies].forEach((ds) => {
             if (ds) {
                 Object.keys(ds).forEach((dep) => {
-                    const version = ds[dep];
-                    /**
-                     * If the dependency was found, it means that another package is using it and we need to
-                     * check that we are using the same dependency version.
-                     */
-                    if (deps[dep]) {
-                        const detectedVersion = deps[dep];
-                        if (version !== detectedVersion) {
-                            /**
-                             * If the version is different, we need to add it to the list of incoherent dependencies.
-                             * Since multiple versions for the same package could be coherent, for each dependency
-                             * we have a list of possible incoherent dependencies.
-                             */
-                            if (!incoherentDependencies[dep]) {
-                                incoherentDependencies[dep] = [];
+                    if (!dependenciesToIgnore.includes(dep)) {
+                        const version = ds[dep];
+                        /**
+                         * If the dependency was found, it means that another package is using it and we need to
+                         * check that we are using the same dependency version.
+                         */
+                        if (deps[dep]) {
+                            const detectedVersion = deps[dep];
+                            if (version !== detectedVersion) {
+                                /**
+                                 * If the version is different, we need to add it to the list of incoherent dependencies.
+                                 * Since multiple versions for the same package could be coherent, for each dependency
+                                 * we have a list of possible incoherent dependencies.
+                                 */
+                                if (!incoherentDependencies[dep]) {
+                                    incoherentDependencies[dep] = [];
+                                }
+                                incoherentDependencies[dep].push({
+                                    name: dep,
+                                    addedBy: pkgName,
+                                    version,
+                                });
                             }
-                            incoherentDependencies[dep].push({
-                                name: dep,
-                                addedBy: pkgName,
-                                version,
-                            });
+                        }
+                        else {
+                            deps[dep] = version;
                         }
                     }
                     else {
-                        deps[dep] = version;
+                        // eslint-disable-next-line no-console
+                        console.log(`Ignoring dependency ${dep} since it was ignored in the action's configuration`);
                     }
                 });
             }
@@ -29199,6 +29205,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const includeMainPackageJson = core.getInput('include-main-package-json') === 'true';
     const shouldAnalyseImpact = core.getInput('impact-analysis') === 'true';
     const workspacesToIgnore = core.getInput('ignore-workspaces');
+    const dependenciesToIgnore = core.getInput('dependencies-to-ignore').split(',');
     const onHighImpact = core.getInput('on-high-impact').split(',');
     const highImpactLabels = core.getInput('high-impact-labels').split(',');
     const highImpactThreshold = parseInt(core.getInput('high-impact-threshold'), 10);
@@ -29216,6 +29223,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             project,
             onlyWarn,
             verbose,
+            dependenciesToIgnore,
         });
     }
     if (shouldAnalyseImpact) {
@@ -29227,6 +29235,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             highImpactLabels,
             verbose,
             highImpactPackagesRegexp,
+            dependenciesToIgnore,
         });
     }
 });
