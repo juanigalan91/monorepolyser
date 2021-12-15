@@ -30,6 +30,10 @@ inputs:
     description: 'Action to be executed on high impact PR. It can be "comment", "add-labels" or multiple actions, separating them by a comma'
     required: false
     default: 'comment'
+  dependencies-to-ignore:
+    description: 'Dependencies names that will be ignore from the analysis, separating them by a comma'
+    required: false
+    default: ''
   high-impact-labels:
     description: 'Labels to be added (separated by a comma) if the PR has a high impact'
     required: false

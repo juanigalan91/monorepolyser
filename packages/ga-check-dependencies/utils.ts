@@ -12,7 +12,10 @@ export interface GetIncoherentDependencies {
 /**
  * Calculates if there are any incoherent dependencies on the current project
  */
-const getIncoherentDependencies = (project: ProjectMetadata): GetIncoherentDependencies => {
+const getIncoherentDependencies = (
+  project: ProjectMetadata,
+  dependenciesToIgnore: string[]
+): GetIncoherentDependencies => {
   const incoherentDependencies: Record<string, IncoherentDependency[]> = {};
   const deps: Record<string, string> = {};
   const { packages } = project;
@@ -28,33 +31,38 @@ const getIncoherentDependencies = (project: ProjectMetadata): GetIncoherentDepen
     [dependencies, devDependencies].forEach((ds) => {
       if (ds) {
         Object.keys(ds).forEach((dep) => {
-          const version = ds[dep];
+          if (!dependenciesToIgnore.includes(dep)) {
+            const version = ds[dep];
 
-          /**
-           * If the dependency was found, it means that another package is using it and we need to
-           * check that we are using the same dependency version.
-           */
-          if (deps[dep]) {
-            const detectedVersion = deps[dep];
+            /**
+             * If the dependency was found, it means that another package is using it and we need to
+             * check that we are using the same dependency version.
+             */
+            if (deps[dep]) {
+              const detectedVersion = deps[dep];
 
-            if (version !== detectedVersion) {
-              /**
-               * If the version is different, we need to add it to the list of incoherent dependencies.
-               * Since multiple versions for the same package could be coherent, for each dependency
-               * we have a list of possible incoherent dependencies.
-               */
-              if (!incoherentDependencies[dep]) {
-                incoherentDependencies[dep] = [];
+              if (version !== detectedVersion) {
+                /**
+                 * If the version is different, we need to add it to the list of incoherent dependencies.
+                 * Since multiple versions for the same package could be coherent, for each dependency
+                 * we have a list of possible incoherent dependencies.
+                 */
+                if (!incoherentDependencies[dep]) {
+                  incoherentDependencies[dep] = [];
+                }
+
+                incoherentDependencies[dep].push({
+                  name: dep,
+                  addedBy: pkgName,
+                  version,
+                });
               }
-
-              incoherentDependencies[dep].push({
-                name: dep,
-                addedBy: pkgName,
-                version,
-              });
+            } else {
+              deps[dep] = version;
             }
           } else {
-            deps[dep] = version;
+            // eslint-disable-next-line no-console
+            console.log(`Ignoring dependency ${dep} since it was ignored in the action's configuration`);
           }
         });
       }
